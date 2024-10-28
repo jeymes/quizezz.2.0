@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from '../../shared-theme/colorModeIconDropdown';
 import Sitemark from '../../components/sitemarkIcon'
+import { useAuthStore } from '@/app/zustand/StoreAuth/store';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     display: 'flex',
@@ -32,9 +33,37 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 
 export default function AppAppBar() {
     const [open, setOpen] = React.useState(false);
+    const [loadingSignIn, setLoadingSignIn] = React.useState<boolean>(false);
+    const { userInfo } = useAuthStore();
+
+    async function handleLogin() {
+        setLoadingSignIn(true); // Inicia o estado de carregamento
+
+        try {
+            if (userInfo) {
+                // Verifica se o usuário está logado e já na página correta
+                if (window.location.pathname !== '/dashboard') {
+                    // navigate('/dashboard');
+                }
+            } else {
+                // Se não houver informações do usuário, redireciona para login
+                if (window.location.pathname !== '/login') {
+                    // navigate('/login');
+                }
+            }
+        } catch (error) {
+            console.error('Erro ao redirecionar:', error);
+        } finally {
+            setLoadingSignIn(false); // Finaliza o estado de carregamento
+        }
+    };
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
+    };
+
+    function handleCheckout() {
+        window.open("https://pay.hotmart.com/V95399372J", "_blank");
     };
 
     return (
@@ -53,23 +82,54 @@ export default function AppAppBar() {
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
                         <Sitemark />
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <Button variant="text" color="info" size="small">
-                                Features
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('logoCollection')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small">
+                                Plataformas
                             </Button>
-                            <Button variant="text" color="info" size="small">
-                                Testimonials
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small">
+                                Como funciona?
                             </Button>
-                            <Button variant="text" color="info" size="small">
-                                Highlights
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('highlights')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small">
+                                Benefícios
                             </Button>
-                            <Button variant="text" color="info" size="small">
-                                Pricing
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('verticalLinearStepper')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small">
+                                Para quem é?
                             </Button>
-                            <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
+                                Depoimentos
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
+                                Planos
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
                                 FAQ
-                            </Button>
-                            <Button variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                                Blog
                             </Button>
                         </Box>
                     </Box>
@@ -80,11 +140,17 @@ export default function AppAppBar() {
                             alignItems: 'center',
                         }}
                     >
-                        <Button color="primary" variant="text" size="small">
-                            Sign in
+                        <Button
+                            onClick={handleLogin}
+
+                            color="primary" variant="text" size="small">
+                            Entrar
                         </Button>
-                        <Button color="primary" variant="contained" size="small">
-                            Sign up
+                        <Button
+                            onClick={handleCheckout}
+
+                            color="primary" variant="contained" size="small">
+                            Cadastra-se
                         </Button>
                         <ColorModeIconDropdown />
                     </Box>
@@ -115,21 +181,26 @@ export default function AppAppBar() {
                                     </IconButton>
                                 </Box>
 
-                                <MenuItem>Features</MenuItem>
-                                <MenuItem>Testimonials</MenuItem>
-                                <MenuItem>Highlights</MenuItem>
-                                <MenuItem>Pricing</MenuItem>
+                                <MenuItem>Plataformas</MenuItem>
+                                <MenuItem>Como funciona?</MenuItem>
+                                <MenuItem>Benefícios</MenuItem>
+                                <MenuItem>Para quem é?</MenuItem>
+                                <MenuItem>Depoimentos</MenuItem>
+                                <MenuItem>Planos</MenuItem>
                                 <MenuItem>FAQ</MenuItem>
-                                <MenuItem>Blog</MenuItem>
                                 <Divider sx={{ my: 3 }} />
                                 <MenuItem>
-                                    <Button color="primary" variant="contained" fullWidth>
-                                        Sign up
+                                    <Button
+                                        onClick={handleCheckout}
+                                        color="primary" variant="contained" fullWidth>
+                                        Cadastra-se
                                     </Button>
                                 </MenuItem>
                                 <MenuItem>
-                                    <Button color="primary" variant="outlined" fullWidth>
-                                        Sign in
+                                    <Button
+                                        onClick={handleLogin}
+                                        color="primary" variant="outlined" fullWidth>
+                                        Entrar
                                     </Button>
                                 </MenuItem>
                             </Box>
