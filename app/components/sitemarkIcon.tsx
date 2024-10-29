@@ -3,7 +3,9 @@ import SvgIcon from '@mui/material/SvgIcon';
 
 export default function SitemarkIcon() {
     return (
-        <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
+        <SvgIcon
+            sx={{ marginRight: 1, width: 80, display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}
+        >
             <svg width="105" height="30" viewBox="0 0 105 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_12_386)">
                     <g clip-path="url(#clip1_12_386)">

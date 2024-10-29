@@ -98,6 +98,13 @@ export default function AppAppBar() {
                             </Button>
                             <Button
                                 onClick={() => {
+                                    document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                                variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
+                                Depoimentos
+                            </Button>
+                            <Button
+                                onClick={() => {
                                     document.getElementById('highlights')?.scrollIntoView({ behavior: 'smooth' });
                                 }}
                                 variant="text" color="info" size="small">
@@ -109,13 +116,6 @@ export default function AppAppBar() {
                                 }}
                                 variant="text" color="info" size="small">
                                 Para quem é?
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                                variant="text" color="info" size="small" sx={{ minWidth: 0 }}>
-                                Depoimentos
                             </Button>
                             <Button
                                 onClick={() => {

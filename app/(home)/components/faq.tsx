@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 export default function FAQ() {
@@ -16,6 +15,73 @@ export default function FAQ() {
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
             setExpanded(isExpanded ? panel : false);
         };
+
+    const faqData = [
+        {
+            id: 'panel1',
+            question: "Como posso personalizar os quizzes para a minha marca?",
+            answer: (
+                <>
+                    Você pode personalizar cada aspecto dos quizzes, desde as perguntas até o design visual.
+                    Isso permite que o conteúdo reflita a identidade da sua marca, criando uma experiência imersiva
+                    e alinhada com seus objetivos de marketing.
+                </>
+            ),
+        },
+        {
+            id: 'panel2',
+            question: "Como os relatórios detalhados podem ajudar a melhorar minhas campanhas?",
+            answer: (
+                <>
+                    Os relatórios oferecem insights valiosos sobre o comportamento e preferências do seu público.
+                    Com esses dados, você pode ajustar suas campanhas e estratégias de marketing, garantindo melhores
+                    resultados com base em informações precisas.
+                </>
+            ),
+        },
+        {
+            id: 'panel3',
+            question: "Como os quizzes podem atrair novos clientes?",
+            answer: (
+                <>
+                    Os quizzes interativos criam experiências divertidas e envolventes que despertam a curiosidade dos
+                    usuários. Isso pode atrair novos clientes para sua marca de maneira criativa e incentivar a
+                    participação em massa.
+                </>
+            ),
+        },
+        {
+            id: 'panel4',
+            question: "Como os quizzes podem aumentar o engajamento nas redes sociais?",
+            answer: (
+                <>
+                    Compartilhar quizzes nas redes sociais é uma ótima maneira de aumentar a visibilidade da sua marca.
+                    Eles são altamente compartilháveis, gerando mais interações e ampliando o alcance de suas publicações.
+                </>
+            ),
+        },
+        {
+            id: 'panel5',
+            question: "Quais dados posso obter dos quizzes para melhorar minhas estratégias?",
+            answer: (
+                <>
+                    Ao coletar respostas dos quizzes, você pode obter informações detalhadas sobre os interesses e
+                    preferências do seu público. Esses dados são cruciais para ajustar suas estratégias de marketing
+                    e produtos, tornando-as mais eficazes.
+                </>
+            ),
+        },
+        {
+            id: 'panel6',
+            question: "Os quizzes fornecem feedback em tempo real?",
+            answer: (
+                <>
+                    Sim, os quizzes oferecem feedback instantâneo baseado nas respostas dos usuários. Isso permite
+                    ajustar suas ações e estratégias em tempo real, otimizando os resultados de suas campanhas.
+                </>
+            ),
+        }
+    ];
 
     return (
         <Container
@@ -39,111 +105,35 @@ export default function FAQ() {
                     textAlign: { sm: 'left', md: 'center' },
                 }}
             >
-                Frequently asked questions
+                Perguntas Frequentes
             </Typography>
             <Box sx={{ width: '100%' }}>
-                <Accordion
-                    expanded={expanded === 'panel1'}
-                    onChange={handleChange('panel1')}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1d-content"
-                        id="panel1d-header"
+                {faqData.map((item) => (
+                    <Accordion
+                        key={item.id}
+                        expanded={expanded === item.id}
+                        onChange={handleChange(item.id)}
                     >
-                        <Typography component="h3" variant="subtitle2">
-                            How do I contact customer support if I have a question or issue?
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography
-                            variant="body2"
-                            gutterBottom
-                            sx={{ maxWidth: { sm: '100%', md: '70%' } }}
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={`${item.id}-content`}
+                            id={`${item.id}-header`}
                         >
-                            You can reach our customer support team by emailing
-                            <Link> support@email.com </Link>
-                            or calling our toll-free number. We&apos;re here to assist you
-                            promptly.
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion
-                    expanded={expanded === 'panel2'}
-                    onChange={handleChange('panel2')}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel2d-content"
-                        id="panel2d-header"
-                    >
-                        <Typography component="h3" variant="subtitle2">
-                            Can I return the product if it doesn&apos;t meet my expectations?
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography
-                            variant="body2"
-                            gutterBottom
-                            sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-                        >
-                            Absolutely! We offer a hassle-free return policy. If you&apos;re not
-                            completely satisfied, you can return the product within [number of
-                            days] days for a full refund or exchange.
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion
-                    expanded={expanded === 'panel3'}
-                    onChange={handleChange('panel3')}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel3d-content"
-                        id="panel3d-header"
-                    >
-                        <Typography component="h3" variant="subtitle2">
-                            What makes your product stand out from others in the market?
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography
-                            variant="body2"
-                            gutterBottom
-                            sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-                        >
-                            Our product distinguishes itself through its adaptability, durability,
-                            and innovative features. We prioritize user satisfaction and
-                            continually strive to exceed expectations in every aspect.
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion
-                    expanded={expanded === 'panel4'}
-                    onChange={handleChange('panel4')}
-                >
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel4d-content"
-                        id="panel4d-header"
-                    >
-                        <Typography component="h3" variant="subtitle2">
-                            Is there a warranty on the product, and what does it cover?
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography
-                            variant="body2"
-                            gutterBottom
-                            sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-                        >
-                            Yes, our product comes with a [length of warranty] warranty. It covers
-                            defects in materials and workmanship. If you encounter any issues
-                            covered by the warranty, please contact our customer support for
-                            assistance.
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
+                            <Typography component="h3" variant="subtitle2">
+                                {item.question}
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography
+                                variant="body2"
+                                gutterBottom
+                                sx={{ maxWidth: { sm: '100%', md: '70%' } }}
+                            >
+                                {item.answer}
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
             </Box>
         </Container>
     );

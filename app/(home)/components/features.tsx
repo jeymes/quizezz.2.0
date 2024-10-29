@@ -8,34 +8,58 @@ import Typography from '@mui/material/Typography';
 
 import { styled } from '@mui/material/styles';
 
-import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
-import EdgesensorHighRoundedIcon from '@mui/icons-material/EdgesensorHighRounded';
-import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
+import DevicesIcon from '@mui/icons-material/Devices';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import LineWeightIcon from '@mui/icons-material/LineWeight';
+import SourceIcon from '@mui/icons-material/Source';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+import Dashoboard from '../../../assets/img/ImgApp/Macbook0.png';
+import CreatedQuiz from '../../../assets/img/ImgApp/Macbook1.png';
+import MyQuiz from '../../../assets/img/ImgApp/Macbook2.png';
+import RelationsQuiz from '../../../assets/img/ImgApp/Macbook4.png';
+import HeaderInFooterQuiz from '../../../assets/img/ImgApp/Macbook3.png';
 
 const items = [
     {
-        icon: <ViewQuiltRoundedIcon />,
-        title: 'Dashboard',
+        icon: <DevicesIcon />,
+        title: 'Dashoboard',
         description:
-            'This item could provide a snapshot of the most important metrics or data points related to the product.',
-        imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/dash-light.png")`,
-        imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/dash-dark.png")`,
+            'A ferramenta de criação de quizzes permite que você desenvolva quizzes personalizados de forma rápida e eficiente.',
+        imageLight: `url(${Dashoboard.src})`,
+        imageDark: `url(${Dashoboard.src})`,
     },
     {
-        icon: <EdgesensorHighRoundedIcon />,
-        title: 'Mobile integration',
+        icon: <AutoAwesomeMosaicIcon />,
+        title: 'Criação',
         description:
-            'This item could provide information about the mobile app version of the product.',
-        imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-light.png")`,
-        imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/mobile-dark.png")`,
+            'A ferramenta de criação de quizzes permite que você desenvolva quizzes personalizados de forma rápida e eficiente.',
+        imageLight: `url(${CreatedQuiz.src})`,
+        imageDark: `url(${CreatedQuiz.src})`,
     },
     {
-        icon: <DevicesRoundedIcon />,
-        title: 'Available on all platforms',
+        icon: <LineWeightIcon />,
+        title: 'Feitos',
         description:
-            'This item could let users know the product is available on all platforms, such as web, mobile, and desktop.',
-        imageLight: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-light.png")`,
-        imageDark: `url("${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/images/templates/templates-images/devices-dark.png")`,
+            'O painel "Meus Quizzes" oferece uma visão clara de todos os quizzes que você já criou. Aqui, você pode visualizar, editar ou deletar quizzes conforme necessário.',
+        imageLight: `url(${MyQuiz.src})`,
+        imageDark: `url(${MyQuiz.src})`,
+    },
+    {
+        icon: <SourceIcon />,
+        title: 'Relatórios',
+        description:
+            'Com a ferramenta de relatórios detalhados, você pode acompanhar de perto o desempenho de cada quiz, analisando as respostas dadas pelos participantes.',
+        imageLight: `url(${RelationsQuiz.src})`,
+        imageDark: `url(${RelationsQuiz.src})`,
+    },
+    {
+        icon: <SettingsIcon />,
+        title: 'Configurações',
+        description:
+            'Esta funcionalidade permite que você adicione um cabeçalho (header), rodapé (footer) e Pixel (Rastreamento) personalizados aos seus quizzes.',
+        imageLight: `url(${HeaderInFooterQuiz.src})`,
+        imageDark: `url(${HeaderInFooterQuiz.src})`,
     },
 ];
 
@@ -86,7 +110,7 @@ export function MobileLayout({
                 gap: 2,
             }}
         >
-            <Box sx={{ display: 'flex', gap: 2, overflow: 'auto' }}>
+            <Box sx={{ display: 'flex', gap: 2, overflow: 'auto', flexWrap: 'wrap' }}>
                 {items.map(({ title }, index) => (
                     <Chip
                         size="medium"
@@ -103,7 +127,8 @@ export function MobileLayout({
                         mb: 2,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        minHeight: 280,
+                        minHeight: { xs: 180, sm: 280 },
+                        backgroundRepeat: 'no-repeat',
                         backgroundImage: 'var(--items-imageLight)',
                         ...theme.applyStyles('dark', {
                             backgroundImage: 'var(--items-imageDark)',
@@ -152,15 +177,13 @@ export default function Features() {
                     gutterBottom
                     sx={{ color: 'text.primary' }}
                 >
-                    Product features
+                    Como o Quizzez funciona?
                 </Typography>
                 <Typography
                     variant="body1"
                     sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 } }}
                 >
-                    Provide a brief overview of the key features of the product. For example,
-                    you could list the number of features, their types or benefits, and
-                    add-ons.
+                    Veja Como Funis e Quizzes Trabalham Juntos para Impulsionar Suas Vendas
                 </Typography>
             </Box>
             <Box
@@ -251,6 +274,8 @@ export default function Features() {
                                 width: 420,
                                 height: 500,
                                 backgroundSize: 'contain',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
                                 backgroundImage: 'var(--items-imageLight)',
                                 ...theme.applyStyles('dark', {
                                     backgroundImage: 'var(--items-imageDark)',

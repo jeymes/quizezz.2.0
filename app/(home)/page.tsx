@@ -12,7 +12,8 @@ import AppTheme from '../shared-theme/appTheme';
 import LogoCollection from './components/logoCollection';
 import Testimonials from './components/testimonials';
 import Highlights from './components/highlights';
-import Pricing from './components/pricing';
+import Plans from './components/plans';
+import VerticalLinearStepper from './components/verticalLinearStepper';
 
 export default function Home(props: { disableCustomTheme?: boolean }) {
     return (
@@ -28,8 +29,9 @@ export default function Home(props: { disableCustomTheme?: boolean }) {
                 <Testimonials />
                 <Divider />
                 <Highlights />
+                <VerticalLinearStepper />
                 <Divider />
-                <Pricing />
+                <Plans />
                 <Divider />
                 <FAQ />
                 <Divider />
