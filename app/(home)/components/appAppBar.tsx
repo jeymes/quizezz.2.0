@@ -38,7 +38,7 @@ export default function AppAppBar() {
 
     async function handleLogin() {
         setLoadingSignIn(true); // Inicia o estado de carregamento
-
+        window.location.href = '/signin'
         try {
             if (userInfo) {
                 // Verifica se o usuário está logado e já na página correta
@@ -47,7 +47,7 @@ export default function AppAppBar() {
                 }
             } else {
                 // Se não houver informações do usuário, redireciona para login
-                if (window.location.pathname !== '/login') {
+                if (window.location.pathname !== '/signin') {
                     // navigate('/login');
                 }
             }
@@ -150,7 +150,7 @@ export default function AppAppBar() {
                             onClick={handleCheckout}
 
                             color="primary" variant="contained" size="small">
-                            Cadastra-se
+                            Inscrever-se
                         </Button>
                         <ColorModeIconDropdown />
                     </Box>
@@ -193,7 +193,7 @@ export default function AppAppBar() {
                                     <Button
                                         onClick={handleCheckout}
                                         color="primary" variant="contained" fullWidth>
-                                        Cadastra-se
+                                        Inscrever-se
                                     </Button>
                                 </MenuItem>
                                 <MenuItem>

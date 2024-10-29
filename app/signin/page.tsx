@@ -115,6 +115,10 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         return isValid;
     };
 
+    function handleCheckout() {
+        window.open("https://pay.hotmart.com/V95399372J", "_blank");
+    };
+
     return (
         <AppTheme {...props}>
             <CssBaseline enableColorScheme />
@@ -127,7 +131,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         variant="h4"
                         sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
                     >
-                        Sign in
+                        Entrar
                     </Typography>
                     <Box
                         component="form"
@@ -148,7 +152,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                                 id="email"
                                 type="email"
                                 name="email"
-                                placeholder="your@email.com"
+                                placeholder="exemplos@gmail.com"
                                 autoComplete="email"
                                 autoFocus
                                 required
@@ -160,7 +164,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         </FormControl>
                         <FormControl>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <FormLabel htmlFor="password">Password</FormLabel>
+                                <FormLabel htmlFor="password">Senha</FormLabel>
                                 <Link
                                     component="button"
                                     type="button"
@@ -168,7 +172,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                                     variant="body2"
                                     sx={{ alignSelf: 'baseline' }}
                                 >
-                                    Forgot your password?
+                                    Esqueceu sua senha?
                                 </Link>
                             </Box>
                             <TextField
@@ -188,7 +192,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         </FormControl>
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            label="Lembre de mim"
                         />
                         <ForgotPassword open={open} handleClose={handleClose} />
                         <Button
@@ -197,18 +201,17 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                             variant="contained"
                             onClick={validateInputs}
                         >
-                            Sign in
+                            Entrar
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
-                            Don&apos;t have an account?{' '}
+                            Não tem uma conta?{' '}
                             <span>
-                                <Link
-                                    href="/material-ui/getting-started/templates/sign-in/"
-                                    variant="body2"
-                                    sx={{ alignSelf: 'center' }}
+                                <Button
+                                    variant="text"
+                                    onClick={handleCheckout}
                                 >
-                                    Sign up
-                                </Link>
+                                    Inscrever-se
+                                </Button>
                             </span>
                         </Typography>
                     </Box>
