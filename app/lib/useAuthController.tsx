@@ -161,7 +161,7 @@ export function useAuthController() {
 
         if (!password.value || password.value.length < 6) {
             setPasswordError(true);
-            setPasswordErrorMessage('A senha deve ter pelo menos 6 caracteres.');
+            setPasswordErrorMessage('A senha deve ter pelo menos 8 caracteres.');
             isValid = false;
         } else {
             setPasswordError(false);
