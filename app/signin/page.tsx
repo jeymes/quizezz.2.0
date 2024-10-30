@@ -3,9 +3,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
@@ -18,6 +16,8 @@ import AppTheme from '../shared-theme/appTheme';
 import ColorModeSelect from '../shared-theme/colorModeSelect';
 import SitemarkIcon from '../components/sitemarkIcon';
 import ForgotPassword from './forgotPassword';
+import { useAuthController } from '../lib/useAuthController';
+import LoadingOverlay from '../components/loadingOverlay';
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -62,66 +62,25 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
-    const [emailError, setEmailError] = React.useState(false);
-    const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-    const [passwordError, setPasswordError] = React.useState(false);
-    const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-    const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        if (emailError || passwordError) {
-            event.preventDefault();
-            return;
-        }
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
-
-    const validateInputs = () => {
-        const email = document.getElementById('email') as HTMLInputElement;
-        const password = document.getElementById('password') as HTMLInputElement;
-
-        let isValid = true;
-
-        if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-            setEmailError(true);
-            setEmailErrorMessage('Please enter a valid email address.');
-            isValid = false;
-        } else {
-            setEmailError(false);
-            setEmailErrorMessage('');
-        }
-
-        if (!password.value || password.value.length < 6) {
-            setPasswordError(true);
-            setPasswordErrorMessage('Password must be at least 6 characters long.');
-            isValid = false;
-        } else {
-            setPasswordError(false);
-            setPasswordErrorMessage('');
-        }
-
-        return isValid;
-    };
-
-    function handleCheckout() {
-        window.open("https://pay.hotmart.com/V95399372J", "_blank");
-    };
+    const {
+        handleSubmit,
+        handleClickOpen,
+        handleClose,
+        handleCheckout,
+        open,
+        loadingSignIn,
+        validateInputs,
+        emailError,
+        emailErrorMessage,
+        passwordError,
+        passwordErrorMessage,
+    } = useAuthController();
 
     return (
         <AppTheme {...props}>
             <CssBaseline enableColorScheme />
+            <LoadingOverlay loading={loadingSignIn} />
             <SignInContainer direction="column" justifyContent="space-between">
                 <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
                 <Card variant="outlined">
@@ -190,10 +149,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                                 color={passwordError ? 'error' : 'primary'}
                             />
                         </FormControl>
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Lembre de mim"
-                        />
                         <ForgotPassword open={open} handleClose={handleClose} />
                         <Button
                             type="submit"
@@ -201,7 +156,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                             variant="contained"
                             onClick={validateInputs}
                         >
-                            Entrar
+                            {loadingSignIn ? 'Carregando...' : 'Entrar'}
                         </Button>
                         <Typography sx={{ textAlign: 'center' }}>
                             Não tem uma conta?{' '}
