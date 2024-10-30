@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
 import { useAuthStore } from '../zustand/StoreAuth/store';
@@ -8,10 +8,12 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useQuizStore } from '../zustand/StoreQuiz/store';
 import { useQuizResponseStore } from '../zustand/StoreQuizResponse/store';
 import { useNotification } from '../components/notificationProvider';
+import { User } from '../@types/types';
+import { setCookie } from 'nookies';
 
 export function useAuthController() {
     const router = useRouter();
-    const { setUserInfo } = useAuthStore();
+    const { setUserInfo, clearUserInfo, userInfo } = useAuthStore();
     const { setQuizData } = useQuizStore();
     const { setQuizDataResponse } = useQuizResponseStore();
     const { showNotification } = useNotification();
@@ -22,6 +24,7 @@ export function useAuthController() {
     const [open, setOpen] = React.useState(false);
     const [loadingSignIn, setLoadingSignIn] = useState<boolean>(false);
     const [loadingResetPassword, setLoadingResetPassword] = useState<boolean>(false);
+    // console.log(userInfo)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -44,14 +47,22 @@ export function useAuthController() {
     };
 
     // Função para login com email e senha
-    const signInWithEmail = async (data: any) => {
+    const signInWithEmail = async (data: User) => {
         setLoadingSignIn(true); // Iniciar carregamento para login
 
         try {
-
             // Fazer login usando o Firebase Authentication
             const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
             const user = userCredential.user;
+
+            // Obter token do usuário logado
+            const token = await user.getIdToken();
+
+            // Armazenar o token no cookie
+            setCookie(null, 'session-token', token, {
+                maxAge: 30 * 24 * 60 * 60, // 30 dias
+                path: '/', // O cookie estará acessível em todo o domínio
+            });
 
             // Buscar dados adicionais na coleção 'users' com base no uid do usuário
             const userDocRef = doc(db, 'users', user.uid);
@@ -64,7 +75,8 @@ export function useAuthController() {
                 setUserInfo({
                     uid: userData.id,
                     name: userData.name,
-                    email: userData.email
+                    email: userData.email,
+                    token: token, // Adicionando o token aqui
                 });
 
                 showNotification('Login bem-sucedido!', "success");
@@ -82,15 +94,22 @@ export function useAuthController() {
         }
     };
 
+
     // Função para logout
     const signOutUser = async () => {
         try {
             await signOut(auth); // Desloga do Firebase
-            setUserInfo(null); // Limpa as informações do usuário no Zustand
+            clearUserInfo(); // Limpa as informações do usuário no Zustand
             setQuizData(null);
             setQuizDataResponse(null);
-            router.push('/signin');
-            // Redireciona para a página de login
+
+            // Limpa o cookie do token
+            setCookie(null, 'session-token', '', {
+                maxAge: -1, // Define o cookie para expirar imediatamente
+                path: '/', // O cookie deve ser removido do domínio
+            });
+
+            router.push('/signin'); // Redireciona para a página de login
             showNotification('Logout realizado com sucesso!', 'success');
         } catch (error) {
             console.error('Erro ao deslogar:', error);
@@ -159,7 +178,7 @@ export function useAuthController() {
             setEmailErrorMessage('');
         }
 
-        if (!password.value || password.value.length < 6) {
+        if (!password.value || password.value.length < 8) {
             setPasswordError(true);
             setPasswordErrorMessage('A senha deve ter pelo menos 8 caracteres.');
             isValid = false;
@@ -169,6 +188,18 @@ export function useAuthController() {
         }
 
         return isValid;
+    };
+
+    // Exemplo de validação em tempo real
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        if (!value || !/\S+@\S+\.\S+/.test(value)) {
+            setEmailError(true);
+            setEmailErrorMessage('Insira um endereço de e-mail válido.');
+        } else {
+            setEmailError(false);
+            setEmailErrorMessage('');
+        }
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -182,7 +213,7 @@ export function useAuthController() {
 
         // Verifica se a ação é para login ou redefinição de senha
         if (data.password) {
-            await signInWithEmail(data); // Passa o objeto com email e senha
+            await signInWithEmail(data as User); // Passa o objeto com email e senha
         } else {
             await resetPassword({ email: data.email }); // Passa o objeto com email
         }
@@ -190,6 +221,7 @@ export function useAuthController() {
 
     return {
         signInWithEmail,
+        handleEmailChange,
         signOutUser,
         resetPassword,
         handleSubmit,

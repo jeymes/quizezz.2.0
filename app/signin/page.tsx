@@ -18,6 +18,7 @@ import SitemarkIcon from '../components/sitemarkIcon';
 import ForgotPassword from './forgotPassword';
 import { useAuthController } from '../lib/useAuthController';
 import LoadingOverlay from '../components/loadingOverlay';
+import { Checkbox, Divider, FormControlLabel } from '@mui/material';
 
 const Card = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
@@ -75,6 +76,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
         emailErrorMessage,
         passwordError,
         passwordErrorMessage,
+        handleEmailChange
     } = useAuthController();
 
     return (
@@ -119,6 +121,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                                 variant="outlined"
                                 color={emailError ? 'error' : 'primary'}
                                 sx={{ ariaLabel: 'email' }}
+                                onChange={handleEmailChange}
                             />
                         </FormControl>
                         <FormControl>
@@ -158,6 +161,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
                         >
                             {loadingSignIn ? 'Carregando...' : 'Entrar'}
                         </Button>
+                        <Divider>Ou</Divider>
                         <Typography sx={{ textAlign: 'center' }}>
                             Não tem uma conta?{' '}
                             <span>

@@ -1,7 +1,9 @@
 export type User = {
+  token: string;
   uid: string;
   name: string;
   email: string;
+  password?: any;
 }
 
 export interface Option {
