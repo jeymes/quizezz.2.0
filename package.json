@@ -22,13 +22,16 @@
     "next": "15.0.1",
     "nookies": "^2.5.2",
     "react": "19.0.0-rc-69d4b800-20241021",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-hook-form": "^7.53.1",
+    "reactflow": "^11.11.4",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18",
     "typescript": "^5"
   }
