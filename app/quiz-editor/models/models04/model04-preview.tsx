@@ -1,11 +1,13 @@
 import React from 'react';
 
-const Modelo01 = ({ imageUrl }: any) => {
+const Modelo04Preview = ({ imageUrl }: any) => {
     return (
-        <div>
+        <div
+            style={{ width: '100%' }}
+        >
             <img src={imageUrl} alt="Modelo" style={{ width: '100%', borderRadius: '8px' }} />
         </div>
     );
 };
 
-export default Modelo01;
+export default Modelo04Preview;
