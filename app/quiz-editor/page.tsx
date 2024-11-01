@@ -21,6 +21,7 @@ import Modelo03Edit from './models/models03/model03-edit';
 import useModelManager from '../controller/useModelManagerController';
 import { useFormController } from '../controller/useFormController';
 import { getDesignTokens } from '../shared-theme/themePrimitives';
+import { Commit, Photo, PhotoLibrary, Title } from '@mui/icons-material';
 
 // Defina o modo para 'dark' ou 'light' conforme necessário
 const darkTheme = createTheme(getDesignTokens('dark'));
@@ -34,28 +35,28 @@ const modelOptions = [
     {
         name: 'Cabeçalho',
         component: Modelo01Preview,
-        icon: ImageIcon,
+        icon: PhotoLibrary,
         isFullWidth: true,
         model: 'modelo01'
     },
     {
         name: 'Progress',
         component: Modelo02Preview,
-        icon: ImageIcon,
+        icon: Commit,
         isFullWidth: true,
         model: 'modelo02'
     },
     {
         name: 'Titulo',
         component: Modelo03Preview,
-        icon: ModelIcon,
+        icon: Title,
         isFullWidth: true,
         model: 'modelo03'
     },
     {
         name: 'Image',
         component: Modelo04Preview,
-        icon: ModelIcon,
+        icon: Photo,
         isFullWidth: false,
         model: 'modelo04'
     }
@@ -178,27 +179,16 @@ export default function QuizEditor() {
                                 <Card
                                     sx={{
                                         width: '50%',
-                                        padding: 2,
                                         position: 'relative',
                                     }}
                                 >
-                                    {/* Botão de Fechar */}
-                                    <Button
-                                        onClick={() => setTextInputModalOpen(false)}
-                                        sx={{
-                                            position: 'absolute',
-                                            top: 8,
-                                            right: 8,
-                                            minWidth: 'auto',
-                                            padding: 0,
-                                        }}
-                                    >
-                                        X
-                                    </Button>
 
                                     {/* Renderização Condicional dos Componentes de Edição */}
                                     {modelPreview[editIndex]?.component === Modelo01Preview && (
-                                        <Modelo01Edit control={control} index={nodes.length} optionIndex={editIndex} key={editIndex} />
+                                        <Modelo01Edit
+                                            title="Cabeçalho"
+                                            onClose={() => setTextInputModalOpen(false)}
+                                            control={control} index={nodes.length} optionIndex={editIndex} key={editIndex} />
                                     )}
                                     {modelPreview[editIndex]?.component === Modelo02Preview && <Modelo02Edit />}
                                     {modelPreview[editIndex]?.component === Modelo03Preview && <Modelo03Edit />}
@@ -264,19 +254,18 @@ export default function QuizEditor() {
                                                         flexDirection: 'row',
                                                         gap: 1,
                                                         borderRadius: 2,
-                                                        padding: 1,
                                                         backgroundColor: 'rgba(255, 255, 255, 0.9)', // Cor de fundo dos ícones
                                                         boxShadow: 2, // Sombra para destaque
                                                     }}
                                                 >
-                                                    <Button onClick={() => handleModelClick(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
-                                                        <EditIcon />
+                                                    <Button onClick={() => handleModelClick(index)} sx={{ minWidth: 0, padding: 1, color: 'gray' }}>
+                                                        <EditIcon fontSize='small' />
                                                     </Button>
                                                     <Button onClick={() => handleDuplicateModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
-                                                        <DuplicateIcon />
+                                                        <DuplicateIcon fontSize='small' />
                                                     </Button>
-                                                    <Button onClick={() => handleDeleteModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
-                                                        <DeleteIcon />
+                                                    <Button onClick={() => handleDeleteModel(index)} sx={{ minWidth: 0, padding: 1, color: 'red' }}>
+                                                        <DeleteIcon fontSize='small' />
                                                     </Button>
                                                 </Box>
                                             </div>

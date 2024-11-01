@@ -104,6 +104,7 @@ const useModelManager = (): UseModelManager => {
 
     const handleDeleteModel = (index: number) => {
         setModelPreview((prev) => prev.filter((_, idx) => idx !== index));
+        setTextInputModalOpen(false)
     };
 
     const handleModelSelect = (model: ModelPreview) => {
