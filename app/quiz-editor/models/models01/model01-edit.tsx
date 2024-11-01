@@ -1,35 +1,39 @@
 import React from 'react';
-import { TextField, Box, Avatar, IconButton, Card, CardContent, Typography, Select, MenuItem, FormControl, InputLabel, AppBar, Toolbar } from '@mui/material';
+import {
+    TextField,
+    Box,
+    Avatar,
+    IconButton,
+    Card,
+    CardContent,
+    Select,
+    MenuItem,
+    FormControl,
+} from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { Close, AddPhotoAlternate, PhotoLibrary } from '@mui/icons-material';
+import { AddPhotoAlternate, PhotoLibrary } from '@mui/icons-material';
+import Header from '../../components/header';
 
 type Modelo01EditProps = {
-    control: any; // Controle do formulário vindo do useForm
-    index: number; // Índice da pergunta
-    optionIndex: number; // Índice da opção atual
-    title: string; // Título do cabeçalho
-    onClose: () => void; // Função para fechar
+    control: any;
+    index: number;
+    pageIndex: number;
+    onClose: () => void;
 };
 
-const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex, title, onClose }) => {
+const Modelo01Edit: React.FC<Modelo01EditProps> = ({
+    control,
+    index,
+    pageIndex,
+    onClose,
+}) => {
     return (
         <>
             {/* Cabeçalho */}
-            < AppBar position="static" >
+            <Header title="Cabeçalho" icon={PhotoLibrary} onClose={onClose} />
 
-                <Toolbar sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ gap: 5, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                        <PhotoLibrary />
-                        <Typography variant="body2">{title}</Typography>
-                    </div>
-                    <IconButton edge="end" color="inherit" onClick={onClose}>
-                        <Close />
-                    </IconButton>
-                </Toolbar>
-            </ AppBar>
-            <Box display="flex" flexDirection="column" gap={2} padding={2} >
-
-
+            <Box display="flex" flexDirection="column" gap={2} padding={2}>
+                {/* Card para Imagem */}
                 <Card
                     variant="outlined"
                     sx={{
@@ -41,13 +45,17 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex
                 >
                     <CardContent>
                         <Controller
-                            name={`questions.${index}.options.${optionIndex}.image`} // Nome do campo no formulário
+                            name={`pages.${pageIndex}.elements.${index}.imageUrl`} // Caminho atualizado para imagem
                             control={control}
                             render={({ field }) => (
                                 <>
                                     {field.value ? (
                                         <Avatar
-                                            src={typeof field.value === 'string' ? field.value : URL.createObjectURL(field.value)}
+                                            src={
+                                                typeof field.value === 'string'
+                                                    ? field.value
+                                                    : URL.createObjectURL(field.value)
+                                            }
                                             alt="Preview"
                                             sx={{ width: 100, height: 100, margin: '10px auto' }}
                                         />
@@ -60,7 +68,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex
                                                 borderRadius: 0,
                                                 '&:hover': {
                                                     backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                                                    borderRadius: 0
+                                                    borderRadius: 0,
                                                 },
                                             }}
                                         >
@@ -84,10 +92,9 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex
                     </CardContent>
                 </Card>
 
-
-                {/* Input para tamanho da logo */}
+                {/* Input para Tamanho da Logo */}
                 <Controller
-                    name={`questions.${index}.options.${optionIndex}.size`} // Nome do campo no formulário
+                    name={`pages.${pageIndex}.elements.${index}.size`} // Caminho atualizado para tamanho
                     control={control}
                     render={({ field }) => (
                         <TextField
@@ -101,17 +108,18 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex
                     )}
                 />
 
-                {/* Select para posição da logo */}
+                {/* Select para Posição da Logo */}
                 <Controller
-                    name={`questions.${index}.options.${optionIndex}.position`} // Nome do campo no formulário
+                    name={`pages.${pageIndex}.elements.${index}.position`} // Caminho atualizado para posição
                     control={control}
                     render={({ field }) => (
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 {...field}
                                 displayEmpty
-                                renderValue={(value) => value ? value : 'Selecione a posição'}
-                                // Para garantir que o espaço para o rótulo não seja exibido
+                                renderValue={(value) =>
+                                    value ? value : 'Selecione a posição'
+                                }
                                 inputProps={{
                                     'aria-label': 'Posição da Logo',
                                 }}
@@ -123,11 +131,8 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({ control, index, optionIndex
                         </FormControl>
                     )}
                 />
-
-
             </Box>
         </>
-
     );
 };
 

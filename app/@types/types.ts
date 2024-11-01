@@ -19,11 +19,13 @@ export type PageElement =
     index: number;
     type: 'header';
     content: string;
+    model?: string;
   }
   | {
     index: number;
     type: 'progress';
     content: number;
+    model?: string;
   }
   | {
     index: number;
@@ -38,20 +40,10 @@ export type PageElement =
     model?: string;
   };
 
-
-// Definindo tipo para a pergunta
-type Question = {
-  index: number; // Índice da pergunta
-  type: 'question'; // Tipo do elemento
-  content: string; // Texto da pergunta
-  model: string; // Modelo associado
-  imageUrl?: string; // Imagem da pergunta (opcional)
-  elements: PageElement[]; // Elementos dentro da questão
-};
-
-// Definindo tipo para os dados da página
-type Pages = {
-  elements: Question[]; // Array de perguntas
+// Definindo tipo para uma página do quiz
+export type Page = {
+  page: number; // Índice da página
+  elements: PageElement[]; // Elementos dentro da página
 };
 
 // Definindo tipo para os dados do quiz
@@ -61,9 +53,8 @@ export interface QuizData {
   quizId: string; // ID do quiz
   userId: string; // ID do usuário
   color: string; // Cor associada ao quiz
-  questions: Pages; // Estrutura das perguntas
+  pages: Page[]; // Array de páginas
 }
-
 
 export interface QuizCard {
   id: string;
