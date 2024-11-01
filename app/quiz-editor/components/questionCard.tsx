@@ -3,10 +3,11 @@ import { Handle, Position } from 'reactflow';
 
 interface NodeProps {
     data: any; // Substitua 'any' pelo tipo adequado
-    onClick: () => void; // Adicione esta linha
+    onClick?: () => void; // Adicione esta linha
+    id: any;
 }
 
-const QuestionCard = ({ data, onClick }: NodeProps) => {
+const QuestionCard = ({ data, onClick, id }: NodeProps) => {
     const { question, options } = data;
 
     return (

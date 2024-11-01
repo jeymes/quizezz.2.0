@@ -1,11 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import ReactFlow, { Controls, Background, useNodesState, useEdgesState, addEdge } from 'reactflow';
+import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import QuestionCard from './components/questionCard';
 import StartCard from './components/startCard';
-import { Modal, Button, Box, Typography, Avatar, Card } from '@mui/material';
+import { Modal, Button, Box, Typography, Card } from '@mui/material';
 import Modelo01Edit from './models/models01/model01-edit';
 import Modelo01Preview from './models/models01/model01-preview';
 import ImageIcon from '@mui/icons-material/Image';
@@ -13,15 +12,16 @@ import ModelIcon from '@mui/icons-material/Widgets';
 import Modelo04Preview from './models/models04/model04-preview';
 import Modelo04Edit from './models/models04/model04-edit';
 import EditIcon from '@mui/icons-material/Edit';
-import DuplicateIcon from '@mui/icons-material/ContentCopy'; // Você pode escolher outro ícone apropriado
+import DuplicateIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modelo02Preview from './models/models02/model02-preview';
 import Modelo02Edit from './models/models02/model02-edit';
 import Modelo03Preview from './models/models03/model03-preview';
 import Modelo03Edit from './models/models03/model03-edit';
+import useModelManager from '../lib/useModelManager';
 
 const nodeTypes = {
-    questionCard: ({ id, data }) => <QuestionCard id={id} data={data} />,
+    questionCard: ({ id, data }: any) => <QuestionCard id={id} data={data} />,
     startCard: StartCard,
 };
 
@@ -52,103 +52,27 @@ const modelOptions = [
     }
 ];
 
-function QuizEditor() {
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [textInputModalOpen, setTextInputModalOpen] = useState(false);
-    const [currentNodeId, setCurrentNodeId] = useState(null);
-    const [modelPreview, setModelPreview] = useState([]);
-    const [userInput, setUserInput] = useState({});
-    const [image, setImage] = useState(null);
-    const [editIndex, setEditIndex] = useState(null);
-    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+export default function QuizEditor() {
 
-    useEffect(() => {
-        const startNode = {
-            id: 'start',
-            type: 'startCard',
-            position: { x: 50, y: 50 },
-            data: {},
-        };
-        setNodes((nds) => [startNode, ...nds]);
-    }, [setNodes]);
-
-    const addQuestion = () => {
-        const newNodeId = (nodes.length + 1).toString();
-        const lastNodePosition = nodes[nodes.length - 1]?.position || { x: 50, y: 50 };
-
-        const newNode = {
-            id: newNodeId,
-            type: 'questionCard',
-            position: {
-                x: lastNodePosition.x + 200,
-                y: lastNodePosition.y,
-            },
-            data: {
-                question: `Nova Pergunta ${newNodeId}`,
-                options: ['Opção A', 'Opção B', 'Opção C'],
-            },
-        };
-
-        setNodes((nds) => [...nds, newNode]);
-        setEdges((eds) => [
-            ...eds,
-            {
-                id: `start-${newNodeId}`,
-                source: 'start',
-                target: newNodeId,
-            },
-        ]);
-    };
-
-    const openModal = (nodeId) => {
-        setCurrentNodeId(nodeId);
-        setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-        setModalIsOpen(false);
-        setUserInput({});
-        setEditIndex(null);
-        setModelPreview([]);
-    };
-
-    const handleModelSelect = (model) => {
-        const props = model.props || {};
-        setModelPreview((prev) => [
-            ...prev,
-            {
-                id: Date.now(),
-                component: model.component,
-                props: { ...props, imageUrl: image || 'https://via.placeholder.com/150' },
-                isFullWidth: model.isFullWidth, // Adicionando a propriedade isFullWidth aqui
-
-            },
-        ]);
-    };
-
-    const handleDuplicateModel = (index) => {
-        const modelToDuplicate = modelPreview[index];
-        setModelPreview((prev) => [
-            ...prev,
-            {
-                id: Date.now(),
-                component: modelToDuplicate.component,
-                props: { ...modelToDuplicate.props },
-                isFullWidth: modelToDuplicate.isFullWidth // Duplicando a propriedade isFullWidth também
-            },
-        ]);
-    };
-
-    const handleModelClick = (index) => {
-        setEditIndex(index);
-        setTextInputModalOpen(true);
-    };
-
-    const handleDeleteModel = (index) => {
-        setModelPreview((prev) => prev.filter((_, idx) => idx !== index));
-    };
+    const {
+        modelPreview,
+        edges,
+        modalIsOpen,
+        textInputModalOpen,
+        editIndex,
+        nodes,
+        setTextInputModalOpen,
+        onConnect,
+        onEdgesChange,
+        onNodesChange,
+        addQuestion,
+        openModal,
+        closeModal,
+        handleDuplicateModel,
+        handleModelClick,
+        handleDeleteModel,
+        handleModelSelect
+    } = useModelManager()
 
     return (
         <div style={{ height: '100vh', position: 'relative' }}>
@@ -271,8 +195,8 @@ function QuizEditor() {
                                             // Define a largura com base na propriedade do modelo
                                             width: model.isFullWidth ? '100%' : 'calc(50% - 10px)', // Ajuste para garantir que não ultrapasse 100%
                                         }}
-                                        onMouseEnter={(e) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'flex')}
-                                        onMouseLeave={(e) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'none')}
+                                        onMouseEnter={(e: any) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'flex')}
+                                        onMouseLeave={(e: any) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'none')}
                                     >
                                         <ModelComponent {...model.props} />
 
@@ -353,5 +277,3 @@ function QuizEditor() {
         </div>
     );
 }
-
-export default QuizEditor;

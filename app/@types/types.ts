@@ -5,47 +5,6 @@ export type User = {
   email: string;
   password?: any;
 }
-
-export interface Option {
-  option: string;
-  description: string;
-  image: any;  // Suporta upload de imagem ou null se não houver imagem
-  video: string;
-  file?: any,
-}
-
-export interface Question {
-  question: string;
-  correctOption: string;
-  link: string;
-  titleLink: string;
-  title: string;
-  description: string;
-  options: Option[];  // Um array de opções
-  modelo: string;
-}
-export interface QuizData {
-  id: string;
-  title: string;
-  description: string;
-  quizLink: string;
-  quizId: string;
-  userId: string;
-  createdAt: any;
-  questions: Question[];  // Um array de perguntas
-  color: string;
-}
-
-export interface QuizCard {
-  id: string;
-  title: string;
-  description: string;
-  questions: {
-    question: string;
-    correctOption: string;
-    options: string[];
-  }[];
-}
 // Tipo para Buyer com todas as propriedades combinadas
 export interface Subscriptions {
   buyer: {
