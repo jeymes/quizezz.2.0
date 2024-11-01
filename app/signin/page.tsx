@@ -16,7 +16,7 @@ import AppTheme from '../shared-theme/appTheme';
 import ColorModeSelect from '../shared-theme/colorModeSelect';
 import SitemarkIcon from '../components/sitemarkIcon';
 import ForgotPassword from './forgotPassword';
-import { useAuthController } from '../lib/useAuthController';
+import { useAuthController } from '../controller/useAuthController';
 import LoadingOverlay from '../components/loadingOverlay';
 import { Checkbox, Divider, FormControlLabel } from '@mui/material';
 

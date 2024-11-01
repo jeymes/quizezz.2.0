@@ -1,19 +1,11 @@
-import { SvgIconComponent } from '@mui/icons-material';
 import { useCallback, useEffect, useState } from 'react';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection, EdgeChange, NodeChange } from 'reactflow';
 
-interface ModelOption {
-    name: string;
-    component: React.FC<any>; // Se precisar de props específicas, substitua `any`
-    icon: SvgIconComponent;
-    isFullWidth: boolean;
-}
-
 interface ModelPreview {
-    id: string;
     component: React.FC<any>;
     isFullWidth: boolean;
-    props?: any; // Substitua por um tipo específico se necessário
+    props?: any;
+    model: string;
 }
 
 interface UseModelManager {
@@ -99,11 +91,13 @@ const useModelManager = (): UseModelManager => {
                 component: modelToDuplicate.component,
                 props: { ...modelToDuplicate.props },
                 isFullWidth: modelToDuplicate.isFullWidth,
+                model: modelToDuplicate.model,
             },
         ]);
     };
 
     const handleModelClick = (index: number) => {
+        const modelToEdit = modelPreview[index];
         setEditIndex(index);
         setTextInputModalOpen(true);
     };
@@ -117,10 +111,10 @@ const useModelManager = (): UseModelManager => {
         setModelPreview((prev) => [
             ...prev,
             {
-                id: Date.now(),
                 component: model.component,
                 props: { ...props, imageUrl: image || 'https://via.placeholder.com/150' },
                 isFullWidth: model.isFullWidth,
+                model: model.model
             },
         ]);
     };

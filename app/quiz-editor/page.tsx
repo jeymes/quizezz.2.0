@@ -4,7 +4,7 @@ import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import QuestionCard from './components/questionCard';
 import StartCard from './components/startCard';
-import { Modal, Button, Box, Typography, Card } from '@mui/material';
+import { Modal, Button, Box, Typography, Card, createTheme, ThemeProvider } from '@mui/material';
 import Modelo01Edit from './models/models01/model01-edit';
 import Modelo01Preview from './models/models01/model01-preview';
 import ImageIcon from '@mui/icons-material/Image';
@@ -18,7 +18,12 @@ import Modelo02Preview from './models/models02/model02-preview';
 import Modelo02Edit from './models/models02/model02-edit';
 import Modelo03Preview from './models/models03/model03-preview';
 import Modelo03Edit from './models/models03/model03-edit';
-import useModelManager from '../lib/useModelManager';
+import useModelManager from '../controller/useModelManagerController';
+import { useFormController } from '../controller/useFormController';
+import { getDesignTokens } from '../shared-theme/themePrimitives';
+
+// Defina o modo para 'dark' ou 'light' conforme necessário
+const darkTheme = createTheme(getDesignTokens('dark'));
 
 const nodeTypes = {
     questionCard: ({ id, data }: any) => <QuestionCard id={id} data={data} />,
@@ -30,30 +35,33 @@ const modelOptions = [
         name: 'Cabeçalho',
         component: Modelo01Preview,
         icon: ImageIcon,
-        isFullWidth: true
+        isFullWidth: true,
+        model: 'modelo01'
     },
     {
         name: 'Progress',
         component: Modelo02Preview,
         icon: ImageIcon,
-        isFullWidth: true
+        isFullWidth: true,
+        model: 'modelo02'
     },
     {
         name: 'Titulo',
         component: Modelo03Preview,
         icon: ModelIcon,
-        isFullWidth: true
+        isFullWidth: true,
+        model: 'modelo03'
     },
     {
         name: 'Image',
         component: Modelo04Preview,
         icon: ModelIcon,
-        isFullWidth: false
+        isFullWidth: false,
+        model: 'modelo04'
     }
 ];
 
 export default function QuizEditor() {
-
     const {
         modelPreview,
         edges,
@@ -72,208 +80,215 @@ export default function QuizEditor() {
         handleModelClick,
         handleDeleteModel,
         handleModelSelect
-    } = useModelManager()
+    } = useModelManager();
+
+    const {
+        register,
+        control,
+        handleSubmit,
+        reset,
+        setValue,
+        addNewQuestion,
+        onSubmit,
+    } = useFormController();
 
     return (
-        <div style={{ height: '100vh', position: 'relative' }}>
-            <Button
-                variant="contained"
-                onClick={addQuestion}
-                style={{
-                    position: 'absolute',
-                    zIndex: 10,
-                    padding: '10px',
-                    top: 10,
-                    left: 10,
-                }}
-            >
-                Adicionar Pergunta
-            </Button>
-
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                nodeTypes={nodeTypes}
-                fitView
-                snapToGrid={true}
-                snapGrid={[15, 15]}
-                onNodeClick={(event, node) => openModal(node.id)}
-            >
-                <Controls />
-                <Background />
-            </ReactFlow>
-
-            {/* Modal Principal */}
-            <Modal open={modalIsOpen} onClose={closeModal}>
-                <Box
-                    sx={{
+        <ThemeProvider theme={darkTheme}>
+            <div style={{ height: '100vh', position: 'relative' }}>
+                <Button
+                    variant="contained"
+                    onClick={addQuestion}
+                    style={{
                         position: 'absolute',
-                        right: 0,
-                        top: '5%',
-                        width: '60%',
-                        height: '90%',
-                        bgcolor: 'Background',
-                        borderRadius: 2,
-                        boxShadow: 24,
-                        p: 2,
-                        overflowY: 'auto',
-                        display: 'flex',
+                        zIndex: 10,
+                        padding: '10px',
+                        top: 10,
+                        left: 10,
                     }}
                 >
-                    <Box
-                        sx={{ flex: 1, paddingRight: 2 }}
-                    >
+                    Adicionar Pergunta
+                </Button>
 
-                        {modelOptions.map((model, index) => {
-                            const IconComponent = model.icon;
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    nodeTypes={nodeTypes}
+                    fitView
+                    snapToGrid={true}
+                    snapGrid={[15, 15]}
+                    onNodeClick={(event, node) => openModal(node.id)}
+                >
+                    <Controls />
+                    <Background />
+                </ReactFlow>
 
-                            return (
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Card
-                                        key={index}
-                                        onClick={() => handleModelSelect(model)}
-                                        sx={{
-                                            marginBottom: 1,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'flex-start',
-                                            padding: 1,
-                                            width: 150,
-                                            bgcolor: 'GrayText',
-                                        }}
-                                    >
-                                        <IconComponent sx={{ color: 'white', marginRight: 1 }} />
-                                        <Box sx={{ textAlign: 'left' }}>
-                                            <Typography
-                                                sx={{ fontSize: 15, color: 'white' }}
-                                                variant="subtitle1">{model.name}</Typography>
-                                        </Box>
-                                    </Card>
-                                </div>
-                            );
-                        })}
-                    </Box>
-
-                    <Card
-                        sx={{
-                            justifyContent: 'space-between',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: '100%',
-                            width: 360,
-                            bgcolor: 'GrayText',
-                        }}
-                    >
+                {/* Modal Principal */}
+                <Modal open={modalIsOpen} onClose={closeModal}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <Box
                             sx={{
-                                bgcolor: 'transparent',
-                                padding: 1,
+                                position: 'absolute',
+                                right: 0,
+                                top: '5%',
+                                width: '60%',
+                                height: '90%',
                                 borderRadius: 2,
-                                marginBottom: 1,
+                                boxShadow: 24,
+                                p: 3,
+                                overflowY: 'auto',
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                flexWrap: 'wrap',
-                                width: '100%',
+                                gap: 2,
+                                bgcolor: 'background.paper', // Cor do fundo
+                                border: '2px solid #ccc', // Borda opcional
                             }}
                         >
-                            {modelPreview.map((model, index) => {
-                                const ModelComponent = model.component;
-
-                                return (
-                                    <div
-                                        key={model.id}
-                                        style={{
-                                            borderRadius: 8,
-                                            marginBottom: '10px',
-                                            position: 'relative',
-                                            backgroundColor: 'darkgray',
-                                            padding: 5,
-                                            overflow: 'hidden',
-                                            // Define a largura com base na propriedade do modelo
-                                            width: model.isFullWidth ? '100%' : 'calc(50% - 10px)', // Ajuste para garantir que não ultrapasse 100%
+                            {/* Modo de Seleção de Modelos */}
+                            {!textInputModalOpen ? (
+                                <Box sx={{ flex: 1, paddingRight: 2 }}>
+                                    {modelOptions.map((model, index) => {
+                                        const IconComponent = model.icon;
+                                        return (
+                                            <Card
+                                                key={index}
+                                                onClick={() => handleModelSelect(model)}
+                                                sx={{
+                                                    marginBottom: 1,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'flex-start',
+                                                    padding: 1,
+                                                    width: 150,
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                <IconComponent sx={{ marginRight: 1 }} />
+                                                <Typography sx={{ fontSize: 15 }} variant="subtitle1">
+                                                    {model.name}
+                                                </Typography>
+                                            </Card>
+                                        );
+                                    })}
+                                </Box>
+                            ) : (
+                                // Modo de Edição
+                                <Card
+                                    sx={{
+                                        width: '50%',
+                                        padding: 2,
+                                        position: 'relative',
+                                    }}
+                                >
+                                    {/* Botão de Fechar */}
+                                    <Button
+                                        onClick={() => setTextInputModalOpen(false)}
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 8,
+                                            right: 8,
+                                            minWidth: 'auto',
+                                            padding: 0,
                                         }}
-                                        onMouseEnter={(e: any) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'flex')}
-                                        onMouseLeave={(e: any) => (e.currentTarget.querySelector('.icon-buttons').style.display = 'none')}
                                     >
-                                        <ModelComponent {...model.props} />
+                                        X
+                                    </Button>
 
-                                        <Box
-                                            className="icon-buttons"
-                                            sx={{
-                                                display: 'none', // Oculta por padrão
-                                                position: 'absolute',
-                                                top: '50%',
-                                                left: '50%',
-                                                transform: 'translate(-50%, -50%)',
-                                                flexDirection: 'row',
-                                                gap: 1,
-                                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                                borderRadius: 2,
-                                                padding: 1,
-                                            }}
-                                        >
-                                            <Button
-                                                onClick={() => handleModelClick(index)}
-                                                sx={{ minWidth: 0, padding: 1, color: 'white' }}
+                                    {/* Renderização Condicional dos Componentes de Edição */}
+                                    {modelPreview[editIndex]?.component === Modelo01Preview && (
+                                        <Modelo01Edit control={control} index={nodes.length} optionIndex={editIndex} key={editIndex} />
+                                    )}
+                                    {modelPreview[editIndex]?.component === Modelo02Preview && <Modelo02Edit />}
+                                    {modelPreview[editIndex]?.component === Modelo03Preview && <Modelo03Edit />}
+                                    {modelPreview[editIndex]?.component === Modelo04Preview && <Modelo04Edit />}
+                                </Card>
+                            )}
+
+                            {/* Seção de pré-visualização dos modelos */}
+                            <Card
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '100%',
+                                    width: 360,
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        padding: 1,
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        flexWrap: 'wrap',
+                                        width: '100%',
+                                        gap: 1,
+                                    }}
+                                >
+                                    {modelPreview.map((model, index) => {
+                                        const ModelComponent = model.component;
+                                        return (
+                                            <div
+                                                key={model.model}
+                                                style={{
+                                                    borderRadius: 8,
+                                                    marginBottom: '10px',
+                                                    position: 'relative',
+                                                    padding: 5,
+                                                    width: model.isFullWidth ? '100%' : 'calc(50% - 10px)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    backgroundColor: 'darkgray', // Cor de fundo
+                                                    transition: 'background-color 0.3s ease', // Efeito de transição
+                                                }}
+                                                onMouseEnter={(e: any) => {
+                                                    e.currentTarget.querySelector('.icon-buttons').style.display = 'flex';
+                                                    e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)'; // Muda a cor do fundo ao passar o mouse
+                                                }}
+                                                onMouseLeave={(e: any) => {
+                                                    e.currentTarget.querySelector('.icon-buttons').style.display = 'none';
+                                                    e.currentTarget.style.backgroundColor = 'darkgray'; // Retorna à cor original
+                                                }}
                                             >
-                                                <EditIcon />
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleDuplicateModel(index)}
-                                                sx={{ minWidth: 0, padding: 1, color: 'white' }}
-                                            >
-                                                <DuplicateIcon />
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleDeleteModel(index)}
-                                                sx={{ minWidth: 0, padding: 1, color: 'white' }}
-                                            >
-                                                <DeleteIcon />
-                                            </Button>
-                                        </Box>
-                                    </div>
-                                );
-                            })}
+                                                <ModelComponent {...model.props} />
+
+                                                <Box
+                                                    className="icon-buttons"
+                                                    sx={{
+                                                        display: 'none',
+                                                        position: 'absolute',
+                                                        top: '50%',
+                                                        left: '50%',
+                                                        transform: 'translate(-50%, -50%)',
+                                                        flexDirection: 'row',
+                                                        gap: 1,
+                                                        borderRadius: 2,
+                                                        padding: 1,
+                                                        backgroundColor: 'rgba(255, 255, 255, 0.9)', // Cor de fundo dos ícones
+                                                        boxShadow: 2, // Sombra para destaque
+                                                    }}
+                                                >
+                                                    <Button onClick={() => handleModelClick(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
+                                                        <EditIcon />
+                                                    </Button>
+                                                    <Button onClick={() => handleDuplicateModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
+                                                        <DuplicateIcon />
+                                                    </Button>
+                                                    <Button onClick={() => handleDeleteModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
+                                                        <DeleteIcon />
+                                                    </Button>
+                                                </Box>
+                                            </div>
+                                        );
+                                    })}
+                                </Box>
+
+                            </Card>
                         </Box>
-                    </Card>
-
-
-
-                </Box>
-            </Modal>
-
-            {/* Modal edit */}
-            <Modal open={textInputModalOpen} onClose={() => setTextInputModalOpen(false)}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        borderRadius: 2,
-                        boxShadow: 24,
-                        p: 4,
-                    }}
-                >
-                    {modelPreview[editIndex]?.component && modelPreview[editIndex]?.component === Modelo01Preview && (
-                        <Modelo01Edit />
-                    )}
-                    {modelPreview[editIndex]?.component && modelPreview[editIndex]?.component === Modelo02Preview && (
-                        <Modelo02Edit />
-                    )}
-                    {modelPreview[editIndex]?.component && modelPreview[editIndex]?.component === Modelo03Preview && (
-                        <Modelo03Edit />
-                    )}
-                    {modelPreview[editIndex]?.component && modelPreview[editIndex]?.component === Modelo04Preview && (
-                        <Modelo04Edit />
-                    )}
-
-                </Box>
-            </Modal>
-        </div>
+                    </form>
+                </Modal>
+            </div>
+        </ThemeProvider>
     );
 }

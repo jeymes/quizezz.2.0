@@ -1,18 +1,28 @@
 import React from 'react';
+import { Box, Avatar } from '@mui/material';
 
-const Modelo01Preview = ({ imageUrl }: any) => {
+interface Modelo01PreviewProps {
+    imageUrl: string;
+}
+
+const Modelo01Preview: React.FC<Modelo01PreviewProps> = ({ imageUrl }) => {
     return (
-        <div style={{
-            width: '100%',
-            display: 'flex',
-            height: 60,
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}  >
-            <img
-                src={imageUrl} alt="Modelo"
-                style={{ width: 50, borderRadius: '8px' }} />
-        </div>
+        <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+        >
+            <Avatar
+                src={imageUrl}
+                alt="Modelo"
+                sx={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 1, // Border radius com Material UI
+                }}
+            />
+        </Box>
     );
 };
 

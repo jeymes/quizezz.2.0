@@ -5,6 +5,76 @@ export type User = {
   email: string;
   password?: any;
 }
+
+// Definindo tipo para opções de pergunta
+export type Option = {
+  index: number; // Índice da opção
+  text: string; // Texto da opção
+  imageUrl?: string; // URL da imagem opcional
+};
+
+// Definindo tipo para os elementos da página
+export type PageElement =
+  | {
+    index: number;
+    type: 'header';
+    content: string;
+  }
+  | {
+    index: number;
+    type: 'progress';
+    content: number;
+  }
+  | {
+    index: number;
+    type: 'options';
+    options: Option[];
+    model?: string;
+  }
+  | {
+    index: number;
+    type: 'button';
+    content: string;
+    model?: string;
+  };
+
+
+// Definindo tipo para a pergunta
+type Question = {
+  index: number; // Índice da pergunta
+  type: 'question'; // Tipo do elemento
+  content: string; // Texto da pergunta
+  model: string; // Modelo associado
+  imageUrl?: string; // Imagem da pergunta (opcional)
+  elements: PageElement[]; // Elementos dentro da questão
+};
+
+// Definindo tipo para os dados da página
+type Pages = {
+  elements: Question[]; // Array de perguntas
+};
+
+// Definindo tipo para os dados do quiz
+export interface QuizData {
+  title: string; // Título do quiz
+  quizLink: string; // Link do quiz
+  quizId: string; // ID do quiz
+  userId: string; // ID do usuário
+  color: string; // Cor associada ao quiz
+  questions: Pages; // Estrutura das perguntas
+}
+
+
+export interface QuizCard {
+  id: string;
+  title: string;
+  description: string;
+  questions: {
+    question: string;
+    correctOption: string;
+    options: string[];
+  }[];
+}
 // Tipo para Buyer com todas as propriedades combinadas
 export interface Subscriptions {
   buyer: {

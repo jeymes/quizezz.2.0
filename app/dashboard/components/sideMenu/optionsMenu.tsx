@@ -10,7 +10,7 @@ import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../menuButton';
-import { useAuthController } from '@/app/lib/useAuthController';
+import { useAuthController } from '@/app/controller/useAuthController';
 
 const MenuItem = styled(MuiMenuItem)({
     margin: '2px 0',
