@@ -12,10 +12,14 @@ export interface Option {
   description: string;
   image: any;  // Suporta upload de imagem ou null se não houver imagem
   video: string;
-  file?: any,
 }
+export interface Models {
+  options: Option;
+  isFullWidth: boolean,
+  model: string
 
-export interface Question {
+}
+export interface Pages {
   question: string;
   correctOption: string;
   link: string;
@@ -23,11 +27,10 @@ export interface Question {
   title: string;
   description: string;
   image: string;
-  options: Option[];  // Um array de opções
   header: string;
   footer: string;
   progress: string;
-  modelo: string;
+  models: Models[];
 }
 export interface QuizData {
   id: string;
@@ -37,7 +40,7 @@ export interface QuizData {
   quizId: string;
   userId: string;
   createdAt: any;
-  questions: Question[];  // Um array de perguntas
+  pages: Pages[];  // Um array de perguntas
   color: string;
 }
 

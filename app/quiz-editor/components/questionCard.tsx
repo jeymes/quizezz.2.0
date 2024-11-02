@@ -25,8 +25,8 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
                 pointerEvents: 'auto',
             }}
         >
-            <Handle type="target" position={Position.Left} />
-            <Handle type="source" position={Position.Right} />
+            <Handle type="target" position={Position.Left} id={id} />
+            <Handle type="source" position={Position.Right} id={id} />
 
             <div
                 style={{
@@ -49,17 +49,6 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
                 <div style={{ marginBottom: '20px', position: 'relative' }}>
                     {options.map((option: any, index: any) => (
                         <div key={index} style={{ position: 'relative', marginBottom: '8px' }}>
-                            <Handle
-                                type="source"
-                                position={Position.Right}
-                                id={`option-${index}`}
-                                style={{
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    right: '-10px',
-                                    backgroundColor: '#3f51b5',
-                                }}
-                            />
                             <Button
                                 variant="outlined"
                                 style={{
@@ -69,11 +58,12 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
                                     position: 'relative',
                                 }}
                             >
-                                {option}
+                                {option.label}
                             </Button>
                         </div>
                     ))}
                 </div>
+
 
                 <Button variant="contained" color="primary" fullWidth>
                     Continuar

@@ -1,69 +1,84 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection } from 'reactflow';
-import { QuizData } from '../@types/types';
+import { Models, QuizData } from '../@types/types';
 
 const useModelManager = (): any => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-    const [modalNodeId, setModalNodeId] = useState<string | null>(null);  // Novo estado para o ID do nó
+    const [modalNodeId, setModalNodeId] = useState<string | null>(null);  // ID do nó que está em edição
     const [textInputModalOpen, setTextInputModalOpen] = useState(false);
     const [modelPreview, setModelPreview] = useState<any[]>([]);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-    const [modelsPerQuestion, setModelsPerQuestion] = useState<string[]>([]);
+    const [modelsPerQuestion, setModelsPerQuestion] = useState<Models[]>([]);
 
-    const { register, control, handleSubmit, reset, watch, setValue } = useForm({
+    const { register, control, handleSubmit, reset, watch, setValue } = useForm<QuizData>({
         defaultValues: {
+            id: '',  // ID inicial
             title: '',
+            description: '',
             quizLink: '',
             quizId: '',
             userId: '',
+            createdAt: null, // ou new Date() conforme sua necessidade
             color: '',
             pages: [{
                 question: '',
-                header: '',
-                footer: '',
-                progress: '',
                 correctOption: '',
                 link: '',
                 titleLink: '',
                 title: '',
                 description: '',
-                options: [{
-                    option: '',
-                    description: '',
-                    image: null,
-                    video: '',
+                image: '', // ou null
+                header: '',
+                footer: '',
+                progress: '',
+                models: [{
+                    model: '', // Inicialização do modelo
+                    isFullWidth: false, // Valor padrão
+                    options: {
+                        option: '', // Inicialização com valor padrão
+                        description: '',
+                        image: null,
+                        video: '',
+                    },
                 }],
-                modelo: '',
             }]
         }
     });
 
-    const { fields: pages, append: appendPage } = useFieldArray({
+    const { fields: pages, append: appendPage, update: updatePage } = useFieldArray({
         control,
         name: 'pages',
     });
 
-    const handleModelSelect = (modelo: any) => {
+    const handleModelSelect = (model: string, isFullWidth: boolean) => {
+        if (modalNodeId === null) return; // Verifica se existe um nó aberto
+
         setModelsPerQuestion((prevModels) => {
-            const updatedModels = [...prevModels];
-            updatedModels[currentQuestionIndex] = modelo; // Atualiza o modelo da pergunta atual
+            const updatedModels: Models[] = [...prevModels];
+
+            // Criação de um novo modelo com todas as propriedades necessárias
+            const newModel: Models = {
+                model,
+                isFullWidth,
+                options: {
+                    option: '',      // Inicialização do valor
+                    description: '',
+                    image: null,
+                    video: '',
+                },
+            };
+
+            updatedModels.push(newModel);
+
+            const pageIndex = parseInt(modalNodeId);
+            setValue(`pages.${pageIndex}.models`, updatedModels); // Atualiza o campo "models" no formulário
+
             return updatedModels;
         });
 
-        // Limpar opções ao selecionar novo modelo
-        setValue(`pages.${currentQuestionIndex}.options`, [
-            {
-                option: '',
-                description: '',
-                image: null,
-                video: '',
-            }
-        ]);
-
-        // Atualiza o valor do campo "modelo" da pergunta atual no formulário
-        setValue(`pages.${currentQuestionIndex}.modelo`, modelo); // Corrigido para atualizar o campo 'modelo'
+        // Atualiza o campo "modelo" no formulário
+        setValue(`pages.${parseInt(modalNodeId)}.models`, model as any);
     };
 
     const onConnect = useCallback(
@@ -72,10 +87,34 @@ const useModelManager = (): any => {
     );
 
     const addQuestion = () => {
+        // Cria uma nova pergunta com dados iniciais
+        appendPage({
+            question: '',
+            header: '',
+            footer: '',
+            progress: '',
+            correctOption: '',
+            link: '',
+            titleLink: '',
+            title: '',
+            description: '',
+            image: '', // Adicione se necessário
+            models: [{
+                model: '', // Inicialização do modelo
+                isFullWidth: false, // Valor padrão
+                options: {
+                    option: '',
+                    description: '',
+                    image: null,
+                    video: '',
+                },
+            }],
+        });
+
+        // Cria um novo nó para o React Flow
         const newNodeId = nodes.length.toString();
         const lastNodePosition = nodes[nodes.length - 1]?.position || { x: 50, y: 50 };
 
-        // Criação do novo nó
         const newNode: Node = {
             id: newNodeId,
             type: 'questionCard',
@@ -84,43 +123,25 @@ const useModelManager = (): any => {
                 y: lastNodePosition.y,
             },
             data: {
-                question: `Nova Pergunta ${newNodeId}`, // Texto da nova pergunta
-                options: ['Opção A', 'Opção B', 'Opção C'], // Opções iniciais
-                modelo: '', // Inicializa o modelo vazio
+                id: newNodeId,
+                question: `Pergunta ${newNodeId}`,
+                options: [
+                    { id: '2', label: 'Opção A' },
+                    { id: '3', label: 'Opção B' },
+                    { id: '4', label: 'Opção C' },
+                ],
+                model: '', // Ajuste se necessário
             },
         };
 
-        // Atualiza o estado dos nós, incluindo o novo nó
         setNodes((nds) => [...nds, newNode]);
 
-        // Adiciona a nova página somente se já existir uma página anterior
-        if (nodes.length > 1) {
-            appendPage({
-                question: '', // A pergunta do novo nó
-                header: '', // Campo inicial
-                footer: '', // Campo inicial
-                progress: '', // Campo inicial
-                correctOption: '', // Campo inicial
-                link: '', // Campo inicial
-                titleLink: '', // Campo inicial
-                title: '', // Campo inicial
-                description: '', // Campo inicial
-                options: [{
-                    option: '',
-                    description: '',
-                    image: null,
-                    video: '',
-                }],
-                modelo: '', // Campo modelo vazio
-            });
-        }
-
-        // Se é o primeiro nó, adiciona a conexão com o nó inicial
+        // Adiciona a conexão entre o nó inicial e o novo nó
         if (nodes.length === 1) {
             setEdges((eds) => [
                 ...eds,
                 {
-                    id: `start-${newNodeId}`,
+                    id: `start`,
                     source: 'start',
                     target: newNodeId,
                 },
@@ -129,20 +150,9 @@ const useModelManager = (): any => {
     };
 
     const onSubmit: SubmitHandler<QuizData> = async (data) => {
-        // Montar a estrutura quizData
-        const quizData = {
-            edges: edges.map((edge) => ({
-                id: edge.id,
-                source: edge.source,
-                target: edge.target,
-                data: data
-            })),
-        };
-
-        console.log('Dados do Quiz:', quizData);
+        console.log('Dados do Quiz:', data);
+        // Aqui você pode processar os dados do quiz conforme necessário
     };
-
-    console.log(watch)
 
     const openModal = (nodeId: string) => {
         const node = nodes.find((node) => node.id === nodeId);
@@ -167,7 +177,6 @@ const useModelManager = (): any => {
     }, [setNodes]);
 
     return {
-
         control,
         pages,
         handleSubmit,
@@ -189,7 +198,9 @@ const useModelManager = (): any => {
         addQuestion,
         openModal,
         closeModal,
-        watch
+        handleModelSelect,
+        watch,
+        modelsPerQuestion
     };
 };
 
