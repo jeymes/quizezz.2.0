@@ -7,53 +7,38 @@ export type User = {
 }
 
 // Definindo tipo para opções de pergunta
-export type Option = {
-  index: number; // Índice da opção
-  text: string; // Texto da opção
-  imageUrl?: string; // URL da imagem opcional
-};
+export interface Option {
+  option: string;
+  description: string;
+  image: any;  // Suporta upload de imagem ou null se não houver imagem
+  video: string;
+  file?: any,
+}
 
-// Definindo tipo para os elementos da página
-export type PageElement =
-  | {
-    index: number;
-    type: 'header';
-    content: string;
-    model?: string;
-  }
-  | {
-    index: number;
-    type: 'progress';
-    content: number;
-    model?: string;
-  }
-  | {
-    index: number;
-    type: 'options';
-    options: Option[];
-    model?: string;
-  }
-  | {
-    index: number;
-    type: 'button';
-    content: string;
-    model?: string;
-  };
-
-// Definindo tipo para uma página do quiz
-export type Page = {
-  page: number; // Índice da página
-  elements: PageElement[]; // Elementos dentro da página
-};
-
-// Definindo tipo para os dados do quiz
+export interface Question {
+  question: string;
+  correctOption: string;
+  link: string;
+  titleLink: string;
+  title: string;
+  description: string;
+  image: string;
+  options: Option[];  // Um array de opções
+  header: string;
+  footer: string;
+  progress: string;
+  modelo: string;
+}
 export interface QuizData {
-  title: string; // Título do quiz
-  quizLink: string; // Link do quiz
-  quizId: string; // ID do quiz
-  userId: string; // ID do usuário
-  color: string; // Cor associada ao quiz
-  pages: Page[]; // Array de páginas
+  id: string;
+  title: string;
+  description: string;
+  quizLink: string;
+  quizId: string;
+  userId: string;
+  createdAt: any;
+  questions: Question[];  // Um array de perguntas
+  color: string;
 }
 
 export interface QuizCard {

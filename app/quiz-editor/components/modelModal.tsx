@@ -1,7 +1,6 @@
 // ModelModal.tsx
 import React from 'react';
 import { Box, Modal, Button, Card, Typography } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
 import EditIcon from '@mui/icons-material/Edit';
 import DuplicateIcon from '@mui/icons-material/FileCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -149,7 +148,9 @@ const ModelModal = ({
                                 }}
                             >
                                 {modelPreview.map((model: any, index: any) => {
+
                                     const ModelComponent = model.component;
+
                                     return (
                                         <div
                                             key={model.model}
@@ -174,7 +175,9 @@ const ModelModal = ({
                                                 e.currentTarget.style.backgroundColor = 'darkgray';
                                             }}
                                         >
+
                                             <ModelComponent {...model.props} />
+
                                             <Box
                                                 className="icon-buttons"
                                                 sx={{
