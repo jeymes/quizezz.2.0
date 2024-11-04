@@ -47,6 +47,8 @@ export default function QuizEditor() {
         watchedData
     } = useModelManager();
 
+    console.log(modalNodeId)
+
     return (
         <ThemeProvider theme={darkTheme}>
             <div style={{ height: '100vh', position: 'relative' }}>
@@ -124,7 +126,7 @@ export default function QuizEditor() {
                                     onModelSelect={handleModelSelect}
                                 />
                                 <ModelPreview
-
+                                    activePageIndex={modalNodeId}
                                     watchedData={watchedData}
                                 />
 

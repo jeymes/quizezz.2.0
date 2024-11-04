@@ -1,4 +1,4 @@
-import { Card, Box, Button } from '@mui/material';
+import { Card, Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modelo01Preview from '../models/models01/model01-preview';
@@ -9,14 +9,18 @@ import { ControlPointDuplicate } from '@mui/icons-material';
 import { QuizData } from '@/app/@types/types';
 
 type ModelPreviewProps = {
-    watchedData?: QuizData; // Ajustado para ser do tipo QuizData
+    watchedData?: QuizData; // Mantém o tipo QuizData
+    activePageIndex?: number; // Mantém o índice da página ativa
 }
 
-const ModelPreview = ({ watchedData }: ModelPreviewProps) => {
-    console.log('watchedData:', watchedData);
+const ModelPreview = ({ watchedData, activePageIndex }: ModelPreviewProps) => {
+    // Certifique-se de que `activePageIndex` não seja undefined e que estamos acessando a página correta
+    const dataArray = watchedData?.pages?.[activePageIndex ?? 0]?.models || [];
 
-    // Verifique se watchedData e pages são definidos
-    const dataArray = watchedData?.pages?.flatMap(page => page.models) || []; // Extraindo modelos dos pages
+    // Logs para verificação
+    console.log('watchedData:', watchedData);
+    console.log('activePageIndex:', activePageIndex);
+    console.log('dataArray:', dataArray);
 
     return (
         <Card
@@ -50,7 +54,7 @@ const ModelPreview = ({ watchedData }: ModelPreviewProps) => {
                                 marginBottom: '10px',
                                 position: 'relative',
                                 padding: 5,
-                                width: model.isFullWidth || dataArray.length === 0 ? '100%' : 'calc(50% - 10px)',
+                                width: model.isFullWidth === false ? '100%' : model.isFullWidth ? '100%' : 'calc(50% - 10px)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -66,19 +70,22 @@ const ModelPreview = ({ watchedData }: ModelPreviewProps) => {
                                 e.currentTarget.style.backgroundColor = 'darkgray';
                             }}
                         >
+                            {model.model === '' && <Box
+                                sx={{
+                                    width: '100%',
+                                    padding: 2,
+                                    textAlign: 'center',
+                                    backgroundColor: 'darkgray',
+                                    borderRadius: 2,
+                                }}
+                            >
+                                <Typography variant="body1">Escolha um dos modelos</Typography>
+                            </Box>}
                             {model.model === 'model01' && <Modelo01Preview imageUrl='teste' />}
                             {model.model === 'model02' && <Modelo02Preview />}
                             {model.model === 'model03' && <Modelo03Preview />}
                             {model.model === 'model04' && <Modelo04Preview />}
-                            {model.model !== 'model01'
-                                && model.model !== 'model02'
-                                && model.model !== 'model03'
-                                && model.model !== 'model04'
-                                &&
-                                <div>
-                                    No model selected
-                                </div>
-                            }
+
                             <Box
                                 className="icon-buttons"
                                 sx={{
@@ -106,7 +113,19 @@ const ModelPreview = ({ watchedData }: ModelPreviewProps) => {
                             </Box>
                         </div>
                     ))
-                ) : null} {/* Remove a mensagem "No models to display" */}
+                ) : (
+                    <Box
+                        sx={{
+                            width: '100%',
+                            padding: 2,
+                            textAlign: 'center',
+                            backgroundColor: 'darkgray',
+                            borderRadius: 2,
+                        }}
+                    >
+                        <Typography variant="body1">Escolha um dos modelos</Typography>
+                    </Box>
+                )}
             </Box>
         </Card>
     );

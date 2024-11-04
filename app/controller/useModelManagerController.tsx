@@ -45,6 +45,7 @@ const useModelManager = (): any => {
             }]
         }
     });
+
     // Monitore os dados do formulário em tempo real
     const watchedData = watch();
 
@@ -152,9 +153,36 @@ const useModelManager = (): any => {
     };
 
     const onSubmit: SubmitHandler<QuizData> = async (data) => {
-        console.log('Dados do Quiz:', data);
-        // Aqui você pode processar os dados do quiz conforme necessário
+        // Mapeia as edges para incluir os dados das páginas
+        const edgesWithPages = edges.map((edge) => {
+            const sourceIndex = parseInt(edge.source);
+            const targetIndex = parseInt(edge.target);
+
+            // Garante que a página correspondente existe
+            const sourcePage = data.pages[sourceIndex];
+            const targetPage = data.pages[targetIndex];
+
+            return {
+                ...edge,
+                sourcePage: sourcePage || null, // Dados da página de origem
+                targetPage: targetPage || null, // Dados da página de destino
+            };
+        });
+
+        // Combina os dados do quiz com as arestas e as páginas
+        const combinedData = {
+            edges: edgesWithPages,
+            title: data.title,
+            description: data.description,
+            quizLink: data.quizLink,
+            quizId: data.quizId,
+            // ... outros campos necessários
+        };
+
+        console.log('Dados do Quiz salvos como JSON:', combinedData);
     };
+
+
 
     const openModal = (nodeId: string) => {
         const node = nodes.find((node) => node.id === nodeId);
@@ -207,3 +235,10 @@ const useModelManager = (): any => {
 };
 
 export default useModelManager;
+// const handleNext = () => {
+//     const nextEdge = edgesWithPages.find(edge => edge.source === currentEdge.target);
+//     if (nextEdge) {
+//         setCurrentEdge(nextEdge);
+//         setCurrentPage(nextEdge.targetPage); // Agora você pode usar o targetPage diretamente
+//     }
+// };
