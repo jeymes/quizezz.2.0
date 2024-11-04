@@ -44,6 +44,7 @@ export default function QuizEditor() {
         onSubmit,
         nodes,
         modalNodeId,
+        watchedData
     } = useModelManager();
 
     return (
@@ -123,9 +124,9 @@ export default function QuizEditor() {
                                     onModelSelect={handleModelSelect}
                                 />
                                 <ModelPreview
-                                    modelsPerQuestion={modelsPerQuestion}
-                                />
 
+                                    watchedData={watchedData}
+                                />
 
                             </Box>
                         </Box>

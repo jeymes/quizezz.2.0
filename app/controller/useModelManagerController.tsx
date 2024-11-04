@@ -45,6 +45,8 @@ const useModelManager = (): any => {
             }]
         }
     });
+    // Monitore os dados do formulário em tempo real
+    const watchedData = watch();
 
     const { fields: pages, append: appendPage, update: updatePage } = useFieldArray({
         control,
@@ -199,7 +201,7 @@ const useModelManager = (): any => {
         openModal,
         closeModal,
         handleModelSelect,
-        watch,
+        watchedData,
         modelsPerQuestion
     };
 };
