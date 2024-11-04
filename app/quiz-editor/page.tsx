@@ -105,7 +105,7 @@ export default function QuizEditor() {
                                 border: '2px solid #ccc', // Borda opcional
                             }}
                         >
-                            <button type='submit' >salvar</button>
+                            {/* <button type='submit' >salvar</button> */}
 
                             <Header
                                 title="Nova Pagina"
