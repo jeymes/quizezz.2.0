@@ -1,5 +1,5 @@
-'use client';
-
+'use client'
+import React, { useState } from 'react';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import QuestionCard from './components/questionCard';
@@ -11,8 +11,8 @@ import { AutoStories } from '@mui/icons-material';
 import Header from './components/header';
 import ModelPreview from './components/modelPreview';
 import SidebarModels from './components/sidebarModels';
+import Modelo01Edit from './models/models01/model01-edit';
 
-// Defina o modo para 'dark' ou 'light' conforme necessário
 const darkTheme = createTheme(getDesignTokens('dark'));
 
 const nodeTypes = {
@@ -21,12 +21,10 @@ const nodeTypes = {
 };
 
 export default function QuizEditor() {
-
     const {
         modelsPerQuestion,
         edges,
         textInputModalOpen,
-        editIndex,
         pages,
         setTextInputModalOpen,
         onConnect,
@@ -47,7 +45,14 @@ export default function QuizEditor() {
         watchedData
     } = useModelManager();
 
-    console.log(modalNodeId)
+    const [selectedModel, setSelectedModel] = useState<string | null>(null); // string para armazenar o modelo
+    const [modelIndex, setModelIndex] = useState<number | null>(null); // número para armazenar o index do modelo
+
+    // Função para selecionar o modelo e definir o índice
+    const handleModelSelection = (model: string, index: number) => {
+        setSelectedModel(model); // define o modelo selecionado
+        setModelIndex(index); // define o índice do modelo
+    };
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -85,7 +90,6 @@ export default function QuizEditor() {
 
                 {/* Modal Principal */}
                 <Modal open={Boolean(modalNodeId)} onClose={closeModal}>
-
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box
                             sx={{
@@ -101,39 +105,50 @@ export default function QuizEditor() {
                                 justifyContent: 'flex-start',
                                 flexDirection: 'column',
                                 gap: 2,
-                                bgcolor: 'background.paper', // Cor do fundo
-                                border: '2px solid #ccc', // Borda opcional
+                                bgcolor: 'background.paper',
+                                border: '2px solid #ccc',
                             }}
                         >
-                            {/* <button type='submit' >salvar</button> */}
-
                             <Header
-                                title="Nova Pagina"
+                                title="Nova Página"
                                 icon={AutoStories}
                                 onClose={closeModal}
                             />
 
-                            <Box sx={{
-                                paddingInline: 2,
-                                height: '85%',
-                                display: 'flex',
-                                width: '100%',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start'
-                            }}>
-                                <SidebarModels
-                                    onModelSelect={handleModelSelect}
-                                />
+                            <Box
+                                sx={{
+                                    paddingInline: 2,
+                                    height: '85%',
+                                    display: 'flex',
+                                    width: '100%',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'flex-start',
+                                }}
+                            >
+                                {selectedModel ? (
+                                    <Box sx={{ width: '30%' }}>
+                                        {selectedModel === 'model01' && modelIndex !== null && (
+                                            <Modelo01Edit
+                                                index={modelIndex} // Passa o índice gerado dinamicamente
+                                                onClose={() => setSelectedModel(null)}
+                                                control={control}
+                                                activePageIndex={modalNodeId}
+                                            />
+                                        )}
+                                    </Box>
+                                ) : (
+                                    <SidebarModels onModelSelect={handleModelSelect} />
+                                )}
+
                                 <ModelPreview
+                                    handleModelSelection={handleModelSelection}
                                     activePageIndex={modalNodeId}
                                     watchedData={watchedData}
                                 />
-
                             </Box>
                         </Box>
                     </form>
-
                 </Modal>
             </div>
         </ThemeProvider>

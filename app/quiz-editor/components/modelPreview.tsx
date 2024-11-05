@@ -11,9 +11,10 @@ import { QuizData } from '@/app/@types/types';
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData
     activePageIndex?: number; // Mantém o índice da página ativa
+    handleModelSelection?: any
 }
 
-const ModelPreview = ({ watchedData, activePageIndex }: ModelPreviewProps) => {
+const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection }: ModelPreviewProps) => {
     // Certifique-se de que `activePageIndex` não seja undefined e que estamos acessando a página correta
     const dataArray = watchedData?.pages?.[activePageIndex ?? 0]?.models || [];
 
@@ -81,7 +82,8 @@ const ModelPreview = ({ watchedData, activePageIndex }: ModelPreviewProps) => {
                             >
                                 <Typography variant="body1">Escolha um dos modelos</Typography>
                             </Box>}
-                            {model.model === 'model01' && <Modelo01Preview imageUrl='teste' />}
+                            {model.model === 'model01' && <Modelo01Preview
+                                imageUrl={model.options.image} />}
                             {model.model === 'model02' && <Modelo02Preview />}
                             {model.model === 'model03' && <Modelo03Preview />}
                             {model.model === 'model04' && <Modelo04Preview />}
@@ -101,7 +103,10 @@ const ModelPreview = ({ watchedData, activePageIndex }: ModelPreviewProps) => {
                                     boxShadow: 2,
                                 }}
                             >
-                                <Button sx={{ minWidth: 0, padding: 1, color: 'gray' }}>
+                                <Button
+                                    onClick={() => handleModelSelection(model.model, index)}
+                                    sx={{ minWidth: 0, padding: 1, color: 'gray' }}
+                                >
                                     <EditIcon fontSize='small' />
                                 </Button>
                                 <Button sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>

@@ -17,14 +17,14 @@ import Header from '../../components/header';
 type Modelo01EditProps = {
     control: any;
     index: number;
-    pageIndex: number;
+    activePageIndex: number;
     onClose: () => void;
 };
 
 const Modelo01Edit: React.FC<Modelo01EditProps> = ({
     control,
     index,
-    pageIndex,
+    activePageIndex,
     onClose,
 }) => {
     return (
@@ -45,17 +45,13 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                 >
                     <CardContent>
                         <Controller
-                            name={`pages.${pageIndex}.elements.${index}.imageUrl`} // Caminho atualizado para imagem
+                            name={`pages.${activePageIndex}.models.${index}.options.image`}
                             control={control}
                             render={({ field }) => (
                                 <>
                                     {field.value ? (
                                         <Avatar
-                                            src={
-                                                typeof field.value === 'string'
-                                                    ? field.value
-                                                    : URL.createObjectURL(field.value)
-                                            }
+                                            src={`${field.value.type ? URL.createObjectURL(field.value) : field.value}`}
                                             alt="Preview"
                                             sx={{ width: 100, height: 100, margin: '10px auto' }}
                                         />
@@ -94,7 +90,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
 
                 {/* Input para Tamanho da Logo */}
                 <Controller
-                    name={`pages.${pageIndex}.elements.${index}.size`} // Caminho atualizado para tamanho
+                    name={`pages.${activePageIndex}.models.${index}.options.size`} // Caminho atualizado para tamanho
                     control={control}
                     render={({ field }) => (
                         <TextField
@@ -110,7 +106,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
 
                 {/* Select para Posição da Logo */}
                 <Controller
-                    name={`pages.${pageIndex}.elements.${index}.position`} // Caminho atualizado para posição
+                    name={`pages.${activePageIndex}.models.${index}.options.position`} // Caminho atualizado para posição
                     control={control}
                     render={({ field }) => (
                         <FormControl fullWidth variant="outlined" margin="normal">
