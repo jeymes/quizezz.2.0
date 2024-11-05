@@ -42,7 +42,9 @@ export default function QuizEditor() {
         selectedModel,
         handleModelSelection,
         modelIndex,
-        setSelectedModel
+        setSelectedModel,
+        deleteModel,
+        duplicateModel,
     } = useModelManager();
 
     return (
@@ -143,6 +145,8 @@ export default function QuizEditor() {
                                     handleModelSelection={handleModelSelection}
                                     activePageIndex={modalNodeId}
                                     watchedData={watchedData}
+                                    deleteModel={deleteModel}
+                                    duplicateModel={duplicateModel}
                                 />
                             </Box>
                         </Box>

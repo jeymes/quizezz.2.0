@@ -35,6 +35,7 @@ const useModelManager = (): any => {
         name: 'pages',
     });
 
+    // Função para seleciona um modelo
     const handleModelSelect = (model: string, isFullWidth: boolean) => {
         if (modalNodeId === null) {
             console.log("modalNodeId é nulo, nada a ser feito.");
@@ -79,11 +80,13 @@ const useModelManager = (): any => {
         console.log("Modelos atualizados para a página:", updatedModels);
     };
 
+    // Função para conectar as perguntas
     const onConnect = useCallback(
         (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
         [setEdges]
     );
 
+    // Função para criar uma nova pergunta
     const addQuestion = () => {
         appendPage({
             question: '',
@@ -136,6 +139,7 @@ const useModelManager = (): any => {
         }
     };
 
+    // Função para salvar o form
     const onSubmit: SubmitHandler<QuizData> = async (data) => {
         const filteredEdges = edges.filter(edge => edge.source !== 'start' && edge.target !== 'start');
         const filteredNodes = nodes.filter(node => node.id !== 'start');
@@ -166,6 +170,7 @@ const useModelManager = (): any => {
         console.log('Dados do Quiz salvos como JSON:', combinedData);
     };
 
+    // Função para abrir o modal
     const openModal = (nodeId: string) => {
         const node = nodes.find((node) => node.id === nodeId);
         if (node && node.data.isStartNode) {
@@ -176,15 +181,72 @@ const useModelManager = (): any => {
         setModalNodeId((parseInt(nodeId) - 1).toString());
     };
 
+    // Função para fecha o modal
     const closeModal = () => {
         setModalNodeId(null);  // Reseta o ID ao fechar o modal
         setSelectedModel(null)
     };
 
-    // Função para selecionar o modelo e definir o índice
+    // Função para selecionar o modelo e abrir o edit modelo
     const handleModelSelection = (model: string, index: number) => {
         setSelectedModel(model); // define o modelo selecionado
         setModelIndex(index); // define o índice do modelo
+    };
+
+    // Função para deletar o modelo pelo index
+    const deleteModel = (index: number) => {
+        // Obtém o índice da página a partir do modalNodeId
+        const pageIndex = parseInt(modalNodeId as any);
+
+        // Verifica se o índice é válido
+        if (!watchedData.pages || !watchedData.pages[pageIndex]?.models) {
+            console.log("Índice da página é inválido ou não existem modelos para deletar:", pageIndex);
+            return;
+        }
+
+        // Obtém os modelos atuais da página
+        const currentModels = watchedData.pages[pageIndex].models;
+
+        // Remove o modelo pelo índice
+        const updatedModels = currentModels.filter((_, i) => i !== index);
+
+        // Atualiza o campo "models" no formulário com o array atualizado
+        setValue(`pages.${pageIndex}.models`, updatedModels);
+        setModelsPerQuestion(updatedModels); // Atualiza o estado local
+        // console.log("Modelo deletado. Modelos atualizados:", updatedModels);
+    };
+
+    // Função para deplicar o modelo pelo index
+    const duplicateModel = (index: number) => {
+        // Obtém o índice da página a partir do modalNodeId
+        const pageIndex = parseInt(modalNodeId as any);
+
+        // Verifica se o índice é válido
+        if (!watchedData.pages || !watchedData.pages[pageIndex]?.models) {
+            console.log("Índice da página é inválido ou não existem modelos para duplicar:", pageIndex);
+            return;
+        }
+
+        // Obtém os modelos atuais da página
+        const currentModels = watchedData.pages[pageIndex].models;
+
+        // Verifica se o modelo existe no índice fornecido
+        if (currentModels.length <= index) {
+            console.log("Modelo não encontrado no índice:", index);
+            return;
+        }
+
+        // Duplica o modelo selecionado
+        const modelToDuplicate = currentModels[index];
+        const newModel = { ...modelToDuplicate }; // Clonando o modelo
+
+        // Adiciona o novo modelo à lista de modelos
+        const updatedModels = [...currentModels, newModel];
+
+        // Atualiza o campo "models" no formulário com o array atualizado
+        setValue(`pages.${pageIndex}.models`, updatedModels);
+        setModelsPerQuestion(updatedModels); // Atualiza o estado local
+        // console.log("Modelo duplicado. Modelos atualizados:", updatedModels);
     };
 
     useEffect(() => {
@@ -206,6 +268,8 @@ const useModelManager = (): any => {
     }, [setNodes]);
 
     return {
+        deleteModel,
+        duplicateModel,
         selectedModel,
         handleModelSelection,
         modelIndex,
@@ -238,10 +302,4 @@ const useModelManager = (): any => {
 };
 
 export default useModelManager;
-// const handleNext = () => {
-//     const nextEdge = edgesWithPages.find(edge => edge.source === currentEdge.target);
-//     if (nextEdge) {
-//         setCurrentEdge(nextEdge);
-//         setCurrentPage(nextEdge.targetPage); // Agora você pode usar o targetPage diretamente
-//     }
-// };
+

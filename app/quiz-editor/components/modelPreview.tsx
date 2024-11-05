@@ -11,17 +11,19 @@ import { QuizData } from '@/app/@types/types';
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData
     activePageIndex?: number; // Mantém o índice da página ativa
-    handleModelSelection?: any
+    handleModelSelection?: any;
+    duplicateModel?: any;
+    deleteModel?: any;
 }
 
-const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection }: ModelPreviewProps) => {
+const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, deleteModel, duplicateModel }: ModelPreviewProps) => {
     // Certifique-se de que `activePageIndex` não seja undefined e que estamos acessando a página correta
     const dataArray = watchedData?.pages?.[activePageIndex ?? 0]?.models || [];
 
     // Logs para verificação
-    console.log('watchedData:', watchedData);
-    console.log('activePageIndex:', activePageIndex);
-    console.log('dataArray:', dataArray);
+    // console.log('watchedData:', watchedData);
+    // console.log('activePageIndex:', activePageIndex);
+    // console.log('dataArray:', dataArray);
 
     return (
         <Card
@@ -71,17 +73,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection }: Mo
                                 e.currentTarget.style.backgroundColor = 'darkgray';
                             }}
                         >
-                            {model.model === '' && <Box
-                                sx={{
-                                    width: '100%',
-                                    padding: 2,
-                                    textAlign: 'center',
-                                    backgroundColor: 'darkgray',
-                                    borderRadius: 2,
-                                }}
-                            >
-                                <Typography variant="body1">Escolha um dos modelos</Typography>
-                            </Box>}
+
                             {model.model === 'model01' && <Modelo01Preview
                                 imageUrl={model.options.image} />}
                             {model.model === 'model02' && <Modelo02Preview />}
@@ -109,10 +101,10 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection }: Mo
                                 >
                                     <EditIcon fontSize='small' />
                                 </Button>
-                                <Button sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
+                                <Button onClick={() => duplicateModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
                                     <ControlPointDuplicate fontSize='small' />
                                 </Button>
-                                <Button sx={{ minWidth: 0, padding: 1, color: 'red' }}>
+                                <Button onClick={() => deleteModel(index)} sx={{ minWidth: 0, padding: 1, color: 'red' }}>
                                     <DeleteIcon fontSize='small' />
                                 </Button>
                             </Box>
@@ -122,6 +114,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection }: Mo
                     <Box
                         sx={{
                             width: '100%',
+                            height: '100%',
                             padding: 2,
                             textAlign: 'center',
                             backgroundColor: 'darkgray',
