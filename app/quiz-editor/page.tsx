@@ -22,11 +22,7 @@ const nodeTypes = {
 
 export default function QuizEditor() {
     const {
-        modelsPerQuestion,
         edges,
-        textInputModalOpen,
-        pages,
-        setTextInputModalOpen,
         onConnect,
         onEdgesChange,
         onNodesChange,
@@ -42,17 +38,12 @@ export default function QuizEditor() {
         onSubmit,
         nodes,
         modalNodeId,
-        watchedData
+        watchedData,
+        selectedModel,
+        handleModelSelection,
+        modelIndex,
+        setSelectedModel
     } = useModelManager();
-
-    const [selectedModel, setSelectedModel] = useState<string | null>(null); // string para armazenar o modelo
-    const [modelIndex, setModelIndex] = useState<number | null>(null); // número para armazenar o index do modelo
-
-    // Função para selecionar o modelo e definir o índice
-    const handleModelSelection = (model: string, index: number) => {
-        setSelectedModel(model); // define o modelo selecionado
-        setModelIndex(index); // define o índice do modelo
-    };
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -127,7 +118,14 @@ export default function QuizEditor() {
                                 }}
                             >
                                 {selectedModel ? (
-                                    <Box sx={{ width: '30%' }}>
+                                    <Box
+                                        sx={{
+                                            width: '50%',
+                                            border: '2px solid #ccc',
+                                            borderRadius: 2,
+                                            overflowY: 'auto',
+                                        }}
+                                    >
                                         {selectedModel === 'model01' && modelIndex !== null && (
                                             <Modelo01Edit
                                                 index={modelIndex} // Passa o índice gerado dinamicamente

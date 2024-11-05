@@ -10,6 +10,8 @@ const useModelManager = (): any => {
     const [textInputModalOpen, setTextInputModalOpen] = useState(false);
     const [modelPreview, setModelPreview] = useState<any[]>([]);
     const [modelsPerQuestion, setModelsPerQuestion] = useState<Models[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string | null>(null); // string para armazenar o modelo
+    const [modelIndex, setModelIndex] = useState<number | null>(null); // número para armazenar o index do modelo
 
     const { register, control, handleSubmit, reset, watch, setValue } = useForm<QuizData>({
         defaultValues: {
@@ -21,28 +23,7 @@ const useModelManager = (): any => {
             userId: '',
             createdAt: null, // ou new Date() conforme sua necessidade
             color: '',
-            pages: [{
-                question: '',
-                correctOption: '',
-                link: '',
-                titleLink: '',
-                title: '',
-                description: '',
-                image: '', // ou null
-                header: '',
-                footer: '',
-                progress: '',
-                models: [{
-                    model: '', // Inicialização do modelo
-                    isFullWidth: false, // Valor padrão
-                    options: {
-                        option: '', // Inicialização com valor padrão
-                        description: '',
-                        image: null,
-                        video: '',
-                    },
-                }],
-            }]
+            pages: []
         }
     });
 
@@ -55,33 +36,47 @@ const useModelManager = (): any => {
     });
 
     const handleModelSelect = (model: string, isFullWidth: boolean) => {
-        if (modalNodeId === null) return; // Verifica se existe um nó aberto
+        if (modalNodeId === null) {
+            console.log("modalNodeId é nulo, nada a ser feito.");
+            return; // Verifica se existe um nó aberto
+        }
 
-        setModelsPerQuestion((prevModels) => {
-            const updatedModels: Models[] = [...prevModels];
+        // Obtém o índice da página a partir do modalNodeId
+        const pageIndex = parseInt(modalNodeId);
+        console.log("Índice da página (pageIndex):", modalNodeId);
 
-            // Criação de um novo modelo com todas as propriedades necessárias
-            const newModel: Models = {
-                model,
-                isFullWidth,
-                options: {
-                    option: '',      // Inicialização do valor
-                    description: '',
-                    image: null,
-                    video: '',
-                },
-            };
+        // Verifica se o índice da página é válido
+        if (!watchedData.pages || !watchedData.pages[pageIndex]) {
+            console.log("Índice da página é inválido ou a página não existe:", pageIndex);
+            return;
+        }
 
-            updatedModels.push(newModel);
+        // Pega os modelos atuais do formulário para essa página
+        const currentModels = watchedData.pages[pageIndex].models || [];
+        console.log("Modelos atuais para a página:", currentModels);
 
-            const pageIndex = parseInt(modalNodeId);
-            setValue(`pages.${pageIndex}.models`, updatedModels); // Atualiza o campo "models" no formulário
+        // Cria um novo modelo com as propriedades necessárias
+        const newModel: Models = {
+            model,
+            isFullWidth,
+            options: {
+                option: '', // Inicialização do valor
+                description: '',
+                image: null,
+                video: '',
+            },
+        };
 
-            return updatedModels;
-        });
+        // Adiciona o novo modelo ao array existente de modelos
+        const updatedModels = [...currentModels, newModel];
 
-        // Atualiza o campo "modelo" no formulário
-        setValue(`pages.${parseInt(modalNodeId)}.models`, model as any);
+        // Atualiza o campo "models" no formulário com o array atualizado
+        setValue(`pages.${pageIndex}.models`, updatedModels);
+
+        // Atualiza o estado local para refletir a nova lista de modelos
+        setModelsPerQuestion(updatedModels);
+
+        console.log("Modelos atualizados para a página:", updatedModels);
     };
 
     const onConnect = useCallback(
@@ -90,7 +85,6 @@ const useModelManager = (): any => {
     );
 
     const addQuestion = () => {
-        // Cria uma nova pergunta com dados iniciais
         appendPage({
             question: '',
             header: '',
@@ -101,20 +95,10 @@ const useModelManager = (): any => {
             titleLink: '',
             title: '',
             description: '',
-            image: '', // Adicione se necessário
-            models: [{
-                model: '', // Inicialização do modelo
-                isFullWidth: false, // Valor padrão
-                options: {
-                    option: '',
-                    description: '',
-                    image: null,
-                    video: '',
-                },
-            }],
+            image: '',
+            models: [],
         });
 
-        // Cria um novo nó para o React Flow
         const newNodeId = nodes.length.toString();
         const lastNodePosition = nodes[nodes.length - 1]?.position || { x: 50, y: 50 };
 
@@ -133,18 +117,18 @@ const useModelManager = (): any => {
                     { id: '3', label: 'Opção B' },
                     { id: '4', label: 'Opção C' },
                 ],
-                model: '', // Ajuste se necessário
+                model: '',
             },
         };
 
         setNodes((nds) => [...nds, newNode]);
 
-        // Adiciona a conexão entre o nó inicial e o novo nó
+        // Conecta o novo nó ao startNode, mas só para o primeiro nó criado
         if (nodes.length === 1) {
             setEdges((eds) => [
                 ...eds,
                 {
-                    id: `start`,
+                    id: `start-to-${newNodeId}`,
                     source: 'start',
                     target: newNodeId,
                 },
@@ -153,47 +137,54 @@ const useModelManager = (): any => {
     };
 
     const onSubmit: SubmitHandler<QuizData> = async (data) => {
-        // Mapeia as edges para incluir os dados das páginas
-        const edgesWithPages = edges.map((edge) => {
+        const filteredEdges = edges.filter(edge => edge.source !== 'start' && edge.target !== 'start');
+        const filteredNodes = nodes.filter(node => node.id !== 'start');
+
+        const edgesWithPages = filteredEdges.map((edge) => {
             const sourceIndex = parseInt(edge.source);
             const targetIndex = parseInt(edge.target);
 
-            // Garante que a página correspondente existe
             const sourcePage = data.pages[sourceIndex];
             const targetPage = data.pages[targetIndex];
 
             return {
                 ...edge,
-                sourcePage: sourcePage || null, // Dados da página de origem
-                targetPage: targetPage || null, // Dados da página de destino
+                sourcePage: sourcePage || null,
+                targetPage: targetPage || null,
             };
         });
 
-        // Combina os dados do quiz com as arestas e as páginas
         const combinedData = {
             edges: edgesWithPages,
+            nodes: filteredNodes,
             title: data.title,
             description: data.description,
             quizLink: data.quizLink,
             quizId: data.quizId,
-            // ... outros campos necessários
         };
 
         console.log('Dados do Quiz salvos como JSON:', combinedData);
     };
-
-
 
     const openModal = (nodeId: string) => {
         const node = nodes.find((node) => node.id === nodeId);
         if (node && node.data.isStartNode) {
             return; // Não abre o modal se for o startNode
         }
-        setModalNodeId(nodeId);  // Armazena o ID do nó que está sendo editado
+
+        // Armazena o ID do nó - 1 para usar como índice direto da página
+        setModalNodeId((parseInt(nodeId) - 1).toString());
     };
 
     const closeModal = () => {
         setModalNodeId(null);  // Reseta o ID ao fechar o modal
+        setSelectedModel(null)
+    };
+
+    // Função para selecionar o modelo e definir o índice
+    const handleModelSelection = (model: string, index: number) => {
+        setSelectedModel(model); // define o modelo selecionado
+        setModelIndex(index); // define o índice do modelo
     };
 
     useEffect(() => {
@@ -203,10 +194,22 @@ const useModelManager = (): any => {
             position: { x: 50, y: 50 },
             data: { isStartNode: true },
         };
-        setNodes((nds) => [startNode, ...nds.filter(node => node.id !== 'start')]);
+
+        setNodes((nds) => {
+            // Verifica se o startNode já foi adicionado, para evitar duplicação
+            const existingStartNode = nds.find((node) => node.id === 'start');
+            if (!existingStartNode) {
+                return [startNode, ...nds];
+            }
+            return nds;
+        });
     }, [setNodes]);
 
     return {
+        selectedModel,
+        handleModelSelection,
+        modelIndex,
+        setSelectedModel,
         control,
         pages,
         handleSubmit,
