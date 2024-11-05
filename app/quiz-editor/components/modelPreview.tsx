@@ -14,7 +14,7 @@ type ModelPreviewProps = {
     handleModelSelection?: any;
     duplicateModel?: any;
     deleteModel?: any;
-}
+};
 
 const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, deleteModel, duplicateModel }: ModelPreviewProps) => {
     // Certifique-se de que `activePageIndex` não seja undefined e que estamos acessando a página correta
@@ -57,7 +57,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                 marginBottom: '10px',
                                 position: 'relative',
                                 padding: 5,
-                                width: model.isFullWidth === false ? '100%' : model.isFullWidth ? '100%' : 'calc(50% - 10px)',
+                                width: model.isFullWidth ? '100%' : 'calc(50% - 10px)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -75,10 +75,22 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                         >
 
                             {model.model === 'model01' && <Modelo01Preview
-                                imageUrl={model.options.image} />}
-                            {model.model === 'model02' && <Modelo02Preview />}
-                            {model.model === 'model03' && <Modelo03Preview />}
-                            {model.model === 'model04' && <Modelo04Preview />}
+                                imageUrl={model.options.image}
+                            />}
+
+                            {model.model === 'model02' && <Modelo02Preview
+                                totalPages={watchedData?.pages.length}
+                                currentPage={activePageIndex}
+                            />}
+
+                            {model.model === 'model03' && <Modelo03Preview
+                                option={model.options.option}
+                            />}
+
+                            {model.model === 'model04' && <Modelo04Preview
+                                imageUrl={model.options.image}
+                                option={model.options.option ? model.options.option : `Opção-${index}`}
+                            />}
 
                             <Box
                                 className="icon-buttons"

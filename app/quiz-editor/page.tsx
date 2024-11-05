@@ -1,17 +1,13 @@
 'use client'
-import React, { useState } from 'react';
+import React from 'react';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
 import QuestionCard from './components/questionCard';
 import StartCard from './components/startCard';
-import { Modal, Button, Box, createTheme, ThemeProvider } from '@mui/material';
+import { Button, createTheme, ThemeProvider } from '@mui/material';
 import useModelManager from '../controller/useModelManagerController';
 import { getDesignTokens } from '../shared-theme/themePrimitives';
-import { AutoStories } from '@mui/icons-material';
-import Header from './components/header';
-import ModelPreview from './components/modelPreview';
-import SidebarModels from './components/sidebarModels';
-import Modelo01Edit from './models/models01/model01-edit';
+import ModelModal from './components/modelModal';
 
 const darkTheme = createTheme(getDesignTokens('dark'));
 
@@ -21,6 +17,7 @@ const nodeTypes = {
 };
 
 export default function QuizEditor() {
+
     const {
         edges,
         onConnect,
@@ -82,76 +79,22 @@ export default function QuizEditor() {
                 </ReactFlow>
 
                 {/* Modal Principal */}
-                <Modal open={Boolean(modalNodeId)} onClose={closeModal}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <Box
-                            sx={{
-                                position: 'absolute',
-                                right: 0,
-                                top: '2%',
-                                width: '60%',
-                                height: '95%',
-                                borderRadius: 2,
-                                boxShadow: 24,
-                                overflowY: 'auto',
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                flexDirection: 'column',
-                                gap: 2,
-                                bgcolor: 'background.paper',
-                                border: '2px solid #ccc',
-                            }}
-                        >
-                            <Header
-                                title="Nova Página"
-                                icon={AutoStories}
-                                onClose={closeModal}
-                            />
+                <ModelModal
+                    handleModelSelection={handleModelSelection}
+                    closeModal={closeModal}
+                    control={control}
+                    deleteModel={deleteModel}
+                    duplicateModel={duplicateModel}
+                    handleModelSelect={handleModelSelect}
+                    handleSubmit={handleSubmit}
+                    modalNodeId={modalNodeId}
+                    modelIndex={modelIndex}
+                    onSubmit={onSubmit}
+                    selectedModel={selectedModel}
+                    setSelectedModel={setSelectedModel}
+                    watchedData={watchedData}
+                />
 
-                            <Box
-                                sx={{
-                                    paddingInline: 2,
-                                    height: '85%',
-                                    display: 'flex',
-                                    width: '100%',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'flex-start',
-                                }}
-                            >
-                                {selectedModel ? (
-                                    <Box
-                                        sx={{
-                                            width: '50%',
-                                            border: '2px solid #ccc',
-                                            borderRadius: 2,
-                                            overflowY: 'auto',
-                                        }}
-                                    >
-                                        {selectedModel === 'model01' && modelIndex !== null && (
-                                            <Modelo01Edit
-                                                index={modelIndex} // Passa o índice gerado dinamicamente
-                                                onClose={() => setSelectedModel(null)}
-                                                control={control}
-                                                activePageIndex={modalNodeId}
-                                            />
-                                        )}
-                                    </Box>
-                                ) : (
-                                    <SidebarModels onModelSelect={handleModelSelect} />
-                                )}
-
-                                <ModelPreview
-                                    handleModelSelection={handleModelSelection}
-                                    activePageIndex={modalNodeId}
-                                    watchedData={watchedData}
-                                    deleteModel={deleteModel}
-                                    duplicateModel={duplicateModel}
-                                />
-                            </Box>
-                        </Box>
-                    </form>
-                </Modal>
             </div>
         </ThemeProvider>
     );

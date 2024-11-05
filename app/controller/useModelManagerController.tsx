@@ -65,6 +65,7 @@ const useModelManager = (): any => {
                 description: '',
                 image: null,
                 video: '',
+                totalPages: ''
             },
         };
 

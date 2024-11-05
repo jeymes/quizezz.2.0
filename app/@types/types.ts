@@ -12,6 +12,7 @@ export interface Option {
   description: string;
   image: any;  // Suporta upload de imagem ou null se não houver imagem
   video: string;
+  totalPages: any
 }
 export interface Models {
   options: Option;
