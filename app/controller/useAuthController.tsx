@@ -8,7 +8,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useQuizStore } from '../zustand/StoreQuiz/store';
 import { useQuizResponseStore } from '../zustand/StoreQuizResponse/store';
 import { useNotification } from '../components/notificationProvider';
-import { User } from '../@types/types';
+import { User } from '../../@types/types';
 import { setCookie } from 'nookies';
 
 export function useAuthController() {

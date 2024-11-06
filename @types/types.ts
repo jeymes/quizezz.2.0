@@ -36,10 +36,7 @@ export interface Pages {
 export interface QuizData {
   id: string;
   title: string;
-  description: string;
   quizLink: string;
-  quizId: string;
-  userId: string;
   createdAt: any;
   pages: Pages[];  // Um array de perguntas
   color: string;

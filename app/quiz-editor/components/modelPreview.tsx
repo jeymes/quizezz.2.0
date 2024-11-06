@@ -6,7 +6,7 @@ import Modelo02Preview from '../models/models02/model02-preview';
 import Modelo03Preview from '../models/models03/model03-preview';
 import Modelo04Preview from '../models/models04/model04-preview';
 import { ControlPointDuplicate } from '@mui/icons-material';
-import { QuizData } from '@/app/@types/types';
+import { QuizData } from '@/@types/types';
 
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData

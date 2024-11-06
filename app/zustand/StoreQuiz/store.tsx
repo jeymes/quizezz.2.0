@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { QuizData } from '../../@types/types';
+import { QuizData } from '../../../@types/types';
 
 interface QuizState {
     quizData: QuizData[] | null; // Dados do quiz (array de quizzes)

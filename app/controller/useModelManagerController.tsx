@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection } from 'reactflow';
-import { Models, QuizData } from '../@types/types';
+import { Models, QuizData } from '../../@types/types';
 
 const useModelManager = (): any => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -17,10 +17,7 @@ const useModelManager = (): any => {
         defaultValues: {
             id: '',  // ID inicial
             title: '',
-            description: '',
             quizLink: '',
-            quizId: '',
-            userId: '',
             createdAt: null, // ou new Date() conforme sua necessidade
             color: '',
             pages: []
@@ -29,6 +26,8 @@ const useModelManager = (): any => {
 
     // Monitore os dados do formulário em tempo real
     const watchedData = watch();
+
+    console.log('watchedData', watchedData)
 
     const { fields: pages, append: appendPage, update: updatePage } = useFieldArray({
         control,
@@ -44,7 +43,7 @@ const useModelManager = (): any => {
 
         // Obtém o índice da página a partir do modalNodeId
         const pageIndex = parseInt(modalNodeId);
-        console.log("Índice da página (pageIndex):", modalNodeId);
+        // console.log("Índice da página (pageIndex):", modalNodeId);
 
         // Verifica se o índice da página é válido
         if (!watchedData.pages || !watchedData.pages[pageIndex]) {
@@ -54,7 +53,7 @@ const useModelManager = (): any => {
 
         // Pega os modelos atuais do formulário para essa página
         const currentModels = watchedData.pages[pageIndex].models || [];
-        console.log("Modelos atuais para a página:", currentModels);
+        // console.log("Modelos atuais para a página:", currentModels);
 
         // Cria um novo modelo com as propriedades necessárias
         const newModel: Models = {
@@ -78,7 +77,7 @@ const useModelManager = (): any => {
         // Atualiza o estado local para refletir a nova lista de modelos
         setModelsPerQuestion(updatedModels);
 
-        console.log("Modelos atualizados para a página:", updatedModels);
+        // console.log("Modelos atualizados para a página:", updatedModels);
     };
 
     // Função para conectar as perguntas
@@ -110,12 +109,12 @@ const useModelManager = (): any => {
             id: newNodeId,
             type: 'questionCard',
             position: {
-                x: lastNodePosition.x + 200,
+                x: lastNodePosition.x + 400,
                 y: lastNodePosition.y,
             },
             data: {
                 id: newNodeId,
-                question: `Pergunta ${newNodeId}`,
+                question: `Página ${newNodeId}`,
                 options: [
                     { id: '2', label: 'Opção A' },
                     { id: '3', label: 'Opção B' },
@@ -163,9 +162,7 @@ const useModelManager = (): any => {
             edges: edgesWithPages,
             nodes: filteredNodes,
             title: data.title,
-            description: data.description,
             quizLink: data.quizLink,
-            quizId: data.quizId,
         };
 
         console.log('Dados do Quiz salvos como JSON:', combinedData);

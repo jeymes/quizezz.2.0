@@ -17,7 +17,7 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
                 width: '300px',
                 margin: '10px',
                 cursor: 'pointer',
-                border: '1px solid #ccc',
+                border: '1px solid #d0d7de',
                 borderRadius: '8px',
                 overflow: 'hidden',
                 display: 'flex',
@@ -25,12 +25,12 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
                 pointerEvents: 'auto',
             }}
         >
-            <Handle type="target" position={Position.Left} id={id} />
-            <Handle type="source" position={Position.Right} id={id} />
+            <Handle style={{ backgroundColor: '#027AF2', width: 10, height: 10 }} type="target" position={Position.Left} id={id} />
+            <Handle style={{ backgroundColor: '#027AF2', width: 10, height: 10 }} type="source" position={Position.Right} id={id} />
 
             <div
                 style={{
-                    backgroundColor: '#3f51b5',
+                    backgroundColor: '#027AF2',
                     color: '#fff',
                     padding: '10px',
                     textAlign: 'center',
