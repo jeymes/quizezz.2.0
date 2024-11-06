@@ -25,7 +25,7 @@ const StartCard = () => {
             />
             <Tour fontSize='large' />
             <Typography variant="h6" component="div">
-                Inicio
+                Início
             </Typography>
         </Card>
     );

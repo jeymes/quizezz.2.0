@@ -1,21 +1,86 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import ReactFlow, { Controls, Background } from 'reactflow';
 import 'reactflow/dist/style.css';
-import QuestionCard from './components/questionCard';
+import PagesCard from './components/pagesCard';
 import StartCard from './components/startCard';
-import { Button, createTheme, ThemeProvider } from '@mui/material';
+import { Box, Button, createTheme, IconButton, ThemeProvider } from '@mui/material';
 import useModelManager from '../controller/useModelManagerController';
 import { getDesignTokens } from '../shared-theme/themePrimitives';
 import ModelModal from './components/modelModal';
-import { AutoAwesome } from '@mui/icons-material';
+import { AutoAwesome, Delete, Edit } from '@mui/icons-material';
 import HeaderDefault from './components/headerDefault';
 
 const darkTheme = createTheme(getDesignTokens('dark'));
 
 const nodeTypes = {
-    questionCard: ({ id, data }: any) => <QuestionCard id={id} data={data} />,
-    startCard: StartCard,
+    PagesCard: ({ id, data }) => <OverlayCard id={id} data={data} />,
+    StartCard: StartCard,
+};
+// Componente de overlay com botões de ação
+const OverlayCard = ({ id, data }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleDelete = () => {
+        console.log(`Excluir cartão com ID: ${id}`);
+        // Lógica para excluir o cartão
+    };
+
+    const handleEdit = () => {
+        console.log(`Editar cartão com ID: ${id}`);
+        // Lógica para editar o cartão
+    };
+
+    return (
+        <Box
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            sx={{
+                position: 'relative',
+            }}
+        >
+            {/* Faixa acima do card com botões */}
+            {isHovered && (
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: -40, // Ajuste a posição para aparecer acima do card
+                        left: 0,
+                        width: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)', // Cor de fundo da faixa
+                        color: 'white',
+                        padding: '5px 10px',
+                        display: 'flex',
+                        justifyContent: 'space-between', // Espaçamento entre os botões
+                        alignItems: 'center',
+                        zIndex: 2,
+                    }}
+                >
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        onClick={handleEdit}
+                        startIcon={<Edit />}
+                    >
+                        Editar
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        color="secondary"
+                        onClick={handleDelete}
+                        startIcon={<Delete />}
+                    >
+                        Excluir
+                    </Button>
+                </Box>
+            )}
+
+            {/* Componente principal do card */}
+            <PagesCard id={id} data={data} />
+        </Box>
+    );
 };
 
 export default function QuizEditor() {

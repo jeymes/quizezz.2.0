@@ -107,7 +107,7 @@ const useModelManager = (): any => {
 
         const newNode: Node = {
             id: newNodeId,
-            type: 'questionCard',
+            type: 'PagesCard',
             position: {
                 x: lastNodePosition.x + 400,
                 y: lastNodePosition.y,
@@ -250,7 +250,7 @@ const useModelManager = (): any => {
     useEffect(() => {
         const startNode: Node = {
             id: 'start',
-            type: 'startCard',
+            type: 'StartCard',
             position: { x: 50, y: 50 },
             data: { isStartNode: true },
         };

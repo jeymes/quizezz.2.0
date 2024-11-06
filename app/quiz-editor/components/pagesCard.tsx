@@ -7,7 +7,7 @@ interface NodeProps {
     id: any;
 }
 
-const QuestionCard = ({ data, onClick, id }: NodeProps) => {
+const PagesCard = ({ data, onClick, id }: NodeProps) => {
     const { question, options } = data;
 
     return (
@@ -73,4 +73,4 @@ const QuestionCard = ({ data, onClick, id }: NodeProps) => {
     );
 };
 
-export default QuestionCard;
+export default PagesCard;
