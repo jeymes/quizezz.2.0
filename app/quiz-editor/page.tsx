@@ -14,11 +14,11 @@ import HeaderDefault from './components/headerDefault';
 const darkTheme = createTheme(getDesignTokens('dark'));
 
 const nodeTypes = {
-    PagesCard: ({ id, data }) => <OverlayCard id={id} data={data} />,
+    PagesCard: ({ id, data }: any) => <OverlayCard id={id} data={data} />,
     StartCard: StartCard,
 };
 // Componente de overlay com botões de ação
-const OverlayCard = ({ id, data }) => {
+const OverlayCard = ({ id, data }: any) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleDelete = () => {
