@@ -27,9 +27,9 @@ const useModelManager = (): any => {
     // Monitore os dados do formulário em tempo real
     const watchedData = watch();
 
-    console.log('watchedData', watchedData)
+    // console.log('watchedData', watchedData)
 
-    const { fields: pages, append: appendPage, update: updatePage } = useFieldArray({
+    const { fields: pages, append: appendPage, update: updatePage, remove } = useFieldArray({
         control,
         name: 'pages',
     });
@@ -121,6 +121,8 @@ const useModelManager = (): any => {
                     { id: '4', label: 'Opção C' },
                 ],
                 model: '',
+                deletePage,
+                openModal
             },
         };
 
@@ -137,6 +139,28 @@ const useModelManager = (): any => {
                 },
             ]);
         }
+    };
+
+    // Função para deletar uma página inteira
+    const deletePage = (nodeId: any) => {
+        console.log(nodeId);
+
+        // Remove a página do formulário
+        remove(nodeId);
+
+        // Atualiza os nós removendo o nó correspondente à página excluída
+        setNodes((currentNodes) =>
+            currentNodes.filter((node) => node.id !== String(nodeId)) // Corrige a comparação de id
+        );
+
+        // Remove as arestas associadas ao nó removido
+        setEdges((currentEdges) =>
+            currentEdges.filter(
+                (edge) => edge.source !== String(nodeId) && edge.target !== String(nodeId)
+            )
+        );
+
+        console.log(`Página no índice ${nodeId} foi removida com sucesso.`);
     };
 
     // Função para salvar o form
@@ -214,7 +238,7 @@ const useModelManager = (): any => {
         // console.log("Modelo deletado. Modelos atualizados:", updatedModels);
     };
 
-    // Função para deplicar o modelo pelo index
+    // Função para adicionar um modelo vazio com a mesma estrutura após o índice fornecido
     const duplicateModel = (index: number) => {
         // Obtém o índice da página a partir do modalNodeId
         const pageIndex = parseInt(modalNodeId as any);
@@ -234,17 +258,32 @@ const useModelManager = (): any => {
             return;
         }
 
-        // Duplica o modelo selecionado
+        // Duplica a estrutura do modelo com valores vazios
         const modelToDuplicate = currentModels[index];
-        const newModel = { ...modelToDuplicate }; // Clonando o modelo
+        const newModel = {
+            ...modelToDuplicate,
+            model: modelToDuplicate.model || '', // Mantém a chave mas limpa o conteúdo
+            isFullWidth: modelToDuplicate.isFullWidth || false, // Usa valor padrão se não existir
+            options: {
+                option: '', // Limpa as opções, se existirem
+                description: '',
+                image: null,
+                video: '',
+                totalPages: ''
+            },
+        };
 
-        // Adiciona o novo modelo à lista de modelos
-        const updatedModels = [...currentModels, newModel];
+        // Adiciona o novo modelo vazio após o modelo atual
+        const updatedModels = [
+            ...currentModels.slice(0, index + 1),
+            newModel,
+            ...currentModels.slice(index + 1)
+        ];
 
         // Atualiza o campo "models" no formulário com o array atualizado
         setValue(`pages.${pageIndex}.models`, updatedModels);
         setModelsPerQuestion(updatedModels); // Atualiza o estado local
-        // console.log("Modelo duplicado. Modelos atualizados:", updatedModels);
+        console.log("Novo modelo vazio adicionado após o índice fornecido. Modelos atualizados:", updatedModels);
     };
 
     useEffect(() => {
@@ -266,6 +305,7 @@ const useModelManager = (): any => {
     }, [setNodes]);
 
     return {
+        deletePage,
         deleteModel,
         duplicateModel,
         selectedModel,
