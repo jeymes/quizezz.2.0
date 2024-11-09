@@ -26,6 +26,7 @@
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-hook-form": "^7.53.1",
     "reactflow": "^11.11.4",
+    "uuid": "^11.0.2",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

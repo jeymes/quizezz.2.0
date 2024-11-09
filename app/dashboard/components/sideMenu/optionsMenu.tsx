@@ -56,11 +56,11 @@ export default function OptionsMenu() {
                     },
                 }}
             >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <Divider />
+                <MenuItem onClick={handleClose}>Perfil</MenuItem>
+                {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                {/* <Divider />
                 <MenuItem onClick={handleClose}>Add another account</MenuItem>
-                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleClose}>Settings</MenuItem> */}
                 <Divider />
                 <MenuItem
                     onClick={handleClose}
@@ -68,12 +68,15 @@ export default function OptionsMenu() {
                         [`& .${listItemIconClasses.root}`]: {
                             ml: 'auto',
                             minWidth: 0,
+                            width: 100
+
                         },
                     }}
+
                 >
                     <ListItemText
                         onClick={signOutUser}
-                    >Logout</ListItemText>
+                    >Sair</ListItemText>
                     <ListItemIcon>
                         <LogoutRoundedIcon fontSize="small" />
                     </ListItemIcon>

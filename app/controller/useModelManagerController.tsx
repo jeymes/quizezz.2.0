@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection } from 'reactflow';
-import { Models, QuizData } from '../../@types/types';
+import { Models, QuizData, User } from '../../@types/types';
+import { useQuizStore } from '../zustand/StoreQuiz/store';
+import { v4 as uuidv4 } from 'uuid';
+import { useAuthStore } from '../zustand/StoreAuth/store';
 
 const useModelManager = (): any => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -13,12 +16,15 @@ const useModelManager = (): any => {
     const [selectedModel, setSelectedModel] = useState<string | null>(null); // string para armazenar o modelo
     const [modelIndex, setModelIndex] = useState<number | null>(null); // número para armazenar o index do modelo
 
+    const { setQuizData } = useQuizStore();
+    const { userInfo } = useAuthStore();
+
     const { register, control, handleSubmit, reset, watch, setValue } = useForm<QuizData>({
         defaultValues: {
-            id: '',  // ID inicial
+            id: uuidv4(),
             title: '',
             quizLink: '',
-            createdAt: null, // ou new Date() conforme sua necessidade
+            createdAt: new Date(),
             color: '',
             pages: []
         }
@@ -163,35 +169,6 @@ const useModelManager = (): any => {
         console.log(`Página no índice ${nodeId} foi removida com sucesso.`);
     };
 
-    // Função para salvar o form
-    const onSubmit: SubmitHandler<QuizData> = async (data) => {
-        const filteredEdges = edges.filter(edge => edge.source !== 'start' && edge.target !== 'start');
-        const filteredNodes = nodes.filter(node => node.id !== 'start');
-
-        const edgesWithPages = filteredEdges.map((edge) => {
-            const sourceIndex = parseInt(edge.source);
-            const targetIndex = parseInt(edge.target);
-
-            const sourcePage = data.pages[sourceIndex];
-            const targetPage = data.pages[targetIndex];
-
-            return {
-                ...edge,
-                sourcePage: sourcePage || null,
-                targetPage: targetPage || null,
-            };
-        });
-
-        const combinedData = {
-            edges: edgesWithPages,
-            nodes: filteredNodes,
-            title: data.title,
-            quizLink: data.quizLink,
-        };
-
-        console.log('Dados do Quiz salvos como JSON:', combinedData);
-    };
-
     // Função para abrir o modal
     const openModal = (nodeId: string) => {
         const node = nodes.find((node) => node.id === nodeId);
@@ -285,6 +262,48 @@ const useModelManager = (): any => {
         setModelsPerQuestion(updatedModels); // Atualiza o estado local
         console.log("Novo modelo vazio adicionado após o índice fornecido. Modelos atualizados:", updatedModels);
     };
+
+    const generateQuizUrl = (userId: string, quizId: string) => {
+        const domain = window.location.hostname; // Pega o domínio atual
+        return `https://${domain}/quiz/${userId}/${quizId}`;
+    };
+
+    // Função para salvar o form
+    const onSubmit: SubmitHandler<QuizData> = async (data) => {
+        try {
+            const filteredEdges = edges.filter(edge => edge.source !== 'start' && edge.target !== 'start');
+
+            const edgesWithPages = filteredEdges.map((edge) => {
+                return {
+                    ...edge,
+                };
+            });
+
+            // Aqui você gera a URL do quiz com o ID do usuário e o ID do quiz
+            const userId = userInfo?.uid ? String(userInfo.uid) : ''; // Garante que o userId seja uma string
+            const quizId = watchedData.id; // O ID do quiz é o que você está criando no form
+
+            if (!userId || !quizId) {
+                throw new Error("User ID ou Quiz ID não estão definidos corretamente.");
+            }
+
+            const quizUrl = generateQuizUrl(userId, quizId);
+
+            const combinedData = {
+                edges: edgesWithPages,
+                ...watchedData,
+                quizLink: quizUrl
+            };
+
+            setQuizData(combinedData as any);  // Verifique se setQuizData está funcionando corretamente
+
+            console.log('Dados do Quiz salvos como JSON:', combinedData);  // Deve exibir no console
+
+        } catch (error) {
+            console.error('Erro ao salvar dados do quiz:', error);  // Para capturar qualquer erro
+        }
+    };
+
 
     useEffect(() => {
         const startNode: Node = {

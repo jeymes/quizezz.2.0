@@ -31,7 +31,7 @@ export const useAuthStore = create<LoginState>()(
                 const expirationDate = localStorage.getItem('login-expiration');
                 if (expirationDate && Date.now() > Number(expirationDate)) {
                     // Limpar o armazenamento se a data de expiração tiver passado
-                    state.set({ userInfo: null }); // Limpar userInfo
+                    // state.set({ userInfo: null }); // Limpar userInfo
                     localStorage.removeItem('login-expiration'); // Limpar a data de expiração
                 }
             },

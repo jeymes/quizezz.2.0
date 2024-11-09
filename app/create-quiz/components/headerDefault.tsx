@@ -7,11 +7,10 @@ import { Controller } from 'react-hook-form';
 interface HeaderProps {
     control: any;
     onClose: () => void;
-    onPublish: () => void;
     onPreview: () => void;
 }
 
-export default function HeaderDefault({ control, onClose, onPreview, onPublish }: HeaderProps) {
+export default function HeaderDefault({ control, onClose, onPreview }: HeaderProps) {
     return (
         <AppBar position="static">
             <Toolbar sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
@@ -57,7 +56,7 @@ export default function HeaderDefault({ control, onClose, onPreview, onPublish }
                         color="primary"
                         variant="contained"
                         startIcon={<Cloud />}
-                        onClick={onPublish}
+                        type='submit'
                     >
                         Publicar
                     </Button>
