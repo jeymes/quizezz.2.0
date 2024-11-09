@@ -9,12 +9,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import QuizIcon from '@mui/icons-material/Quiz';
+import { EnergySavingsLeaf, PlayCircle } from '@mui/icons-material';
 
 const Quizezz = () => {
     const { quizData } = useQuizStore();
     const router = useRouter();
 
     console.log("quizData", quizData)
+
+    const handlePlayClick = (quizLink: string) => {
+        router.push(quizLink);  // Navigates to the quiz link
+    };
 
     return (
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
@@ -41,6 +46,9 @@ const Quizezz = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
+                        <IconButton color="primary" onClick={() => handlePlayClick(quizData.quizLink)}>
+                            <PlayCircle />
+                        </IconButton>
                         <IconButton color="primary" onClick={() => console.log('Editar quiz')}>
                             <EditIcon />
                         </IconButton>
