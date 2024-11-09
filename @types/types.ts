@@ -33,12 +33,20 @@ export interface Pages {
   progress: string;
   models: Models[];
 }
+interface Edge {
+  id: string;
+  source: string;
+  target: string;
+  sourceHandle: string;
+  targetHandle: string;
+}
 export interface QuizData {
   id: string;
   title: string;
   quizLink: string;
   createdAt: any;
   pages: Pages[];  // Um array de perguntas
+  edges?: Edge[],
   color: string;
 }
 

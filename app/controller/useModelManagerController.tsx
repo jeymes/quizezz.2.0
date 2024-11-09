@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection } from 'reactflow';
-import { Models, QuizData, User } from '../../@types/types';
+import { Models, QuizData } from '../../@types/types';
 import { useQuizStore } from '../zustand/StoreQuiz/store';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuthStore } from '../zustand/StoreAuth/store';
@@ -264,24 +264,42 @@ const useModelManager = (): any => {
     };
 
     const generateQuizUrl = (userId: string, quizId: string) => {
-        const domain = window.location.hostname; // Pega o domínio atual
-        return `https://${domain}/quiz/${userId}/${quizId}`;
+        return `${window.location.origin}/quiz/${userId}/${quizId}`;
+    };
+
+    // Função para gerar uma URL de visualização a partir de um File ou Blob
+    const createImageURL = (fileOrBlob: any) => {
+        return URL.createObjectURL(fileOrBlob);
+    };
+
+    // Função para processar todas as imagens no watchedData e converter para URLs
+    const convertImagesToURLs = async (data: any) => {
+        const updatedData = { ...data };
+        for (const page of updatedData.pages) {
+            for (const model of page.models) {
+                if (model.options.image) {
+                    if (model.options.image instanceof File || model.options.image instanceof Blob) {
+                        // Converte File ou Blob para uma URL
+                        model.options.image = createImageURL(model.options.image);
+                    } else if (typeof model.options.image === 'string') {
+                        // Se já for uma URL, mantenha-a como está
+                        console.log("Imagem já está no formato de URL:", model.options.image);
+                    }
+                }
+            }
+        }
+        return updatedData;
     };
 
     // Função para salvar o form
-    const onSubmit: SubmitHandler<QuizData> = async (data) => {
+    const onSubmit: SubmitHandler<QuizData> = async () => {
         try {
+            // Filtra arestas inválidas
             const filteredEdges = edges.filter(edge => edge.source !== 'start' && edge.target !== 'start');
+            const edgesWithPages = filteredEdges.map((edge) => ({ ...edge }));
 
-            const edgesWithPages = filteredEdges.map((edge) => {
-                return {
-                    ...edge,
-                };
-            });
-
-            // Aqui você gera a URL do quiz com o ID do usuário e o ID do quiz
-            const userId = userInfo?.uid ? String(userInfo.uid) : ''; // Garante que o userId seja uma string
-            const quizId = watchedData.id; // O ID do quiz é o que você está criando no form
+            const userId = userInfo?.uid ? String(userInfo.uid) : '';
+            const quizId = watchedData.id;
 
             if (!userId || !quizId) {
                 throw new Error("User ID ou Quiz ID não estão definidos corretamente.");
@@ -289,21 +307,23 @@ const useModelManager = (): any => {
 
             const quizUrl = generateQuizUrl(userId, quizId);
 
+            // Converte as imagens em blobs antes de criar o combinedData
+            const updatedWatchedData = await convertImagesToURLs(watchedData);
+
+            // Cria o objeto final combinedData usando o watchedData com blobs
             const combinedData = {
                 edges: edgesWithPages,
-                ...watchedData,
+                ...updatedWatchedData,
                 quizLink: quizUrl
             };
 
-            setQuizData(combinedData as any);  // Verifique se setQuizData está funcionando corretamente
-
-            console.log('Dados do Quiz salvos como JSON:', combinedData);  // Deve exibir no console
+            setQuizData(combinedData);  // Armazena o estado do quiz atualizado com blobs de imagens
+            console.log('Dados do Quiz salvos como JSON com blobs de imagens:', combinedData);
 
         } catch (error) {
-            console.error('Erro ao salvar dados do quiz:', error);  // Para capturar qualquer erro
+            console.error('Erro ao salvar dados do quiz:', error);
         }
     };
-
 
     useEffect(() => {
         const startNode: Node = {

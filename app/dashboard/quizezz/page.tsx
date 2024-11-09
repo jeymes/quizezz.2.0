@@ -17,10 +17,6 @@ const Quizezz = () => {
 
     console.log("quizData", quizData)
 
-    const handlePlayClick = (quizLink: string) => {
-        router.push(quizLink);  // Navigates to the quiz link
-    };
-
     return (
         <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -46,7 +42,7 @@ const Quizezz = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <IconButton color="primary" onClick={() => handlePlayClick(quizData.quizLink)}>
+                        <IconButton color="primary" onClick={() => window.open(quizData.quizLink)}>
                             <PlayCircle />
                         </IconButton>
                         <IconButton color="primary" onClick={() => console.log('Editar quiz')}>
