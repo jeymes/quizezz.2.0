@@ -21,9 +21,9 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
     const dataArray = watchedData?.pages?.[activePageIndex ?? 0]?.models || [];
 
     // Logs para verificação
-    // console.log('watchedData:', watchedData);
+    console.log('watchedData:', watchedData);
     // console.log('activePageIndex:', activePageIndex);
-    // console.log('dataArray:', dataArray);
+    console.log('dataArray:', dataArray);
 
     return (
         <Card

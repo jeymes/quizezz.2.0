@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 type Modelo03PreviewProps = {
-    option?: string;
+    option: string;
 };
 
 const Modelo03Preview: React.FC<Modelo03PreviewProps> = ({ option }) => {
