@@ -41,6 +41,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
             <Box
                 sx={{
                     padding: 1,
+                    overflowY: 'auto',
                     display: 'flex',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',

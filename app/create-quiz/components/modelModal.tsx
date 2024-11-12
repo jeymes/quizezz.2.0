@@ -76,6 +76,7 @@ const ModelModal: React.FC<ModelModalProps> = ({
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'flex-start',
+                        overflowY: 'auto',
                     }}
                 >
                     {selectedModel ? (
