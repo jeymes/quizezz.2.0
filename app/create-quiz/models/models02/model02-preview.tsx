@@ -1,7 +1,13 @@
 import React from 'react';
 import { Box, LinearProgress, Typography } from '@mui/material';
 
-const Modelo02Preview = ({ totalPages = 1, currentPage = 1 }) => {
+type Modelo02PreviewProps = {
+    selected: any;
+    currentPage: any;
+    totalPages: any;
+};
+
+const Modelo02Preview = ({ totalPages = 1, currentPage = 1, selected }: Modelo02PreviewProps) => {
     const progress = (currentPage / totalPages) * 100;
 
     return (
@@ -16,9 +22,12 @@ const Modelo02Preview = ({ totalPages = 1, currentPage = 1 }) => {
                 padding: '0 20px',
             }}
         >
-            <Typography variant="body2" color="black" sx={{ marginBlock: 1 }}>
-                {currentPage} / {totalPages}
-            </Typography>
+            {/* Mostrar o texto de contagem de página apenas se selected for true */}
+            {selected && (
+                <Typography variant="body2" color="black" sx={{ marginBlock: 1 }}>
+                    {currentPage} / {totalPages}
+                </Typography>
+            )}
 
             <Box sx={{ width: '100%', height: 8, borderRadius: 5, overflow: 'hidden', marginBottom: 1 }}>
                 <LinearProgress

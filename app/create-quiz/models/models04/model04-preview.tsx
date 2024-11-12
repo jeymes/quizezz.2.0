@@ -1,13 +1,15 @@
 import React from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
-import { AddAPhoto, AddCircle, ImageAspectRatio } from '@mui/icons-material';
+import { AddCircle } from '@mui/icons-material';
 
 interface Modelo04PreviewProps {
     imageUrl: any;
     option: any;
+    backgroundColor: any;
+    color: any;
 }
 
-const Modelo04Preview: React.FC<Modelo04PreviewProps> = ({ imageUrl, option }) => {
+const Modelo04Preview: React.FC<Modelo04PreviewProps> = ({ imageUrl, option, backgroundColor, color }) => {
     return (
         <Card sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
             <Box
@@ -18,7 +20,7 @@ const Modelo04Preview: React.FC<Modelo04PreviewProps> = ({ imageUrl, option }) =
                     alignItems: 'center',
                     padding: 1,
                     ":hover": {
-                        backgroundColor: '#0059B3'
+                        backgroundColor: backgroundColor ? backgroundColor : '#0059B3'
                     }
                 }}
             >
@@ -40,8 +42,8 @@ const Modelo04Preview: React.FC<Modelo04PreviewProps> = ({ imageUrl, option }) =
                     </CardContent>
                 )}
             </Box>
-            <CardContent sx={{ backgroundColor: '#0059B3', padding: 2 }}>
-                <Typography variant="body2" align="center" color="text.primary">
+            <CardContent sx={{ backgroundColor: backgroundColor ? backgroundColor : '#0059B3', padding: 2 }}>
+                <Typography variant="body2" align="center" color={color}>
                     {option}
                 </Typography>
             </CardContent>

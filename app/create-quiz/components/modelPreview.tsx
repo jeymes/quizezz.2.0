@@ -23,7 +23,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
     // Logs para verificação
     console.log('watchedData:', watchedData);
     // console.log('activePageIndex:', activePageIndex);
-    console.log('dataArray:', dataArray);
+    // console.log('dataArray:', dataArray);
 
     return (
         <Card
@@ -74,20 +74,28 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                             }}
                         >
 
-                            {model.model === 'model01' && <Modelo01Preview
-                                imageUrl={model.options.image}
-                            />}
+                            {model.model === 'model01' &&
+                                <Modelo01Preview
+                                    imageUrl={model.options.image}
+                                    justifyContent={model.options.justifyContent}
+                                    width={model.options.width}
+                                />
+                            }
 
                             {model.model === 'model02' && <Modelo02Preview
                                 totalPages={watchedData?.pages.length}
                                 currentPage={activePageIndex}
+                                selected={model.options.selected}
                             />}
 
                             {model.model === 'model03' && <Modelo03Preview
+                                color={model.options.color}
                                 option={model.options.option}
                             />}
 
                             {model.model === 'model04' && <Modelo04Preview
+                                backgroundColor={model.options.backgroundColor}
+                                color={model.options.color}
                                 imageUrl={model.options.image}
                                 option={model.options.option ? model.options.option : `Opção-${index}`}
                             />}

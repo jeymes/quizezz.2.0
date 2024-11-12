@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Box } from '@mui/material';
+import { TextField, Box, Typography, Stack, styled, Switch } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import Header from '../../components/header';
 import { Commit } from '@mui/icons-material';
@@ -17,32 +17,97 @@ const Modelo02Edit: React.FC<Modelo02EditProps> = ({
     activePageIndex,
     onClose,
 }) => {
+
+    const AntSwitch = styled(Switch)(({ theme }) => ({
+        width: 28,
+        height: 16,
+        padding: 0,
+        display: 'flex',
+        '&:active': {
+            '& .MuiSwitch-thumb': {
+                width: 15,
+            },
+            '& .MuiSwitch-switchBase.Mui-checked': {
+                transform: 'translateX(9px)',
+            },
+        },
+        '& .MuiSwitch-switchBase': {
+            padding: 2,
+            '&.Mui-checked': {
+                transform: 'translateX(12px)',
+                color: '#fff',
+                '& + .MuiSwitch-track': {
+                    opacity: 1,
+                    backgroundColor: '#1890ff',
+                    ...theme.applyStyles('dark', {
+                        backgroundColor: '#177ddc',
+                    }),
+                },
+            },
+        },
+        '& .MuiSwitch-thumb': {
+            boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+            width: 12,
+            height: 12,
+            borderRadius: 6,
+            transition: theme.transitions.create(['width'], {
+                duration: 200,
+            }),
+        },
+        '& .MuiSwitch-track': {
+            borderRadius: 16 / 2,
+            opacity: 1,
+            backgroundColor: 'rgba(0,0,0,.25)',
+            boxSizing: 'border-box',
+            ...theme.applyStyles('dark', {
+                backgroundColor: 'rgba(255,255,255,.35)',
+            }),
+        },
+    }));
+
     return (
         <>
             <Header title="Progress" icon={Commit} onClose={onClose} />
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
 
+                {/* Campo para totalPages */}
                 <Controller
-                    name={`pages.${activePageIndex}.models.${index}.options.totalPages`} // Nome do campo
-                    control={control} // Controle do react-hook-form
+                    name={`pages.${activePageIndex}.models.${index}.options.totalPages`}
+                    control={control}
                     render={({ field }) => (
                         <TextField
-                            {...field} // Espalhar as propriedades do campo
+                            {...field}
                             label="Total de Páginas"
                             type="number"
                             fullWidth
                             margin="normal"
                             variant="outlined"
                             InputProps={{
-                                inputProps: { min: 0 }, // Permitir apenas números positivos
+                                inputProps: { min: 0 },
                             }}
                         />
                     )}
                 />
 
+                {/* Controle de Switch para `selected` */}
+                <Typography variant="body2" sx={{ mt: 2 }}>Paginação</Typography>
+                <Controller
+                    name={`pages.${activePageIndex}.models.${index}.options.selected`}
+                    control={control}
+                    render={({ field }) => (
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography>Off</Typography>
+                            <AntSwitch
+                                checked={field.value || false}
+                                onChange={(event) => field.onChange(event.target.checked)}
+                                inputProps={{ 'aria-label': 'switch selecionado' }}
+                            />
+                            <Typography>On</Typography>
+                        </Stack>
+                    )}
+                />
             </Box>
         </>
-
     );
 };
 

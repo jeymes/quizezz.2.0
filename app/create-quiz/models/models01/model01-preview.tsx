@@ -3,16 +3,18 @@ import { Box, Avatar } from '@mui/material';
 
 interface Modelo01PreviewProps {
     imageUrl: any;
+    width: any;
+    justifyContent: any
 }
 
-const Modelo01Preview: React.FC<Modelo01PreviewProps> = ({ imageUrl }) => {
+const Modelo01Preview: React.FC<Modelo01PreviewProps> = ({ imageUrl, width, justifyContent = 'center' }) => {
 
     return (
         <Box
             display="flex"
-            justifyContent="center"
+            justifyContent={justifyContent}
             alignItems="center"
-            width="100%"
+            width='100%'
         >
             <Avatar
                 src={`${imageUrl instanceof File ? URL.createObjectURL(imageUrl) : imageUrl}`}

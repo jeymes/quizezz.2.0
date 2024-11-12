@@ -6,8 +6,10 @@ import {
     IconButton,
     Card,
     CardContent,
+    Typography,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import { TwitterPicker } from 'react-color';
 import { Image, AddPhotoAlternate } from '@mui/icons-material';
 import Header from '../../components/header';
 
@@ -87,7 +89,7 @@ const Modelo04Edit: React.FC<Modelo04EditProps> = ({
 
                 {/* Input para Tamanho da Imagem */}
                 <Controller
-                    name={`pages.${activePageIndex}.models.${index}.options.option`} // Caminho atualizado para tamanho
+                    name={`pages.${activePageIndex}.models.${index}.options.option`}
                     control={control}
                     render={({ field }) => (
                         <TextField
@@ -101,7 +103,43 @@ const Modelo04Edit: React.FC<Modelo04EditProps> = ({
                     )}
                 />
 
+                {/* Seletor de Cor para o Background */}
+                <Box>
+                    <Controller
+                        name={`pages.${activePageIndex}.models.${index}.options.backgroundColor`}
+                        control={control}
+                        render={({ field }) => (
+                            <>
+                                <Typography paddingBottom={2} variant="body2" component="div">
+                                    Cor de Fundo
+                                </Typography>
+                                <TwitterPicker
+                                    color={field.value || '#ffffff'}
+                                    onChange={(color) => field.onChange(color.hex)}
+                                />
+                            </>
+                        )}
+                    />
+                </Box>
 
+                {/* Seletor de Cor para o Texto */}
+                <Box>
+                    <Controller
+                        name={`pages.${activePageIndex}.models.${index}.options.color`}
+                        control={control}
+                        render={({ field }) => (
+                            <>
+                                <Typography paddingBottom={2} variant="body2" component="div">
+                                    Cor do Texto
+                                </Typography>
+                                <TwitterPicker
+                                    color={field.value || '#ffffff'}
+                                    onChange={(color) => field.onChange(color.hex)}
+                                />
+                            </>
+                        )}
+                    />
+                </Box>
             </Box>
         </>
     );

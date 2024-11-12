@@ -88,25 +88,9 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                     </CardContent>
                 </Card>
 
-                {/* Input para Tamanho da Logo */}
-                <Controller
-                    name={`pages.${activePageIndex}.models.${index}.options.size`} // Caminho atualizado para tamanho
-                    control={control}
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label="Tamanho da Logo (px)"
-                            variant="outlined"
-                            type="number"
-                            fullWidth
-                            margin="normal"
-                        />
-                    )}
-                />
-
                 {/* Select para Posição da Logo */}
                 <Controller
-                    name={`pages.${activePageIndex}.models.${index}.options.position`} // Caminho atualizado para posição
+                    name={`pages.${activePageIndex}.models.${index}.options.justifyContent`} // Caminho atualizado para posição
                     control={control}
                     render={({ field }) => (
                         <FormControl fullWidth variant="outlined" margin="normal">

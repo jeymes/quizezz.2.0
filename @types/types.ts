@@ -13,6 +13,11 @@ export interface Option {
   image: any;  // Suporta upload de imagem ou null se não houver imagem
   video: string;
   totalPages: any
+  justifyContent?: any;
+  width?: any;
+  selected?: any;
+  color?: any;
+  backgroundColor?: any;
 }
 export interface Models {
   options: Option;

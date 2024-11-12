@@ -33,7 +33,7 @@ const useModelManager = (): any => {
     // Monitore os dados do formulário em tempo real
     const watchedData = watch();
 
-    console.log('watchedData', watchedData)
+    // console.log('watchedData', watchedData)
 
     const { fields: pages, append: appendPage, update: updatePage, remove } = useFieldArray({
         control,
