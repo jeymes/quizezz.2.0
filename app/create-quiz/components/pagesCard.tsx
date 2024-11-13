@@ -11,8 +11,9 @@ interface NodeProps {
 }
 
 const PagesCard = ({ data, onClick, id }: NodeProps) => {
-    const { question, options } = data;
     const [isHovered, setIsHovered] = useState(false);
+
+    console.log(data)
 
     return (
         <Box
@@ -23,7 +24,6 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 display: 'flex',
-
             }}
         >
             {isHovered && (
@@ -43,15 +43,16 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                 >
                     <Button
                         onClick={() => data.openModal(id)}
-                        sx={{ padding: 1, color: 'gray', width: '100%', }}
+                        sx={{ padding: 1, color: 'gray', width: '100%' }}
                     >
-                        <EditIcon fontSize='small' />
+                        <EditIcon fontSize="small" />
                     </Button>
 
                     <Button
                         onClick={() => data.deletePage(id)}
-                        sx={{ padding: 1, color: 'red', width: '100%', }}>
-                        <DeleteIcon fontSize='small' />
+                        sx={{ padding: 1, color: 'red', width: '100%' }}
+                    >
+                        <DeleteIcon fontSize="small" />
                     </Button>
                 </Box>
             )}
@@ -81,42 +82,18 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                         textAlign: 'center',
                     }}
                 >
-                    <Typography variant="h6">QuizApp</Typography>
+                    <Typography variant="h6">{data.data.title}</Typography>
                 </div>
 
                 <LinearProgress variant="determinate" value={50} style={{ height: '5px' }} />
 
                 <CardContent style={{ flexGrow: 1, padding: '16px' }}>
-                    <Typography variant="h6" component="div" style={{ marginBottom: '10px', fontWeight: 'bold' }}>
-                        {question}
-                    </Typography>
-
-                    <div style={{ marginBottom: '20px', position: 'relative' }}>
-                        {options.map((option: any, index: any) => (
-                            <div key={index} style={{ position: 'relative', marginBottom: '8px' }}>
-                                <Button
-                                    variant="outlined"
-                                    style={{
-                                        width: '100%',
-                                        textAlign: 'left',
-                                        paddingLeft: '12px',
-                                        position: 'relative',
-                                    }}
-                                >
-                                    {option.label}
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-
 
                     <Button variant="contained" color="primary" fullWidth>
                         Continuar
                     </Button>
                 </CardContent>
-
             </Card>
-
         </Box>
     );
 };

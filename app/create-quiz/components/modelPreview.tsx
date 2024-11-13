@@ -5,8 +5,9 @@ import Modelo01Preview from '../models/models01/model01-preview';
 import Modelo02Preview from '../models/models02/model02-preview';
 import Modelo03Preview from '../models/models03/model03-preview';
 import Modelo04Preview from '../models/models04/model04-preview';
-import { ControlPointDuplicate } from '@mui/icons-material';
+import { ControlPointDuplicate, CopyAll } from '@mui/icons-material';
 import { QuizData } from '@/@types/types';
+import Modelo05Preview from '../models/models05/model05-preview';
 
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData
@@ -21,7 +22,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
     const dataArray = watchedData?.pages?.[activePageIndex ?? 0]?.models || [];
 
     // Logs para verificação
-    console.log('watchedData:', watchedData);
+    // console.log('watchedData:', watchedData);
     // console.log('activePageIndex:', activePageIndex);
     // console.log('dataArray:', dataArray);
 
@@ -101,6 +102,12 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                 option={model.options.option ? model.options.option : `Opção-${index}`}
                             />}
 
+                            {model.model === 'model05' && <Modelo05Preview
+                                backgroundColor={model.options.backgroundColor}
+                                color={model.options.color}
+                                option={model.options.option ? model.options.option : `Opção-${index}`}
+                            />}
+
                             <Box
                                 className="icon-buttons"
                                 sx={{
@@ -123,7 +130,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                     <EditIcon fontSize='small' />
                                 </Button>
                                 <Button onClick={() => duplicateModel(index)} sx={{ minWidth: 0, padding: 1, color: '#1976d2' }}>
-                                    <ControlPointDuplicate fontSize='small' />
+                                    <CopyAll fontSize='small' />
                                 </Button>
                                 <Button onClick={() => deleteModel(index)} sx={{ minWidth: 0, padding: 1, color: 'red' }}>
                                     <DeleteIcon fontSize='small' />

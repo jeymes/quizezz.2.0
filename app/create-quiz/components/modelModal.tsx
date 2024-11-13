@@ -9,6 +9,7 @@ import Modelo03Edit from '../models/models03/model03-edit';
 import Modelo04Edit from '../models/models04/model04-edit';
 import ModelPreview from './modelPreview';
 import SidebarModels from './sidebarModels';
+import Modelo05Edit from '../models/models05/model05-edit';
 
 interface ModelModalProps {
     modalNodeId: string | null; // ID do nó do modal
@@ -114,6 +115,14 @@ const ModelModal: React.FC<ModelModalProps> = ({
                             )}
                             {selectedModel === 'model04' && modelIndex !== null && (
                                 <Modelo04Edit
+                                    index={modelIndex}
+                                    onClose={() => setSelectedModel(null)}
+                                    control={control}
+                                    activePageIndex={modalNodeId as any}
+                                />
+                            )}
+                            {selectedModel === 'model05' && modelIndex !== null && (
+                                <Modelo05Edit
                                     index={modelIndex}
                                     onClose={() => setSelectedModel(null)}
                                     control={control}

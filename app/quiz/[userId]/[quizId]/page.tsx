@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { Paper, Box } from '@mui/material';
 import { useQuizStore } from '@/app/zustand/StoreQuiz/store';
@@ -9,6 +8,7 @@ import Modelo02Preview from '@/app/create-quiz/models/models02/model02-preview';
 import Modelo03Preview from '@/app/create-quiz/models/models03/model03-preview';
 import Modelo04Preview from '@/app/create-quiz/models/models04/model04-preview';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Modelo05Preview from '@/app/create-quiz/models/models05/model05-preview';
 
 // Tipos de dados para o quiz (ajuste conforme sua estrutura real)
 interface QuizModel {
@@ -39,7 +39,6 @@ interface Responses {
 }
 
 const QuizPage = () => {
-    const params = useParams();
     const { quizData } = useQuizStore();
     const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
     const [currentProgress, setCurrentProgress] = useState<number>(1);
@@ -148,23 +147,45 @@ const QuizPage = () => {
                             onClick={() => handleNext(model.options.option, model.model)}
                         >
                             {model.model === 'model01' && (
-                                <Modelo01Preview imageUrl={model.options.image} />
+                                <Modelo01Preview
+                                    imageUrl={model.options.image}
+                                    justifyContent={model.options.justifyContent}
+                                    width={model.options.width}
+                                />
                             )}
 
                             {model.model === 'model02' && (
                                 <Modelo02Preview
                                     totalPages={quizData?.pages.length}
                                     currentPage={currentProgress}
+                                    selected={model.options.selected}
                                 />
                             )}
 
                             {model.model === 'model03' && (
-                                <Modelo03Preview option={model.options.option} />
+                                <Modelo03Preview
+                                    color={model.options.color}
+                                    option={model.options.option}
+                                />
                             )}
 
                             {model.model === 'model04' && (
-                                <Modelo04Preview imageUrl={model.options.image} option={model.options.option} />
+                                <Modelo04Preview
+                                    backgroundColor={model.options.backgroundColor}
+                                    color={model.options.color}
+                                    imageUrl={model.options.image}
+                                    option={model.options.option ? model.options.option : `Opção-${index}`}
+                                />
                             )}
+
+                            {model.model === 'model05' && (
+                                <Modelo05Preview
+                                    backgroundColor={model.options.backgroundColor}
+                                    color={model.options.color}
+                                    option={model.options.option ? model.options.option : `Opção-${index}`}
+                                />
+                            )}
+
                         </Box>
                     ))}
                 </Box>

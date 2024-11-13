@@ -95,7 +95,6 @@ const useModelManager = (): any => {
     // Função para criar uma nova pergunta
     const addQuestion = () => {
         appendPage({
-            question: '',
             header: '',
             footer: '',
             progress: '',
@@ -120,12 +119,8 @@ const useModelManager = (): any => {
             },
             data: {
                 id: newNodeId,
-                question: `Página ${newNodeId}`,
-                options: [
-                    { id: '2', label: 'Opção A' },
-                    { id: '3', label: 'Opção B' },
-                    { id: '4', label: 'Opção C' },
-                ],
+                page: `Página ${newNodeId}`,
+                data: watchedData,
                 model: '',
                 deletePage,
                 openModal

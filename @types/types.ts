@@ -26,7 +26,6 @@ export interface Models {
 
 }
 export interface Pages {
-  question: string;
   correctOption: string;
   link: string;
   titleLink: string;

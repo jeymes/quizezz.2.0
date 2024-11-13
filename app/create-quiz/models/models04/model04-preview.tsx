@@ -11,7 +11,7 @@ interface Modelo04PreviewProps {
 
 const Modelo04Preview: React.FC<Modelo04PreviewProps> = ({ imageUrl, option, backgroundColor, color }) => {
     return (
-        <Card sx={{ width: '100%', borderRadius: 2, boxShadow: 3 }}>
+        <Card sx={{ width: '100%' }}>
             <Box
                 sx={{
                     position: 'relative',

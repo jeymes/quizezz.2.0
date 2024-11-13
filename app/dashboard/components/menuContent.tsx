@@ -7,13 +7,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import { AccountTree } from '@mui/icons-material';
 
 const mainListItems = [
     { text: 'Dashboard', icon: <HomeRoundedIcon />, href: '/dashboard' },
-    { text: 'Quizezz', icon: <AnalyticsRoundedIcon />, href: '/dashboard/quizezz' },
+    { text: 'Quizezz', icon: <AccountTree />, href: '/dashboard/quizezz' },
 ];
 
 const secondaryListItems = [

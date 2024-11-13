@@ -11,7 +11,7 @@ import {
     FormControl,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { AddPhotoAlternate, PhotoLibrary } from '@mui/icons-material';
+import { AddPhotoAlternate, DragHandle } from '@mui/icons-material';
 import Header from '../../components/header';
 
 type Modelo01EditProps = {
@@ -30,7 +30,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cabeçalho" icon={PhotoLibrary} onClose={onClose} />
+            <Header title="Cabeçalho" icon={DragHandle} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
                 {/* Card para Imagem */}
