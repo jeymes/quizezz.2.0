@@ -154,7 +154,7 @@ const useModelManager = (): any => {
         console.log(nodeId);
 
         // Remove a página do formulário
-        remove(nodeId);
+        remove(nodeId - 1);
 
         // Atualiza os nós removendo o nó correspondente à página excluída
         setNodes((currentNodes) =>
@@ -344,8 +344,6 @@ const useModelManager = (): any => {
             return nds;
         });
     }, [setNodes]);
-
-
 
     return {
         deletePage,

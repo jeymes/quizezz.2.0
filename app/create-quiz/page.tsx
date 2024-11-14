@@ -11,6 +11,7 @@ import ModelModal from './components/modelModal';
 import { AutoAwesome } from '@mui/icons-material';
 import HeaderDefault from './components/headerDefault';
 import { useRouter } from 'next/navigation';
+import { useQuizStore } from '../zustand/StoreQuiz/store';
 
 const darkTheme = createTheme(getDesignTokens('dark'));
 
@@ -45,6 +46,7 @@ export default function QuizEditor() {
     } = useModelManager();
 
     const router = useRouter();
+    const { quizData } = useQuizStore();
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -53,7 +55,7 @@ export default function QuizEditor() {
                 <HeaderDefault
                     control={control}
                     onClose={() => router.back()}
-                    onPreview={() => { }}
+                    onPreview={() => window.open(quizData.quizLink)}
                 />
 
                 <div style={{ height: '90vh', position: 'relative' }}>

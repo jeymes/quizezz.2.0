@@ -81,7 +81,7 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                     sx={{
                         width: '300px',
                         margin: '10px',
-                        paddingBlock: 2,
+                        paddingBlock: dataArray.length > 0 ? 0 : 2,
                         cursor: 'pointer',
                         border: '1px solid #d0d7de',
                         borderRadius: 1,
@@ -95,6 +95,8 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                 >
                     <Handle style={{ backgroundColor: '#027AF2', width: 10, height: 10 }} type="target" position={Position.Left} id={id} />
                     <Handle style={{ backgroundColor: '#027AF2', width: 10, height: 10 }} type="source" position={Position.Right} id={id} />
+
+                    {dataArray.length > 0 && <Typography p={1} variant="body1">Página {id} </Typography>}
 
                     {dataArray.length > 0 ? (
                         dataArray.map((model, index) => (
