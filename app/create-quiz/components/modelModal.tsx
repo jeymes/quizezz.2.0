@@ -1,4 +1,3 @@
-// ModelModal.tsx
 import React from 'react';
 import { Box, Modal } from '@mui/material';
 import { AutoStories } from '@mui/icons-material';

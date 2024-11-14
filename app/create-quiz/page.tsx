@@ -56,7 +56,7 @@ export default function QuizEditor() {
                     onPreview={() => { }}
                 />
 
-                <div style={{ height: '100vh', position: 'relative' }}>
+                <div style={{ height: '90vh', position: 'relative' }}>
 
                     <Button
                         variant="contained"

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { addEdge, useEdgesState, useNodesState, Edge, Node, Connection } from 'reactflow';
 import { Models, QuizData } from '../../@types/types';
 import { useQuizStore } from '../zustand/StoreQuiz/store';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuthStore } from '../zustand/StoreAuth/store';
+import { useStoreCardFlowQuiz } from '../zustand/StoreCardFlowQuiz/store';
 
 const useModelManager = (): any => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -31,7 +32,13 @@ const useModelManager = (): any => {
     });
 
     // Monitore os dados do formulário em tempo real
+    const { setQuizFlowData } = useStoreCardFlowQuiz();
+
     const watchedData = watch();
+
+    useEffect(() => {
+        setQuizFlowData(watchedData as any); // você pode tipar o `watchedData` conforme necessário
+    }, [watch]);
 
     // console.log('watchedData', watchedData)
 
@@ -337,6 +344,8 @@ const useModelManager = (): any => {
             return nds;
         });
     }, [setNodes]);
+
+
 
     return {
         deletePage,
