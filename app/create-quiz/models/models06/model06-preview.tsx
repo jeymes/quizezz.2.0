@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
-type Modelo03PreviewProps = {
-    option: string;
-    color: string;
-};
+interface Modelo06PreviewProps {
+    option: any;
+    color: any;
+}
 
-const Modelo03Preview: React.FC<Modelo03PreviewProps> = ({ option, color }) => {
+const Modelo06Preview: React.FC<Modelo06PreviewProps> = ({ option, color }) => {
     return (
         <Box
             sx={{
@@ -18,11 +18,11 @@ const Modelo03Preview: React.FC<Modelo03PreviewProps> = ({ option, color }) => {
                 padding: '0 20px',
             }}
         >
-            <Typography variant="h6" component="div" color={color}>
-                {!option ? 'Tìtulo' : option}
+            <Typography variant="caption" component="div" color={color}>
+                {!option ? 'Descrição' : option}
             </Typography>
         </Box>
     );
 };
 
-export default Modelo03Preview;
+export default Modelo06Preview;

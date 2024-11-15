@@ -39,7 +39,6 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                     sx={{
                         width: '100%',
                         border: '2px dashed gray',
-                        borderRadius: 2,
                         padding: 2,
                     }}
                 >
@@ -53,7 +52,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                                         <Avatar
                                             src={`${field.value.type ? URL.createObjectURL(field.value) : field.value}`}
                                             alt="Preview"
-                                            sx={{ width: 100, height: 100, margin: '10px auto' }}
+                                            sx={{ width: 100, height: 100, margin: '10px auto', borderRadius: 0, }}
                                         />
                                     ) : (
                                         <IconButton

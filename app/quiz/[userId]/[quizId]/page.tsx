@@ -9,6 +9,9 @@ import Modelo03Preview from '@/app/create-quiz/models/models03/model03-preview';
 import Modelo04Preview from '@/app/create-quiz/models/models04/model04-preview';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Modelo05Preview from '@/app/create-quiz/models/models05/model05-preview';
+import Modelo06Preview from '@/app/create-quiz/models/models06/model06-preview';
+import Modelo07Preview from '@/app/create-quiz/models/models07/model07-preview';
+import Modelo08Preview from '@/app/create-quiz/models/models08/model08-preview';
 
 // Tipos de dados para o quiz (ajuste conforme sua estrutura real)
 interface QuizModel {
@@ -156,6 +159,7 @@ const QuizPage = () => {
 
                             {model.model === 'model02' && (
                                 <Modelo02Preview
+                                    backgroundColor={model.options.backgroundColor}
                                     totalPages={quizData?.pages.length}
                                     currentPage={currentProgress}
                                     selected={model.options.selected}
@@ -185,6 +189,26 @@ const QuizPage = () => {
                                     option={model.options.option ? model.options.option : `Opção-${index}`}
                                 />
                             )}
+
+                            {model.model === 'model06' && <Modelo06Preview
+                                color={model.options.color}
+                                option={model.options.option}
+                            />}
+
+                            {model.model === 'model07' && <Modelo07Preview
+                                color={model.options.color}
+                                option={model.options.option}
+                                description={model.options.description}
+                                backgroundColor={model.options.backgroundColor}
+                            />}
+
+                            {model.model === 'model08' && <Modelo08Preview
+                                onClick={() => window.open(model.options.link)}
+                                backgroundColor={model.options.backgroundColor}
+                                color={model.options.color}
+                                option={model.options.option ? model.options.option : `Opção-${index}`}
+
+                            />}
 
                         </Box>
                     ))}

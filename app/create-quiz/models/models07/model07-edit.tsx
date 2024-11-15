@@ -10,17 +10,17 @@ import {
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { TwitterPicker } from 'react-color';
-import { Crop169 } from '@mui/icons-material';
+import { Crop169, Crop32 } from '@mui/icons-material';
 import Header from '../../components/header';
 
-type Modelo05EditProps = {
+type Modelo07EditProps = {
     control: any;
     index: number;
     activePageIndex: number;
     onClose: () => void;
 };
 
-const Modelo05Edit: React.FC<Modelo05EditProps> = ({
+const Modelo07Edit: React.FC<Modelo07EditProps> = ({
     control,
     index,
     activePageIndex,
@@ -29,7 +29,7 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cartão PP" icon={Crop169} onClose={onClose} />
+            <Header title="Cartão GG" icon={Crop32} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
 
@@ -48,7 +48,21 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
                         />
                     )}
                 />
-
+                {/* Input para Tamanho da Imagem */}
+                <Controller
+                    name={`pages.${activePageIndex}.models.${index}.options.description`}
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Descrição"
+                            variant="outlined"
+                            type="text"
+                            fullWidth
+                            margin="normal"
+                        />
+                    )}
+                />
                 {/* Seletor de Cor para o Background */}
                 <Box>
                     <Controller
@@ -91,4 +105,4 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
     );
 };
 
-export default Modelo05Edit;
+export default Modelo07Edit;

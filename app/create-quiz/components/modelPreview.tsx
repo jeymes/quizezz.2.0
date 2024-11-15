@@ -8,6 +8,9 @@ import Modelo04Preview from '../models/models04/model04-preview';
 import { ControlPointDuplicate, CopyAll } from '@mui/icons-material';
 import { QuizData } from '@/@types/types';
 import Modelo05Preview from '../models/models05/model05-preview';
+import Modelo06Preview from '../models/models06/model06-preview';
+import Modelo07Preview from '../models/models07/model07-preview';
+import Modelo08Preview from '../models/models08/model08-preview';
 
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData
@@ -88,6 +91,7 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                 totalPages={watchedData?.pages.length}
                                 currentPage={activePageIndex}
                                 selected={model.options.selected}
+                                backgroundColor={model.options.backgroundColor}
                             />}
 
                             {model.model === 'model03' && <Modelo03Preview
@@ -106,6 +110,26 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                 backgroundColor={model.options.backgroundColor}
                                 color={model.options.color}
                                 option={model.options.option ? model.options.option : `Opção-${index}`}
+                            />}
+
+                            {model.model === 'model06' && <Modelo06Preview
+                                color={model.options.color}
+                                option={model.options.option}
+                            />}
+
+                            {model.model === 'model07' && <Modelo07Preview
+                                backgroundColor={model.options.backgroundColor}
+                                color={model.options.color}
+                                option={model.options.option ? model.options.option : `Opção-${index}`}
+                                description={model.options.description ? model.options.description : `Descrição-${index}`}
+                            />}
+
+                            {model.model === 'model08' && <Modelo08Preview
+                                onClick={() => { }}
+                                backgroundColor={model.options.backgroundColor}
+                                color={model.options.color}
+                                option={model.options.option ? model.options.option : `Opção-${index}`}
+
                             />}
 
                             <Box

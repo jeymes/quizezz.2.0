@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { useStoreCardFlowQuiz } from '@/app/zustand/StoreCardFlowQuiz/store';
-import { Crop169, TextFields, Image } from '@mui/icons-material';
+import { Crop169, TextFields, Image, ModeComment, TextSnippet, FormatQuote, Crop32 } from '@mui/icons-material';
 import { getDesignTokens } from '@/app/shared-theme/themePrimitives';
 
 interface NodeProps {
@@ -19,7 +19,7 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
     const { quizFlowData } = useStoreCardFlowQuiz();
 
     const dataArray = quizFlowData && quizFlowData.pages && quizFlowData.pages[id - 1]?.models ? quizFlowData.pages[id - 1].models : [];
-
+    console.log(dataArray)
     const darkTheme = createTheme(getDesignTokens('dark'));
 
     return (
@@ -116,7 +116,7 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                 {/* Modelo 01 - Header com Imagem no Centro */}
 
                                 {model.model === 'model01' && (
-                                    <Box sx={{ textAlign: 'center', padding: 1 }}>
+                                    <Box sx={{ textAlign: 'center', }}>
                                         <Avatar
                                             src={`${model.options.image instanceof File ? URL.createObjectURL(model.options.image) : model.options.image}`}
                                             alt="Modelo"
@@ -134,13 +134,14 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                 {model.model === 'model02' && (
                                     <Box sx={{ width: '100%', padding: 1 }}>
                                         {model.options.selected && (
-                                            <Typography variant="body2" color="black" sx={{ marginBlock: 1 }}>
-                                                {model.options.currentPage} / {model.options.totalPages}
+                                            <Typography variant="body2"
+                                                sx={{ marginBlock: 1, textAlign: 'center' }}>
+                                                {id} / {model.options.totalPages || quizFlowData?.pages?.length}
                                             </Typography>
                                         )}
                                         <LinearProgress
                                             variant="determinate"
-                                            value={(model.options.currentPage / quizFlowData?.pages?.length) * 100}
+                                            value={(id / quizFlowData?.pages?.length) * 100}
                                             sx={{
                                                 height: '8px',
                                                 borderRadius: '5px',
@@ -154,7 +155,7 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                 {/* Modelo 03 - Somente Opção */}
 
                                 {model.model === 'model03' && (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', padding: 1 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', }}>
                                         <TextFields sx={{ marginRight: 1 }} />
                                         <Typography variant="body1">{model.options.option}</Typography>
                                     </Box>
@@ -163,7 +164,7 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                 {/* Modelo 04 - Somente Opção */}
 
                                 {model.model === 'model04' && (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 1 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                         <Image sx={{ marginRight: 1 }} />
                                         <Typography variant="body1">{model.options.option}</Typography>
                                     </Box>
@@ -172,9 +173,26 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                 {/* Modelo 05 - Somente Opção */}
 
                                 {model.model === 'model05' && (
-                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 1 }}>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                         <Crop169 sx={{ marginRight: 1 }} />
                                         <Typography variant="body1">{model.options.option}</Typography>
+                                    </Box>
+                                )}
+
+                                {/* Modelo 06 - Somente Opção */}
+
+                                {model.model === 'model06' && (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <FormatQuote sx={{ marginRight: 1 }} />
+                                        <Typography variant="caption">{model.options.option}</Typography>
+                                    </Box>
+                                )}
+
+                                {model.model === 'model07' && (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Crop32 sx={{ marginRight: 1 }} />
+                                        <Typography variant="caption">{model.options.option}</Typography>
+                                        <Typography variant="caption">{model.options.description}</Typography>
                                     </Box>
                                 )}
 

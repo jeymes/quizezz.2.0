@@ -2,25 +2,22 @@ import React from 'react';
 import {
     TextField,
     Box,
-    Avatar,
-    IconButton,
-    Card,
-    CardContent,
     Typography,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { TwitterPicker } from 'react-color';
-import { Crop169 } from '@mui/icons-material';
+import DescriptionIcon from '@mui/icons-material/Description';
 import Header from '../../components/header';
+import { FormatQuote } from '@mui/icons-material';
 
-type Modelo05EditProps = {
+type Modelo06EditProps = {
     control: any;
     index: number;
     activePageIndex: number;
     onClose: () => void;
 };
 
-const Modelo05Edit: React.FC<Modelo05EditProps> = ({
+const Modelo06Edit: React.FC<Modelo06EditProps> = ({
     control,
     index,
     activePageIndex,
@@ -29,44 +26,29 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cartão PP" icon={Crop169} onClose={onClose} />
+            <Header title="Descrição" icon={FormatQuote} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
 
-                {/* Input para Tamanho da Imagem */}
+                {/* Input para Descrição (textarea) */}
                 <Controller
                     name={`pages.${activePageIndex}.models.${index}.options.option`}
                     control={control}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label="Texto"
+                            label="Descrição"
                             variant="outlined"
                             type="text"
                             fullWidth
                             margin="normal"
+                            multiline
+                            minRows={3}
+                            maxRows={6}
+                            placeholder="Digite a descrição aqui..."
                         />
                     )}
                 />
-
-                {/* Seletor de Cor para o Background */}
-                <Box>
-                    <Controller
-                        name={`pages.${activePageIndex}.models.${index}.options.backgroundColor`}
-                        control={control}
-                        render={({ field }) => (
-                            <>
-                                <Typography paddingBottom={2} variant="body2" component="div">
-                                    Cor de Fundo
-                                </Typography>
-                                <TwitterPicker
-                                    color={field.value || '#ffffff'}
-                                    onChange={(color) => field.onChange(color.hex)}
-                                />
-                            </>
-                        )}
-                    />
-                </Box>
 
                 {/* Seletor de Cor para o Texto */}
                 <Box>
@@ -79,7 +61,7 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
                                     Cor do Texto
                                 </Typography>
                                 <TwitterPicker
-                                    color={field.value || '#ffffff'}
+                                    color={field.value || '#000000'}
                                     onChange={(color) => field.onChange(color.hex)}
                                 />
                             </>
@@ -91,4 +73,4 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
     );
 };
 
-export default Modelo05Edit;
+export default Modelo06Edit;

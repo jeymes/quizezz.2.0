@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Card, Typography, Divider } from '@mui/material';
-import { Commit, Crop169, DragHandle, Image, PhotoLibrary, TextFields } from '@mui/icons-material';
+import { Commit, Crop169, Crop32, DragHandle, FormatQuote, Image, TextFields, TextSnippet } from '@mui/icons-material';
 
 interface SidebarProps {
     onModelSelect: (modelo: string, isFullWidth: boolean) => void;
@@ -12,7 +12,7 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
 
             {/* Category: Headers */}
             <Box>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="caption" gutterBottom>
                     Headers
                 </Typography>
                 <Divider sx={{ mb: 1 }} />
@@ -39,11 +39,11 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                                 transform: 'scale(1.05)',
                                 boxShadow: 3,
                             },
-                            width: 80
+                            width: 100
                         }}
                     >
                         <DragHandle sx={{ fontSize: 25 }} />
-                        <Typography variant="body2">Header</Typography>
+                        <Typography variant="caption">Header</Typography>
                     </Card>
 
                     <Card
@@ -62,11 +62,11 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                                 transform: 'scale(1.05)',
                                 boxShadow: 3,
                             },
-                            width: 80
+                            width: 100
                         }}
                     >
                         <Commit sx={{ fontSize: 25 }} />
-                        <Typography variant="body2">Progress</Typography>
+                        <Typography variant="caption">Progress</Typography>
                     </Card>
 
                     <Card
@@ -85,18 +85,18 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                                 transform: 'scale(1.05)',
                                 boxShadow: 3,
                             },
-                            width: 80
+                            width: 100
                         }}
                     >
                         <TextFields sx={{ fontSize: 25 }} />
-                        <Typography variant="body2">Título</Typography>
+                        <Typography variant="caption">Título</Typography>
                     </Card>
                 </Box>
             </Box>
 
             {/* Category: Elements */}
             <Box>
-                <Typography variant="body2" gutterBottom>
+                <Typography variant="caption" gutterBottom>
                     Elementos
                 </Typography>
                 <Divider sx={{ mb: 1 }} />
@@ -106,12 +106,10 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                         display: 'flex',
                         justifyContent: 'flex-start',
                         alignItems: 'center',
+                        flexWrap: 'wrap',
                         gap: 1,
                     }}
                 >
-
-
-
                     <Card
                         onClick={() => onModelSelect('model04', false)}
                         sx={{
@@ -128,11 +126,11 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                                 transform: 'scale(1.05)',
                                 boxShadow: 3,
                             },
-                            width: 80
+                            width: 100
                         }}
                     >
                         <Image sx={{ fontSize: 25 }} />
-                        <Typography variant="body2">Image</Typography>
+                        <Typography variant="caption">Image</Typography>
                     </Card>
 
                     <Card
@@ -151,14 +149,83 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
                                 transform: 'scale(1.05)',
                                 boxShadow: 3,
                             },
-                            width: 80
+                            width: 100
 
                         }}
                     >
                         <Crop169 sx={{ fontSize: 25 }} />
-                        <Typography variant="body2">Cartão</Typography>
+                        <Typography variant="caption">Cartão PP</Typography>
+                    </Card>
+                    <Card
+                        onClick={() => onModelSelect('model06', true)}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 2,
+                            gap: 1,
+                            cursor: 'pointer',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            boxShadow: 'none',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: 3,
+                            },
+                            width: 100
+
+                        }}
+                    >
+                        <FormatQuote sx={{ fontSize: 25 }} />
+                        <Typography variant="caption">Descrição</Typography>
+                    </Card>
+                    <Card
+                        onClick={() => onModelSelect('model07', true)}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 2,
+                            gap: 1,
+                            cursor: 'pointer',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            boxShadow: 'none',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: 3,
+                            },
+                            width: 100
+
+                        }}
+                    >
+                        <Crop32 sx={{ fontSize: 25 }} />
+                        <Typography variant="caption">Cartão GG</Typography>
                     </Card>
 
+                    <Card
+                        onClick={() => onModelSelect('model08', true)}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 2,
+                            gap: 1,
+                            cursor: 'pointer',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            boxShadow: 'none',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: 3,
+                            },
+                            width: 100
+
+                        }}
+                    >
+                        <Crop32 sx={{ fontSize: 25 }} />
+                        <Typography variant="caption">Button</Typography>
+                    </Card>
                 </Box>
 
             </Box>

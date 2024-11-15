@@ -9,6 +9,9 @@ import Modelo04Edit from '../models/models04/model04-edit';
 import ModelPreview from './modelPreview';
 import SidebarModels from './sidebarModels';
 import Modelo05Edit from '../models/models05/model05-edit';
+import Modelo06Edit from '../models/models06/model06-edit';
+import Modelo07Edit from '../models/models07/model07-edit';
+import Modelo08Edit from '../models/models08/model08-edit';
 
 interface ModelModalProps {
     modalNodeId: string | null; // ID do nó do modal
@@ -122,6 +125,30 @@ const ModelModal: React.FC<ModelModalProps> = ({
                             )}
                             {selectedModel === 'model05' && modelIndex !== null && (
                                 <Modelo05Edit
+                                    index={modelIndex}
+                                    onClose={() => setSelectedModel(null)}
+                                    control={control}
+                                    activePageIndex={modalNodeId as any}
+                                />
+                            )}
+                            {selectedModel === 'model06' && modelIndex !== null && (
+                                <Modelo06Edit
+                                    index={modelIndex}
+                                    onClose={() => setSelectedModel(null)}
+                                    control={control}
+                                    activePageIndex={modalNodeId as any}
+                                />
+                            )}
+                            {selectedModel === 'model07' && modelIndex !== null && (
+                                <Modelo07Edit
+                                    index={modelIndex}
+                                    onClose={() => setSelectedModel(null)}
+                                    control={control}
+                                    activePageIndex={modalNodeId as any}
+                                />
+                            )}
+                            {selectedModel === 'model08' && modelIndex !== null && (
+                                <Modelo08Edit
                                     index={modelIndex}
                                     onClose={() => setSelectedModel(null)}
                                     control={control}

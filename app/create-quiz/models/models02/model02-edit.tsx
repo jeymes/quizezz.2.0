@@ -3,6 +3,7 @@ import { TextField, Box, Typography, Stack, styled, Switch } from '@mui/material
 import { Controller } from 'react-hook-form';
 import Header from '../../components/header';
 import { Commit } from '@mui/icons-material';
+import { TwitterPicker } from 'react-color';
 
 type Modelo02EditProps = {
     control: any;
@@ -106,6 +107,24 @@ const Modelo02Edit: React.FC<Modelo02EditProps> = ({
                         </Stack>
                     )}
                 />
+                {/* Seletor de Cor para o Texto */}
+                <Box>
+                    <Controller
+                        name={`pages.${activePageIndex}.models.${index}.options.backgroundColor`}
+                        control={control}
+                        render={({ field }) => (
+                            <>
+                                <Typography paddingBottom={2} variant="body2" component="div">
+                                    Cor do Texto
+                                </Typography>
+                                <TwitterPicker
+                                    color={field.value || '#000000'}
+                                    onChange={(color) => field.onChange(color.hex)}
+                                />
+                            </>
+                        )}
+                    />
+                </Box>
             </Box>
         </>
     );

@@ -2,25 +2,21 @@ import React from 'react';
 import {
     TextField,
     Box,
-    Avatar,
-    IconButton,
-    Card,
-    CardContent,
     Typography,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { TwitterPicker } from 'react-color';
-import { Crop169 } from '@mui/icons-material';
+import { Crop32 } from '@mui/icons-material';
 import Header from '../../components/header';
 
-type Modelo05EditProps = {
+type Modelo08EditProps = {
     control: any;
     index: number;
     activePageIndex: number;
     onClose: () => void;
 };
 
-const Modelo05Edit: React.FC<Modelo05EditProps> = ({
+const Modelo08Edit: React.FC<Modelo08EditProps> = ({
     control,
     index,
     activePageIndex,
@@ -29,11 +25,12 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cartão PP" icon={Crop169} onClose={onClose} />
+            <Header title="Cartão" icon={Crop32} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
 
                 {/* Input para Tamanho da Imagem */}
+
                 <Controller
                     name={`pages.${activePageIndex}.models.${index}.options.option`}
                     control={control}
@@ -49,7 +46,22 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
                     )}
                 />
 
+                <Controller
+                    name={`pages.${activePageIndex}.models.${index}.options.link`}
+                    control={control}
+                    render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Link"
+                            variant="outlined"
+                            type="text"
+                            fullWidth
+                            margin="normal"
+                        />
+                    )}
+                />
                 {/* Seletor de Cor para o Background */}
+
                 <Box>
                     <Controller
                         name={`pages.${activePageIndex}.models.${index}.options.backgroundColor`}
@@ -69,6 +81,7 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
                 </Box>
 
                 {/* Seletor de Cor para o Texto */}
+
                 <Box>
                     <Controller
                         name={`pages.${activePageIndex}.models.${index}.options.color`}
@@ -86,9 +99,10 @@ const Modelo05Edit: React.FC<Modelo05EditProps> = ({
                         )}
                     />
                 </Box>
+
             </Box>
         </>
     );
 };
 
-export default Modelo05Edit;
+export default Modelo08Edit;
