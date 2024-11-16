@@ -12,6 +12,9 @@ import Modelo05Preview from '@/app/create-quiz/models/models05/model05-preview';
 import Modelo06Preview from '@/app/create-quiz/models/models06/model06-preview';
 import Modelo07Preview from '@/app/create-quiz/models/models07/model07-preview';
 import Modelo08Preview from '@/app/create-quiz/models/models08/model08-preview';
+import Modelo09Preview from '@/app/create-quiz/models/models09/model09-preview';
+import LoadingOverlay from '@/app/components/loadingOverlay';
+import NotFound from '@/app/components/404';
 
 // Tipos de dados para o quiz (ajuste conforme sua estrutura real)
 interface QuizModel {
@@ -44,7 +47,6 @@ interface Responses {
 const QuizPage = () => {
     const { quizData } = useQuizStore();
     const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
-    const [currentProgress, setCurrentProgress] = useState<number>(1);
 
     const { setValue, handleSubmit, watch } = useForm<{
         responses: Responses[];
@@ -54,7 +56,7 @@ const QuizPage = () => {
         }
     });
 
-    if (!quizData) return <div>Carregando...</div>;
+    if (!quizData) return <LoadingOverlay loading={!quizData} />;
 
     const currentPage = quizData.pages[currentPageIndex];
 
@@ -72,7 +74,7 @@ const QuizPage = () => {
         let question = getQuestionFromModel03();
 
         if (!question) {
-            question = "Pergunta Padrão";
+            question = "";
         }
 
         setValue(`responses.${currentPageIndex}`, {
@@ -117,30 +119,32 @@ const QuizPage = () => {
             <Paper
                 sx={{
                     borderRadius: 2,
-                    width: '90%',
-                    height: '80vh',
+                    width: '100%',
+                    height: '100%',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    bgcolor: 'transparent'
+
                 }}
             >
+
                 <Box
                     sx={{
-                        width: '60%',
+                        width: { sm: '30%', xs: '100%' },
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                         flexWrap: 'wrap',
                         flexDirection: 'row'
                     }}
-                    mb={3}
                 >
                     {currentPage.models.map((model: any, index: any) => (
                         <Box
                             key={index}
                             sx={{
-                                width: model.isFullWidth ? '90%' : 'calc(23%)',
+                                width: model.isFullWidth ? '100%' : 'calc(23%)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -161,7 +165,7 @@ const QuizPage = () => {
                                 <Modelo02Preview
                                     backgroundColor={model.options.backgroundColor}
                                     totalPages={quizData?.pages.length}
-                                    currentPage={currentProgress}
+                                    currentPage={currentPageIndex}
                                     selected={model.options.selected}
                                 />
                             )}
@@ -202,17 +206,32 @@ const QuizPage = () => {
                                 backgroundColor={model.options.backgroundColor}
                             />}
 
-                            {model.model === 'model08' && <Modelo08Preview
-                                onClick={() => window.open(model.options.link)}
-                                backgroundColor={model.options.backgroundColor}
+                            {model.model === 'model08' && (
+                                <Modelo08Preview
+                                    onClick={() => {
+                                        if (model.options.link) {
+                                            // Se o link existir, abre no navegador
+                                            window.open(model.options.link, '_blank');
+                                        } else {
+                                            // Caso contrário, chama a função handleNext
+                                            // handleNext(model.options.option, model.model);
+                                        }
+                                    }}
+                                    backgroundColor={model.options.backgroundColor}
+                                    color={model.options.color}
+                                    option={model.options.option ? model.options.option : `Opção-${index}`}
+                                />
+                            )}
+
+                            {model.model === 'model09' && <Modelo09Preview
+                                width={model.options.width}
                                 color={model.options.color}
-                                option={model.options.option ? model.options.option : `Opção-${index}`}
-
+                                imageUrl={model.options.image}
                             />}
-
                         </Box>
                     ))}
                 </Box>
+
             </Paper>
         </Box>
     );

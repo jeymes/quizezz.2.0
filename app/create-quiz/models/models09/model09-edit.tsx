@@ -6,22 +6,24 @@ import {
     IconButton,
     Card,
     CardContent,
-    Select,
-    MenuItem,
-    FormControl,
+    Typography,
+    Autocomplete,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { AddPhotoAlternate, DragHandle } from '@mui/icons-material';
+import { TwitterPicker } from 'react-color';
+import { Image, AddPhotoAlternate, Panorama } from '@mui/icons-material';
 import Header from '../../components/header';
 
-type Modelo01EditProps = {
+type Modelo09EditProps = {
     control: any;
     index: number;
     activePageIndex: number;
     onClose: () => void;
 };
 
-const Modelo01Edit: React.FC<Modelo01EditProps> = ({
+const options = ['100%', '50%', '25%',]; // Lista de sugestões
+
+const Modelo09Edit: React.FC<Modelo09EditProps> = ({
     control,
     index,
     activePageIndex,
@@ -30,7 +32,7 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cabeçalho" icon={DragHandle} onClose={onClose} />
+            <Header title="Banner" icon={Panorama} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
                 {/* Card para Imagem */}
@@ -48,10 +50,10 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                             render={({ field }) => (
                                 <>
                                     {field.value ? (
-                                        <Avatar
+                                        <img
                                             src={`${field.value.type ? URL.createObjectURL(field.value) : field.value}`}
                                             alt="Preview"
-                                            sx={{ width: 100, height: 100, margin: '10px auto', borderRadius: 0, }}
+                                            style={{ width: '100%', margin: '10px auto' }}
                                         />
                                     ) : (
                                         <IconButton
@@ -86,32 +88,27 @@ const Modelo01Edit: React.FC<Modelo01EditProps> = ({
                     </CardContent>
                 </Card>
 
-                {/* Select para Posição da Logo */}
-                <Controller
-                    name={`pages.${activePageIndex}.models.${index}.options.justifyContent`} // Caminho atualizado para posição
-                    control={control}
-                    render={({ field }) => (
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <Select
-                                {...field}
-                                displayEmpty
-                                renderValue={(value) =>
-                                    value ? value : 'Selecione a posição'
-                                }
-                                inputProps={{
-                                    'aria-label': 'Posição da Logo',
-                                }}
-                            >
-                                <MenuItem value="left">Esquerda</MenuItem>
-                                <MenuItem value="center">Centro</MenuItem>
-                                <MenuItem value="right">Direita</MenuItem>
-                            </Select>
-                        </FormControl>
-                    )}
-                />
+                {/* Autocomplete */}
+                <Box>
+                    <Controller
+                        name={`pages.${activePageIndex}.models.${index}.options.width`}
+                        control={control}
+                        render={({ field }) => (
+                            <Autocomplete
+                                sx={{ paddingTop: 2 }}
+                                options={options}
+                                renderInput={(params) => (
+                                    <TextField {...params} label="Tamanho" variant="outlined" />
+                                )}
+                                value={field.value || '100%'}
+                                onChange={(_, value) => field.onChange(value)}
+                            />
+                        )}
+                    />
+                </Box>
             </Box>
         </>
     );
 };
 
-export default Modelo01Edit;
+export default Modelo09Edit;

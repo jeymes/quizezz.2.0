@@ -20,6 +20,7 @@
     "@types/react-color": "^3.0.12",
     "dayjs": "^1.11.13",
     "firebase": "^11.0.1",
+    "lottie-react-web": "^2.2.2",
     "next": "15.0.1",
     "nookies": "^2.5.2",
     "react": "19.0.0-rc-69d4b800-20241021",

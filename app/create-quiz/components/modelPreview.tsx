@@ -11,6 +11,7 @@ import Modelo05Preview from '../models/models05/model05-preview';
 import Modelo06Preview from '../models/models06/model06-preview';
 import Modelo07Preview from '../models/models07/model07-preview';
 import Modelo08Preview from '../models/models08/model08-preview';
+import Modelo09Preview from '../models/models09/model09-preview';
 
 type ModelPreviewProps = {
     watchedData?: QuizData; // Mantém o tipo QuizData
@@ -130,6 +131,12 @@ const ModelPreview = ({ watchedData, activePageIndex, handleModelSelection, dele
                                 color={model.options.color}
                                 option={model.options.option ? model.options.option : `Opção-${index}`}
 
+                            />}
+
+                            {model.model === 'model09' && <Modelo09Preview
+                                color={model.options.color}
+                                imageUrl={model.options.image}
+                                width={model.options.width}
                             />}
 
                             <Box

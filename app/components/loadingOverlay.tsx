@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress, Box, Typography } from '@mui/material';
 
-const LoadingOverlay: React.FC<{ loading: boolean }> = ({ loading }) => {
+const LoadingOverlay: React.FC<{ loading: any }> = ({ loading }) => {
     if (!loading) return null;
 
     return (

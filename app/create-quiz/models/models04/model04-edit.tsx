@@ -38,8 +38,6 @@ const Modelo04Edit: React.FC<Modelo04EditProps> = ({
                     sx={{
                         width: '100%',
                         border: '2px dashed gray',
-                        borderRadius: 2,
-                        padding: 2,
                     }}
                 >
                     <CardContent>

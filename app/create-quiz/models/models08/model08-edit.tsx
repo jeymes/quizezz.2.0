@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { TwitterPicker } from 'react-color';
-import { Crop32 } from '@mui/icons-material';
+import { Crop32, SmartButton } from '@mui/icons-material';
 import Header from '../../components/header';
 
 type Modelo08EditProps = {
@@ -25,7 +25,7 @@ const Modelo08Edit: React.FC<Modelo08EditProps> = ({
     return (
         <>
             {/* Cabeçalho */}
-            <Header title="Cartão" icon={Crop32} onClose={onClose} />
+            <Header title="Butão" icon={SmartButton} onClose={onClose} />
 
             <Box display="flex" flexDirection="column" gap={2} padding={2}>
 

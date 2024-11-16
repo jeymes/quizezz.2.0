@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Card, Typography, Divider } from '@mui/material';
-import { Commit, Crop169, Crop32, DragHandle, FormatQuote, Image, TextFields, TextSnippet } from '@mui/icons-material';
+import { Commit, Crop169, Crop32, DragHandle, FormatQuote, Image, Panorama, SmartButton, TextFields, TextSnippet } from '@mui/icons-material';
 
 interface SidebarProps {
     onModelSelect: (modelo: string, isFullWidth: boolean) => void;
@@ -223,8 +223,31 @@ export default function SidebarModels({ onModelSelect }: SidebarProps) {
 
                         }}
                     >
-                        <Crop32 sx={{ fontSize: 25 }} />
+                        <SmartButton sx={{ fontSize: 25 }} />
                         <Typography variant="caption">Button</Typography>
+                    </Card>
+                    <Card
+                        onClick={() => onModelSelect('model09', true)}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 2,
+                            gap: 1,
+                            cursor: 'pointer',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            boxShadow: 'none',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                boxShadow: 3,
+                            },
+                            width: 100
+
+                        }}
+                    >
+                        <Panorama sx={{ fontSize: 25 }} />
+                        <Typography variant="caption">Banner</Typography>
                     </Card>
                 </Box>
 

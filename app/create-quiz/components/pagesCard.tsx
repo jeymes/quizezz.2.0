@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import { useStoreCardFlowQuiz } from '@/app/zustand/StoreCardFlowQuiz/store';
-import { Crop169, TextFields, Image, ModeComment, TextSnippet, FormatQuote, Crop32 } from '@mui/icons-material';
+import { Crop169, TextFields, Image, ModeComment, TextSnippet, FormatQuote, Crop32, SmartButton, Panorama } from '@mui/icons-material';
 import { getDesignTokens } from '@/app/shared-theme/themePrimitives';
 
 interface NodeProps {
@@ -196,6 +196,18 @@ const PagesCard = ({ data, onClick, id }: NodeProps) => {
                                     </Box>
                                 )}
 
+                                {model.model === 'model08' && (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <SmartButton sx={{ marginRight: 1 }} />
+                                        <Typography variant="caption">{model.options.option}</Typography>
+                                    </Box>
+                                )}
+                                {model.model === 'model09' && (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <Panorama sx={{ marginRight: 1 }} />
+                                        <Typography variant="caption">Banner</Typography>
+                                    </Box>
+                                )}
                             </Box>
                         ))
                     ) : (

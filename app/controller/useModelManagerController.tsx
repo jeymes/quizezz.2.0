@@ -293,6 +293,32 @@ const useModelManager = (): any => {
         return updatedData;
     };
 
+
+    // Baixa Json
+    const downloadJSON = (data: object, filename: string) => {
+        // Converte o objeto em uma string JSON
+        const jsonString = JSON.stringify(data, null, 2);
+
+        // Cria um blob do JSON
+        const blob = new Blob([jsonString], { type: 'application/json' });
+
+        // Cria uma URL para o blob
+        const url = URL.createObjectURL(blob);
+
+        // Cria um elemento <a> para iniciar o download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${filename}.json`;
+
+        // Aciona o clique e remove o elemento <a>
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Libera a URL criada
+        URL.revokeObjectURL(url);
+    };
+
     // Função para salvar o form
     const onSubmit: SubmitHandler<QuizData> = async () => {
         try {
@@ -313,15 +339,30 @@ const useModelManager = (): any => {
             const updatedWatchedData = await convertImagesToURLs(watchedData);
 
             // Cria o objeto final combinedData usando o watchedData com blobs
-            const combinedData = {
+            // const data = {
+            //     userId: userInfo?.uid,
+            //     quizId: watchedData.id,
+            //     token: userInfo?.token,
+            //     data: {
+            //         edges: edgesWithPages,
+            //         ...updatedWatchedData,
+            //         quizLink: quizUrl,
+            //     }
+            // };
+
+            const data = {
+                userId: userInfo?.uid,
+                quizId: watchedData.id,
+                token: userInfo?.token,
                 edges: edgesWithPages,
                 ...updatedWatchedData,
-                quizLink: quizUrl
+                quizLink: quizUrl,
             };
 
-            setQuizData(combinedData);  // Armazena o estado do quiz atualizado com blobs de imagens
-            console.log('Dados do Quiz salvos como JSON com blobs de imagens:', combinedData);
-
+            setQuizData(data);  // Armazena o estado do quiz atualizado com blobs de imagens
+            console.log('Dados do Quiz salvos como JSON com blobs de imagens:', data);
+            // Chama a função de download
+            // downloadJSON(data, `quiz-${quizId}`);
         } catch (error) {
             console.error('Erro ao salvar dados do quiz:', error);
         }
