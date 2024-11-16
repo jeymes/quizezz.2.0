@@ -7,14 +7,15 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
 import { visuallyHidden } from '@mui/utils';
 import { styled } from '@mui/material/styles';
+
+import Background from '../../../assets/img/Banner/Img-Landing-Page.png';
+import BackgroundMobile from '../../../assets/img/Banner/Img-Landing-Page-Mobile.png';
 
 const StyledBox = styled('div')(({ theme }) => ({
     alignSelf: 'center',
     width: '100%',
-    height: 400,
     marginTop: theme.spacing(8),
     borderRadius: (theme.cssVariables || theme).shape.borderRadius,
     outline: '6px solid',
@@ -22,21 +23,18 @@ const StyledBox = styled('div')(({ theme }) => ({
     border: '1px solid',
     borderColor: (theme.cssVariables || theme).palette.grey[200],
     boxShadow: '0 0 12px 8px hsla(220, 25%, 80%, 0.2)',
-    backgroundImage: `url(${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/screenshots/material-ui/getting-started/templates/dashboard.jpg)`,
+    backgroundImage: `url(${Background.src})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    [theme.breakpoints.up('sm')]: {
-        marginTop: theme.spacing(10),
-        height: 700,
-    },
-    ...theme.applyStyles('dark', {
-        boxShadow: '0 0 24px 12px hsla(210, 100%, 25%, 0.2)',
-        backgroundImage: `url(${process.env.TEMPLATE_IMAGE_URL || 'https://mui.com'}/static/screenshots/material-ui/getting-started/templates/dashboard-dark.jpg)`,
-        outlineColor: 'hsla(220, 20%, 42%, 0.1)',
-        borderColor: (theme.cssVariables || theme).palette.grey[700],
-    }),
 }));
 
 export default function Hero() {
+
+    function handleCheckout() {
+        window.open("https://quizezz.web.app/quiz/PzKgMEoiV7NFMwYv2GqJCVT5GI12/LWxFAAtCFGipostvBpBJ", "_blank");
+    };
+
     return (
         <Box
             id="hero"
@@ -70,12 +68,13 @@ export default function Hero() {
                         variant="h1"
                         sx={{
                             display: 'flex',
-                            flexDirection: { xs: 'column', sm: 'row' },
+                            flexDirection: { xs: 'column', sm: 'column' },
                             alignItems: 'center',
-                            fontSize: 'clamp(3rem, 10vw, 3.5rem)',
+                            textAlign: 'center',
+                            fontSize: { xs: 25, sm: 55 },
                         }}
                     >
-                        Our&nbsp;latest&nbsp;
+                        Crie Funis de Conversão com Quizzes Interativos e
                         <Typography
                             component="span"
                             variant="h1"
@@ -87,7 +86,7 @@ export default function Hero() {
                                 }),
                             })}
                         >
-                            products
+                            Aumente Suas Vendas
                         </Typography>
                     </Typography>
                     <Typography
@@ -97,11 +96,9 @@ export default function Hero() {
                             width: { sm: '100%', md: '80%' },
                         }}
                     >
-                        Explore our cutting-edge dashboard, delivering high-quality solutions
-                        tailored to your needs. Elevate your experience with top-tier features
-                        and services.
+                        Combine a gamificação dos quizzes com a personalização dos funis de vendas para capturar leads qualificados e aumentar seu faturamento. Crie interações engajantes que conduzem seu público até a conversão.
                     </Typography>
-                    <Stack
+                    {/* <Stack
                         direction={{ xs: 'column', sm: 'row' }}
                         spacing={1}
                         useFlexGap
@@ -144,10 +141,28 @@ export default function Hero() {
                             Terms & Conditions
                         </Link>
                         .
-                    </Typography>
+                    </Typography> */}
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        sx={{
+                            width: { xs: '100%', sm: '50%' },
+                            height: 50,
+                            fontWeight: 700,
+                            fontSize: 17,
+                        }}
+                        onClick={handleCheckout}
+                    >
+                        Acessar Demo
+                    </Button>
                 </Stack>
-                <StyledBox id="image" />
+                <StyledBox
+                    sx={{
+                        height: { xs: 220, sm: 500 },
+                    }}
+                    id="image" />
             </Container>
-        </Box>
+        </Box >
     );
 }

@@ -7,7 +7,7 @@ import NavigateNextRoundedIcon from '@mui/icons-material/NavigateNextRounded';
 const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
     margin: theme.spacing(1, 0),
     [`& .${breadcrumbsClasses.separator}`]: {
-        color: (theme.vars || theme).palette.action.disabled,
+        color: (theme.cssVariables || theme).palette.action.disabled,
         margin: 1,
     },
     [`& .${breadcrumbsClasses.ol}`]: {
@@ -15,7 +15,11 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
     },
 }));
 
-export default function NavbarBreadcrumbs() {
+interface HeaderProps {
+    title: string;
+}
+
+export default function NavbarBreadcrumbs({ title }: HeaderProps) {
     return (
         <StyledBreadcrumbs
             aria-label="breadcrumb"
@@ -23,7 +27,7 @@ export default function NavbarBreadcrumbs() {
         >
             <Typography variant="body1">Dashboard</Typography>
             <Typography variant="body1" sx={{ color: 'text.primary', fontWeight: 600 }}>
-                Home
+                {title}
             </Typography>
         </StyledBreadcrumbs>
     );

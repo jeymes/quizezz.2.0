@@ -6,49 +6,43 @@ import Grid from '@mui/material/Grid2';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
 import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import InsightsIcon from '@mui/icons-material/Insights';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import CelebrationIcon from '@mui/icons-material/Celebration';
 
 const items = [
     {
-        icon: <SettingsSuggestRoundedIcon />,
-        title: 'Adaptable performance',
-        description:
-            'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
-    },
-    {
-        icon: <ConstructionRoundedIcon />,
-        title: 'Built to last',
-        description:
-            'Experience unmatched durability that goes above and beyond with lasting investment.',
-    },
-    {
-        icon: <ThumbUpAltRoundedIcon />,
-        title: 'Great user experience',
-        description:
-            'Integrate our product into your routine with an intuitive and easy-to-use interface.',
-    },
-    {
         icon: <AutoFixHighRoundedIcon />,
-        title: 'Innovative functionality',
-        description:
-            'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+        title: "Flexibilidade e Customização",
+        description: "Personalize cada aspecto dos quizzes, desde as perguntas até o design. Adapte o conteúdo visual e textual para refletir a identidade da sua marca, criando uma experiência imersiva e alinhada com os objetivos da sua empresa."
     },
     {
-        icon: <SupportAgentRoundedIcon />,
-        title: 'Reliable support',
-        description:
-            'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+        icon: <InsightsIcon />,
+        title: "Relatórios Detalhados e Insights",
+        description: "Acompanhe o desempenho dos seus quizzes com relatórios detalhados que oferecem insights valiosos sobre o comportamento e as preferências do público. Use esses dados para ajustar suas campanhas e melhorar continuamente os resultados."
+    },
+    {
+        icon: <RateReviewIcon />,
+        title: "Feedback Personalizado em Tempo Real",
+        description: "Ofereça quizzes ajustados às necessidades específicas do seu público e obtenha feedback instantâneo. Isso permite adaptar suas estratégias em tempo real para maximizar a eficiência das suas ações."
+    },
+    {
+        icon: <CelebrationIcon />,
+        title: "Atraia Novos Clientes de Forma Divertida",
+        description: "Use quizzes interativos para criar experiências envolventes que atraem novos clientes. Gamifique a interação com seu público, despertando curiosidade e incentivando a participação em massa."
     },
     {
         icon: <QueryStatsRoundedIcon />,
-        title: 'Precision in every detail',
-        description:
-            'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+        title: "Aumente o Engajamento nas Redes Sociais",
+        description: "Compartilhe quizzes nas suas redes sociais para aumentar a visibilidade e o alcance da sua marca. Quizzes interativos são altamente compartilháveis e geram mais engajamento, ajudando a ampliar sua presença digital."
     },
+    {
+        icon: <SupportAgentRoundedIcon />,
+        title: "Obtenha Informações Valiosas do Seu Público",
+        description: "Utilize quizzes para coletar insights detalhados sobre os interesses e preferências dos seus clientes. As respostas fornecem dados cruciais que podem ser usados para melhorar suas estratégias de marketing e produtos."
+    }
 ];
 
 export default function Highlights() {
@@ -78,12 +72,10 @@ export default function Highlights() {
                     }}
                 >
                     <Typography component="h2" variant="h4" gutterBottom>
-                        Highlights
+                        Benefícios Principais
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'grey.400' }}>
-                        Explore why our product stands out: adaptability, durability,
-                        user-friendly design, and innovation. Enjoy reliable customer support and
-                        precision in every detail.
+                        Você pode criar páginas altamente eficazes e personalizadas para converter visitantes em clientes qualificados.
                     </Typography>
                 </Box>
                 <Grid container spacing={2}>

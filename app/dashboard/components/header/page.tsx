@@ -6,8 +6,11 @@ import Search from './search';
 import CustomDatePicker from './customDatePicker';
 import MenuButton from '../menuButton';
 import ColorModeIconDropdown from '@/app/shared-theme/colorModeIconDropdown';
+interface HeaderProps {
+    title: string;
+}
 
-export default function Header() {
+export default function Header({ title }: HeaderProps) {
     return (
         <Stack
             direction="row"
@@ -21,15 +24,19 @@ export default function Header() {
             }}
             spacing={2}
         >
-            <NavbarBreadcrumbs />
+            <NavbarBreadcrumbs
+                title={title}
+            />
+
             <Stack direction="row" sx={{ gap: 1 }}>
-                <Search />
-                <CustomDatePicker />
-                <MenuButton showBadge aria-label="Open notifications">
+                {/* <Search /> */}
+                {/* <CustomDatePicker /> */}
+                {/* <MenuButton showBadge aria-label="Open notifications">
                     <NotificationsRoundedIcon />
-                </MenuButton>
+                </MenuButton> */}
                 <ColorModeIconDropdown />
             </Stack>
+
         </Stack>
     );
 }
